@@ -6,6 +6,7 @@ import {
 import { Material, LessonProgress } from '../../types';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
+import { formatDuration } from '../../utils/formatDuration';
 
 interface SmartMaterialViewerProps {
   material: Material;
@@ -140,7 +141,7 @@ export const SmartMaterialViewer: React.FC<SmartMaterialViewerProps> = ({
           <div>
             <p className="text-xs font-bold text-white line-clamp-1">{material.filename}</p>
             <p className="text-[11px] text-slate-400">
-              {material.type.toUpperCase()} {material.fileSize ? `• ${material.fileSize}` : ''} • {material.type === 'video' ? `${Math.floor((material.duration || 0)/60)} phút` : `${totalPages} trang/slide khai báo`}
+              {material.type.toUpperCase()} {material.fileSize ? `• ${material.fileSize}` : ''} • {material.type === 'video' ? formatDuration(material.duration) : `${totalPages} trang/slide khai báo`}
             </p>
           </div>
         </div>

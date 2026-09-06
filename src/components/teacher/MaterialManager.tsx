@@ -6,6 +6,7 @@ import {
 import { Material, Lesson } from '../../types';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
+import { formatDuration } from '../../utils/formatDuration';
 
 export const MaterialManager: React.FC = () => {
   const { addToast } = useToast();
@@ -132,7 +133,7 @@ export const MaterialManager: React.FC = () => {
               <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
                 <a href={mat.storageUrl} target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">Mở tệp gốc</a>
                 <span>
-                  {mat.type === 'video' ? `${Math.floor((mat.duration || 0)/60)} phút` : `${mat.pageCount || mat.slideCount || 0} trang`}
+                  {mat.type === 'video' ? formatDuration(mat.duration) : `${mat.pageCount || mat.slideCount || 0} trang`}
                 </span>
                 <span className="text-emerald-400 font-semibold flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> {mat.required ? 'Bắt buộc' : 'Tham khảo'}
