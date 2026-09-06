@@ -291,22 +291,21 @@ var initialData = {
       lessonId: "lesson-1",
       type: "pdf",
       filename: "Tai_lieu_chuyen_de_Vecto_Lop10.pdf",
-      storageUrl: "https://storage.googleapis.com/eduhub-assets/samples/vecto-chuyende.pdf",
-      pageCount: 8,
+      storageUrl: "/materials/vecto-demo.pdf",
+      pageCount: 1,
       required: true,
-      fileSize: "2.4 MB",
+      fileSize: "50 KB",
       createdAt: "2024-09-05T08:30:00Z"
     },
     {
       id: "mat-2",
       lessonId: "lesson-1",
       type: "video",
-      filename: "BaiGiang_TrucQuan_QuyTacHinhBinhHanh.mp4",
-      storageUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-      duration: 360,
-      // 6 minutes (360 seconds)
+      filename: "Video_minh_hoa_QuyTacVecto.mp4",
+      storageUrl: "/materials/vecto-demo.mp4",
+      duration: 24,
       required: true,
-      fileSize: "18.5 MB",
+      fileSize: "171 KB",
       createdAt: "2024-09-05T08:35:00Z"
     }
   ],
@@ -315,12 +314,12 @@ var initialData = {
       id: "prog-student-1-lesson-1",
       userId: "student-1",
       lessonId: "lesson-1",
-      completedUnits: 8,
-      totalUnits: 8,
+      completedUnits: 100,
+      totalUnits: 100,
       percentage: 100,
-      lastPosition: 8,
-      viewedPages: [1, 2, 3, 4, 5, 6, 7, 8],
-      watchedSegments: [[0, 360]],
+      lastPosition: 1,
+      viewedPages: [1],
+      watchedSegments: [[0, 24]],
       isCompleted: true,
       lastOpenedAt: "2024-09-08T14:30:00Z",
       completedAt: "2024-09-08T14:45:00Z"
@@ -329,12 +328,12 @@ var initialData = {
       id: "prog-student-2-lesson-1",
       userId: "student-2",
       lessonId: "lesson-1",
-      completedUnits: 5,
-      totalUnits: 8,
-      percentage: 62.5,
-      lastPosition: 5,
-      viewedPages: [1, 2, 3, 4, 5],
-      watchedSegments: [[0, 180]],
+      completedUnits: 75,
+      totalUnits: 100,
+      percentage: 75,
+      lastPosition: 1,
+      viewedPages: [1],
+      watchedSegments: [[0, 12]],
       isCompleted: false,
       lastOpenedAt: "2024-09-09T09:15:00Z"
     }
@@ -1983,6 +1982,9 @@ apiRouter.post("/materials/upload", requireTeacherOrAdmin, async (req, res) => {
   if (!filename || !storageUrl || !validTypes.includes(type)) {
     return res.status(400).json({ error: "C\u1EA7n nh\u1EADp t\xEAn, lo\u1EA1i v\xE0 URL h\u1ECDc li\u1EC7u h\u1EE3p l\u1EC7." });
   }
+  if (type === "video" && (!Number.isFinite(Number(duration)) || Number(duration) <= 0)) {
+    return res.status(400).json({ error: "Video c\u1EA7n c\xF3 th\u1EDDi l\u01B0\u1EE3ng h\u1EE3p l\u1EC7 l\u1EDBn h\u01A1n 0." });
+  }
   try {
     const parsedUrl = new URL(storageUrl);
     if (!["http:", "https:"].includes(parsedUrl.protocol)) throw new Error("unsupported protocol");
@@ -2060,6 +2062,12 @@ apiRouter.post("/progress/track", requireAuth, (req, res) => {
   const resolvedMaterialId = materialId || (typeof pageViewed === "number" ? lessonMaterials.find((material2) => material2.type !== "video")?.id : lessonMaterials.find((material2) => material2.type === "video")?.id);
   const material = lessonMaterials.find((item) => item.id === resolvedMaterialId);
   if (!material) return res.status(400).json({ error: "H\u1ECDc li\u1EC7u kh\xF4ng h\u1EE3p l\u1EC7." });
+  if (material.type === "video" && (!Array.isArray(videoSegment) || videoSegment.length !== 2)) {
+    return res.status(400).json({ error: "C\u1EA7n g\u1EEDi ph\xE2n \u0111o\u1EA1n xem cho h\u1ECDc li\u1EC7u video." });
+  }
+  if (material.type !== "video" && typeof pageViewed !== "number") {
+    return res.status(400).json({ error: "C\u1EA7n g\u1EEDi s\u1ED1 trang \u0111\xE3 \u0111\u1ECDc cho h\u1ECDc li\u1EC7u t\xE0i li\u1EC7u." });
+  }
   let existing = db.getLessonProgress(userId, lessonId);
   const now = (/* @__PURE__ */ new Date()).toISOString();
   if (!existing) {
@@ -2136,9 +2144,9 @@ apiRouter.post("/progress/track", requireAuth, (req, res) => {
   }
   if (Array.isArray(videoSegment) && videoSegment.length === 2 && material.type === "video") {
     const duration = material.duration || Number(totalDuration) || 1;
-    const start = Math.max(0, Math.min(duration, Number(videoSegment[0])));
-    const end = Math.max(0, Math.min(duration, Number(videoSegment[1])));
-    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) {
+    const start = Number(videoSegment[0]);
+    const end = Number(videoSegment[1]);
+    if (!Number.isFinite(start) || !Number.isFinite(end) || start < 0 || end > duration + 0.5 || end <= start || end - start > 15) {
       return res.status(400).json({ error: "Ph\xE2n \u0111o\u1EA1n video kh\xF4ng h\u1EE3p l\u1EC7." });
     }
     const segments = mergeSegments([...current.watchedSegments || [], [start, end]]);

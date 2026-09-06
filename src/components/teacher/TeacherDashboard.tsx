@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Users, BookOpen, FileCheck, Award, TrendingUp, AlertTriangle, 
+  Users, BookOpen, FileCheck, Award, AlertTriangle,
   HelpCircle, ArrowRight, Sparkles, RefreshCw, CheckCircle2, ChevronRight,
   GraduationCap, BarChart2, CheckSquare, Layers
 } from 'lucide-react';
@@ -72,7 +72,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             Bảng Điều Khiển Sư Phạm & Khảo Thí
           </h1>
           <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-            Theo dõi tiến độ học tập thực tế theo chuẩn GDPT 2018, tự động hóa chấm thi với Gemini AI và đồng bộ bảng điểm Google Sheets thời gian thực.
+            Theo dõi tiến độ học tập thực tế theo chuẩn GDPT 2018, hỗ trợ chấm thi với Gemini AI và đồng bộ bảng điểm Google Sheets theo cấu hình.
           </p>
 
           <div className="flex items-center gap-3 pt-2 flex-wrap">
@@ -118,12 +118,10 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             </div>
           </div>
           <div>
-            <span className="text-2xl sm:text-3xl font-black text-white">{analytics?.totalStudents || 38}</span>
-            <span className="text-xs text-slate-400 ml-2">học sinh ({analytics?.totalClasses || 2} lớp)</span>
+            <span className="text-2xl sm:text-3xl font-black text-white">{analytics?.totalStudents ?? 0}</span>
+            <span className="text-xs text-slate-400 ml-2">học sinh ({analytics?.totalClasses ?? 0} lớp)</span>
           </div>
-          <p className="text-xs text-emerald-400 font-medium flex items-center gap-1">
-            <TrendingUp className="w-3.5 h-3.5" /> 100% tài khoản đã kích hoạt
-          </p>
+          <p className="text-xs text-slate-400">Tài khoản học sinh trong dữ liệu hiện tại</p>
         </div>
 
         <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800 shadow-lg space-y-2">
@@ -134,7 +132,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             </div>
           </div>
           <div>
-            <span className="text-2xl sm:text-3xl font-black text-emerald-400">{analytics?.averageCompletionRate || 78.5}%</span>
+            <span className="text-2xl sm:text-3xl font-black text-emerald-400">{analytics?.averageCompletionRate ?? 0}%</span>
             <span className="text-xs text-slate-400 ml-2">toàn khóa học</span>
           </div>
           <p className="text-xs text-slate-400">Dựa trên thời lượng xem video & tài liệu</p>
@@ -148,10 +146,10 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             </div>
           </div>
           <div>
-            <span className="text-2xl sm:text-3xl font-black text-amber-400">{analytics?.averageExamScore || 8.2}</span>
+            <span className="text-2xl sm:text-3xl font-black text-amber-400">{analytics?.averageExamScore ?? 0}</span>
             <span className="text-xs text-slate-400 ml-2">/ 10.0 điểm</span>
           </div>
-          <p className="text-xs text-emerald-400 font-medium">85% đạt chuẩn khá - giỏi</p>
+          <p className="text-xs text-slate-400">Tính từ các bài thi đã có kết quả</p>
         </div>
 
         <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800 shadow-lg space-y-2">
@@ -162,10 +160,10 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             </div>
           </div>
           <div>
-            <span className="text-2xl sm:text-3xl font-black text-white">{analytics?.totalLessons || 2}</span>
-            <span className="text-xs text-slate-400 ml-2">bài học ({analytics?.totalExams || 1} đề thi)</span>
+            <span className="text-2xl sm:text-3xl font-black text-white">{analytics?.totalLessons ?? 0}</span>
+            <span className="text-xs text-slate-400 ml-2">bài học ({analytics?.totalExams ?? 0} đề thi)</span>
           </div>
-          <p className="text-xs text-slate-400">Đã thẩm định chuẩn GDPT 2018</p>
+          <p className="text-xs text-slate-400">Nội dung đang có trên hệ thống</p>
         </div>
       </div>
 

@@ -111,21 +111,25 @@ try {
   assert.equal(practiceSubmit.body.feedback.q1.correctAnswer, 'A. AB + BC = AC');
   assert.equal((await post('/api/practice/submit', 'student-3', { attemptId: practiceStart.body.id, answers: {} })).status, 409);
 
-  for (let page = 1; page <= 8; page += 1) {
-    const tracked = await post('/api/progress/track', 'student-3', {
-      userId: 'student-3', lessonId: 'lesson-1', materialId: 'mat-1', pageViewed: page, totalPages: 8
-    });
-    assert.equal(tracked.status, 200);
-  }
+  const trackedPage = await post('/api/progress/track', 'student-3', {
+    userId: 'student-3', lessonId: 'lesson-1', materialId: 'mat-1', pageViewed: 1, totalPages: 99
+  });
+  assert.equal(trackedPage.status, 200);
+  assert.equal((await post('/api/progress/track', 'student-3', {
+    userId: 'student-3', lessonId: 'lesson-1', materialId: 'mat-1', pageViewed: 2, totalPages: 99
+  })).status, 400);
+  assert.equal((await post('/api/progress/track', 'student-3', {
+    userId: 'student-3', lessonId: 'lesson-1', materialId: 'mat-2', videoSegment: [0, 24], totalDuration: 999
+  })).status, 400);
   await post('/api/progress/track', 'student-3', {
-    userId: 'student-3', lessonId: 'lesson-1', materialId: 'mat-1', pageViewed: 8, totalPages: 8
+    userId: 'student-3', lessonId: 'lesson-1', materialId: 'mat-2', videoSegment: [0, 12], totalDuration: 999
   });
   const completedProgress = await post('/api/progress/track', 'student-3', {
-    userId: 'student-3', lessonId: 'lesson-1', materialId: 'mat-2', videoSegment: [0, 360], totalDuration: 360
+    userId: 'student-3', lessonId: 'lesson-1', materialId: 'mat-2', videoSegment: [12, 24], totalDuration: 999
   });
   assert.equal(completedProgress.body.percentage, 100);
   assert.equal(completedProgress.body.isCompleted, true);
-  assert.equal(completedProgress.body.materialProgress['mat-1'].viewedPages.length, 8);
+  assert.equal(completedProgress.body.materialProgress['mat-1'].viewedPages.length, 1);
 
   const studentExam = await api('/api/exams/exam-1', 'student-3');
   assert.equal(studentExam.status, 200);

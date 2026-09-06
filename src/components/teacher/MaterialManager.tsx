@@ -188,6 +188,7 @@ export const MaterialManager: React.FC = () => {
                   </label>
                   <input
                     type="number"
+                    min={1}
                     value={fileType === 'video' ? durationMins : pageCount}
                     onChange={(e) => fileType === 'video' ? setDurationMins(Number(e.target.value)) : setPageCount(Number(e.target.value))}
                     className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500"

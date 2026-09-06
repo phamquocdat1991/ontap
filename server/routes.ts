@@ -292,6 +292,9 @@ apiRouter.post('/materials/upload', requireTeacherOrAdmin, async (req, res) => {
   if (!filename || !storageUrl || !validTypes.includes(type)) {
     return res.status(400).json({ error: 'Cần nhập tên, loại và URL học liệu hợp lệ.' });
   }
+  if (type === 'video' && (!Number.isFinite(Number(duration)) || Number(duration) <= 0)) {
+    return res.status(400).json({ error: 'Video cần có thời lượng hợp lệ lớn hơn 0.' });
+  }
   try {
     const parsedUrl = new URL(storageUrl);
     if (!['http:', 'https:'].includes(parsedUrl.protocol)) throw new Error('unsupported protocol');
@@ -389,6 +392,12 @@ apiRouter.post('/progress/track', requireAuth, (req, res) => {
   );
   const material = lessonMaterials.find(item => item.id === resolvedMaterialId);
   if (!material) return res.status(400).json({ error: 'Học liệu không hợp lệ.' });
+  if (material.type === 'video' && (!Array.isArray(videoSegment) || videoSegment.length !== 2)) {
+    return res.status(400).json({ error: 'Cần gửi phân đoạn xem cho học liệu video.' });
+  }
+  if (material.type !== 'video' && typeof pageViewed !== 'number') {
+    return res.status(400).json({ error: 'Cần gửi số trang đã đọc cho học liệu tài liệu.' });
+  }
 
   let existing = db.getLessonProgress(userId, lessonId);
   const now = new Date().toISOString();
@@ -476,9 +485,16 @@ apiRouter.post('/progress/track', requireAuth, (req, res) => {
 
   if (Array.isArray(videoSegment) && videoSegment.length === 2 && material.type === 'video') {
     const duration = material.duration || Number(totalDuration) || 1;
-    const start = Math.max(0, Math.min(duration, Number(videoSegment[0])));
-    const end = Math.max(0, Math.min(duration, Number(videoSegment[1])));
-    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) {
+    const start = Number(videoSegment[0]);
+    const end = Number(videoSegment[1]);
+    if (
+      !Number.isFinite(start) ||
+      !Number.isFinite(end) ||
+      start < 0 ||
+      end > duration + 0.5 ||
+      end <= start ||
+      end - start > 15
+    ) {
       return res.status(400).json({ error: 'Phân đoạn video không hợp lệ.' });
     }
     const segments = mergeSegments([...(current.watchedSegments || []), [start, end]]);

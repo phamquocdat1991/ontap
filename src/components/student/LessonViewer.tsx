@@ -139,7 +139,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
         </span>
         <span className="text-slate-600">/</span>
         <span className="text-white font-bold truncate">
-          Bài {lesson.order}: {lesson.title}
+          {/^Bài\s+\d+\s*:/i.test(lesson.title) ? lesson.title : `Bài ${lesson.order}: ${lesson.title}`}
         </span>
       </nav>
 

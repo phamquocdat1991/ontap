@@ -308,21 +308,21 @@
       "lessonId": "lesson-1",
       "type": "pdf",
       "filename": "Tai_lieu_chuyen_de_Vecto_Lop10.pdf",
-      "storageUrl": "https://storage.googleapis.com/eduhub-assets/samples/vecto-chuyende.pdf",
-      "pageCount": 8,
+      "storageUrl": "/materials/vecto-demo.pdf",
+      "pageCount": 1,
       "required": true,
-      "fileSize": "2.4 MB",
+      "fileSize": "50 KB",
       "createdAt": "2024-09-05T08:30:00Z"
     },
     {
       "id": "mat-2",
       "lessonId": "lesson-1",
       "type": "video",
-      "filename": "BaiGiang_TrucQuan_QuyTacHinhBinhHanh.mp4",
-      "storageUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-      "duration": 360,
+      "filename": "Video_minh_hoa_QuyTacVecto.mp4",
+      "storageUrl": "/materials/vecto-demo.mp4",
+      "duration": 24,
       "required": true,
-      "fileSize": "18.5 MB",
+      "fileSize": "171 KB",
       "createdAt": "2024-09-05T08:35:00Z"
     }
   ],
@@ -331,24 +331,17 @@
       "id": "prog-student-1-lesson-1",
       "userId": "student-1",
       "lessonId": "lesson-1",
-      "completedUnits": 8,
-      "totalUnits": 8,
+      "completedUnits": 100,
+      "totalUnits": 100,
       "percentage": 100,
-      "lastPosition": 8,
+      "lastPosition": 1,
       "viewedPages": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8
+        1
       ],
       "watchedSegments": [
         [
           0,
-          360
+          24
         ]
       ],
       "isCompleted": true,
@@ -359,21 +352,17 @@
       "id": "prog-student-2-lesson-1",
       "userId": "student-2",
       "lessonId": "lesson-1",
-      "completedUnits": 5,
-      "totalUnits": 8,
-      "percentage": 62.5,
-      "lastPosition": 5,
+      "completedUnits": 75,
+      "totalUnits": 100,
+      "percentage": 75,
+      "lastPosition": 1,
       "viewedPages": [
-        1,
-        2,
-        3,
-        4,
-        5
+        1
       ],
       "watchedSegments": [
         [
           0,
-          180
+          12
         ]
       ],
       "isCompleted": false,
