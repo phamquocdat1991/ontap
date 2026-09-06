@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Sparkles, Users, BookOpen, Layers, Award, 
-  Menu, X, ChevronDown, Check, GraduationCap, ShieldCheck 
+  Menu, ChevronDown, Check, GraduationCap, ShieldCheck, Moon, Sun
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -18,6 +18,16 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { user, usersList, switchUser, isTeacher, isStudent, isAdmin } = useAuth();
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
+  const [isDark, setIsDark] = useState(() => localStorage.getItem('ontap-theme') === 'dark');
+  const canManage = isTeacher || isAdmin;
+
+  const toggleTheme = () => {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle('dark', next);
+    document.documentElement.classList.toggle('light', !next);
+    localStorage.setItem('ontap-theme', next ? 'dark' : 'light');
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 sm:px-6 h-16 flex items-center justify-between shadow-md">
@@ -32,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         <div 
-          onClick={() => onSelectTab(isTeacher ? 'dashboard' : 'student-dashboard')}
+          onClick={() => onSelectTab(canManage ? 'dashboard' : 'student-dashboard')}
           className="flex items-center gap-2.5 cursor-pointer select-none group"
         >
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-md shadow-emerald-950/50 group-hover:scale-105 transition-transform">
@@ -56,7 +66,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Center: Quick Shortcuts (Desktop) */}
       <div className="hidden lg:flex items-center gap-1 bg-slate-950/60 p-1 rounded-2xl border border-slate-800/80">
-        {isTeacher ? (
+        {canManage ? (
           <>
             <button
               onClick={() => onSelectTab('dashboard')}
@@ -150,7 +160,17 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Right: Role Switcher & Profile */}
-      <div className="relative">
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-700/80 bg-slate-800/80 text-slate-300 transition hover:bg-slate-800 hover:text-white"
+          aria-label={isDark ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối'}
+          title={isDark ? 'Giao diện sáng' : 'Giao diện tối'}
+        >
+          {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        </button>
+        <div className="relative">
         <button
           onClick={() => setShowRoleDropdown(!showRoleDropdown)}
           className="flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-1.5 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 transition-all text-left"
@@ -209,7 +229,7 @@ export const Header: React.FC<HeaderProps> = ({
                       <div className="text-left truncate">
                         <p className="font-semibold text-white truncate">{u.fullName}</p>
                         <p className="text-[10px] text-slate-400">
-                          {u.role === 'teacher' ? `Giáo viên (${u.subjectSpecialty || 'Toán'})` : `Học sinh (${u.className || '10A1'})`}
+                          {u.role === 'teacher' ? `Giáo viên (${u.subjectSpecialty || 'Bộ môn'})` : u.role === 'admin' ? 'Quản trị viên hệ thống' : `Học sinh (${u.className || 'Chưa xếp lớp'})`}
                         </p>
                       </div>
                     </div>
@@ -221,10 +241,11 @@ export const Header: React.FC<HeaderProps> = ({
 
             <div className="p-2 border-t border-slate-800/80 bg-slate-950/40 rounded-2xl mt-1 text-[11px] text-slate-400 flex items-center gap-1.5 justify-center">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Dữ liệu phân quyền độc lập an toàn</span>
+              <span>Chuyển tài khoản minh họa để kiểm thử vai trò</span>
             </div>
           </div>
         )}
+        </div>
       </div>
     </header>
   );

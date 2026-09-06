@@ -46,7 +46,11 @@ export const GoogleSheetsSync: React.FC = () => {
       setRetryingId(logId);
       const updated = await api.retrySheetSync(logId);
       setLogs(prev => prev.map(l => l.id === logId ? updated : l));
-      addToast('Đồng bộ lại thành công!', 'Dữ liệu kết quả bài thi đã được ghi nhận vào Google Sheets.', 'success');
+      if (updated.status === 'success') {
+        addToast('Đồng bộ lại thành công!', 'Google Sheets đã xác nhận dòng dữ liệu mới.', 'success');
+      } else {
+        addToast('Đồng bộ chưa thành công', updated.errorMsg || 'Vui lòng kiểm tra cấu hình máy chủ.', 'warning');
+      }
     } catch (err: any) {
       addToast('Lỗi đồng bộ', err.message, 'error');
     } finally {
@@ -63,7 +67,7 @@ export const GoogleSheetsSync: React.FC = () => {
       });
       setSettings(updated);
       setShowConfig(false);
-      addToast('Đã lưu cấu hình Google Sheets', 'Kết nối thành công tới trang tính.', 'success');
+      addToast('Đã lưu cấu hình Google Sheets', 'Hệ thống sẽ kiểm tra quyền truy cập ở lần đồng bộ tiếp theo.', 'success');
     } catch (err: any) {
       addToast('Lỗi lưu cấu hình', err.message, 'error');
     }
@@ -79,7 +83,7 @@ export const GoogleSheetsSync: React.FC = () => {
             Đồng Bộ Bảng Điểm Google Sheets
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Dữ liệu luôn lưu Firestore an toàn trước, Google Sheets đóng vai trò lớp đồng bộ thứ hai để giáo viên xuất báo cáo và đối chiếu.
+            Nhật ký kết quả được lưu trước, sau đó máy chủ ghi đủ 15 cột vào Google Sheets bằng tài khoản dịch vụ.
           </p>
         </div>
 
@@ -106,6 +110,7 @@ export const GoogleSheetsSync: React.FC = () => {
 
           <button
             onClick={fetchLogsAndSettings}
+            aria-label="Làm mới nhật ký đồng bộ"
             className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl border border-slate-700"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -122,21 +127,21 @@ export const GoogleSheetsSync: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <span className="font-bold text-sm text-white">
-                {settings?.spreadsheetName || 'AI_Learning_Hub_BangDiem_Lop10A1'}
+                {settings?.spreadsheetName || 'AI_Learning_Hub_DuLieuMau'}
               </span>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
-                <CheckCircle2 className="w-3 h-3" /> Đang hoạt động
+                <CheckCircle2 className="w-3 h-3" /> {settings?.googleSheetsConnected ? 'Đã lưu cấu hình' : 'Chưa cấu hình'}
               </span>
             </div>
             <p className="text-xs text-slate-400 font-mono mt-0.5">
-              Spreadsheet ID: {settings?.spreadsheetId || '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'}
+              Spreadsheet ID: {settings?.spreadsheetId || 'Chưa thiết lập'}
             </p>
           </div>
         </div>
 
         <div className="text-right text-xs">
           <span className="text-slate-400">Trạng thái tự động đồng bộ: </span>
-          <span className="text-emerald-400 font-bold">BẬT (Sau mỗi lần nộp bài)</span>
+          <span className="text-emerald-400 font-bold">{settings?.autoSync ? 'BẬT (sau khi điểm đã hoàn tất)' : 'TẮT'}</span>
         </div>
       </div>
 
@@ -146,7 +151,7 @@ export const GoogleSheetsSync: React.FC = () => {
           <h2 className="text-xs font-bold text-slate-200 uppercase tracking-wider">
             Nhật ký 15 Cột dữ liệu đồng bộ Google Sheets ({logs.length} bản ghi)
           </h2>
-          <span className="text-[11px] text-slate-400">Chuẩn hóa cấu trúc theo thời gian thực</span>
+          <span className="text-[11px] text-slate-400">Trạng thái phản ánh đúng kết quả API Google Sheets</span>
         </div>
 
         <div className="overflow-x-auto">
@@ -253,7 +258,7 @@ export const GoogleSheetsSync: React.FC = () => {
                   value={sheetId}
                   onChange={(e) => setSheetId(e.target.value)}
                   required
-                  placeholder="VD: 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms"
+                  placeholder="Nhập ID bảng tính Google Sheets"
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono"
                 />
                 <p className="text-[11px] text-slate-400 mt-1">

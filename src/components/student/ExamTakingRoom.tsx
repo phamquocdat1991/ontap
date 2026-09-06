@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Award, Clock, CheckCircle2, AlertTriangle, ArrowLeft, 
   Send, FileText, Check, ShieldCheck, Sparkles, RefreshCw,
@@ -8,7 +8,7 @@ import { Exam, ExamAttempt } from '../../types';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { ConfirmModal } from '../common/ConfirmModal';
-import { LoadingState } from '../common/StateViews';
+import { EmptyState, LoadingState } from '../common/StateViews';
 
 interface ExamTakingRoomProps {
   examId: string;
@@ -25,36 +25,48 @@ export const ExamTakingRoom: React.FC<ExamTakingRoomProps> = ({
 }) => {
   const { addToast } = useToast();
   const [exam, setExam] = useState<Exam | null>(null);
+  const [attempt, setAttempt] = useState<ExamAttempt | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const answersRef = useRef<Record<string, string>>({});
   const [timeLeft, setTimeLeft] = useState<number>(45 * 60);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionResult, setSubmissionResult] = useState<ExamAttempt | null>(null);
   const [loading, setLoading] = useState(true);
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
   const [showConfirmExit, setShowConfirmExit] = useState(false);
+  const [loadError, setLoadError] = useState('');
+
+  useEffect(() => {
+    answersRef.current = answers;
+  }, [answers]);
 
   useEffect(() => {
     const fetchExam = async () => {
       try {
         setLoading(true);
-        const eList = await api.getExams();
-        const curExam = eList.find(e => e.id === examId);
-        if (curExam) {
-          setExam(curExam);
-          setTimeLeft((curExam.durationMinutes || 45) * 60);
+        const curExam = await api.getExamById(examId);
+        setExam(curExam);
+        const activeAttempt = await api.startExamAttempt(examId);
+        setAttempt(activeAttempt);
+        setAnswers(activeAttempt.answers || {});
+        if (activeAttempt.status === 'in_progress') {
+          setTimeLeft(Math.max(0, Math.floor((new Date(activeAttempt.deadline).getTime() - Date.now()) / 1000)));
+        } else {
+          setSubmissionResult(activeAttempt);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to load exam:', err);
+        setLoadError(err.message || 'Không thể mở đề kiểm tra.');
       } finally {
         setLoading(false);
       }
     };
     fetchExam();
-  }, [examId]);
+  }, [examId, studentId]);
 
   // Countdown timer
   useEffect(() => {
-    if (submissionResult || timeLeft <= 0) return;
+    if (!attempt || submissionResult || timeLeft <= 0) return;
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
@@ -67,7 +79,7 @@ export const ExamTakingRoom: React.FC<ExamTakingRoomProps> = ({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [submissionResult, timeLeft]);
+  }, [attempt?.id, submissionResult, timeLeft <= 0]);
 
   const handleSelectMC = (qId: string, option: string) => {
     if (submissionResult) return;
@@ -80,20 +92,22 @@ export const ExamTakingRoom: React.FC<ExamTakingRoomProps> = ({
   };
 
   const handleSubmitExam = async () => {
-    if (!exam || isSubmitting || submissionResult) return;
+    if (!exam || !attempt || isSubmitting || submissionResult) return;
     try {
       setIsSubmitting(true);
       setShowConfirmSubmit(false);
-      const attempt = await api.submitExamAttempt({
-        examId: exam.id,
-        answers,
+      const submittedAttempt = await api.submitExamAttempt({
+        attemptId: attempt.id,
+        answers: answersRef.current,
         durationSeconds: (exam.durationMinutes * 60) - timeLeft
       });
 
-      setSubmissionResult(attempt);
+      setSubmissionResult(submittedAttempt);
       addToast(
         'Đã nộp bài kiểm tra thành công!',
-        `Điểm số sơ bộ: ${attempt.score}/10. Kết quả đã được lưu trữ và đồng bộ an toàn.`,
+        submittedAttempt.status === 'needs_review'
+          ? `Phần trắc nghiệm đã chấm; bài tự luận đang chờ giáo viên duyệt.`
+          : `Điểm: ${submittedAttempt.score}/${submittedAttempt.totalScore}. Kết quả đã được lưu.`,
         'success'
       );
     } catch (err: any) {
@@ -109,8 +123,12 @@ export const ExamTakingRoom: React.FC<ExamTakingRoomProps> = ({
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  if (loading || !exam) {
+  if (loading) {
     return <LoadingState message="Đang chuẩn bị đề kiểm tra cho bạn..." />;
+  }
+
+  if (!exam || loadError) {
+    return <EmptyState icon={AlertTriangle} title="Chưa thể mở phòng kiểm tra" description={loadError || 'Không tìm thấy đề kiểm tra.'} actionText="Quay về góc học tập" onAction={onExit} />;
   }
 
   // Result View after submission
@@ -143,7 +161,7 @@ export const ExamTakingRoom: React.FC<ExamTakingRoomProps> = ({
               <p className="text-[10px] uppercase font-bold text-slate-400 mt-1">Câu Sai</p>
             </div>
             <div>
-              <p className="text-2xl sm:text-3xl font-black text-amber-400">{submissionResult.score} / 10</p>
+              <p className="text-2xl sm:text-3xl font-black text-amber-400">{submissionResult.score ?? 0} / {submissionResult.totalScore}</p>
               <p className="text-[10px] uppercase font-bold text-slate-400 mt-1">Điểm Tổng</p>
             </div>
           </div>
@@ -157,12 +175,18 @@ export const ExamTakingRoom: React.FC<ExamTakingRoomProps> = ({
             {Object.keys(submissionResult.essayEvaluations || {}).length > 0 && (
               <p className="flex items-center gap-2 text-purple-300 font-semibold">
                 <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
-                Phần tự luận đã được Gemini AI sơ khảo theo thang điểm Rubric và chuyển tới Thầy/Cô thẩm định.
+                {Object.values(submissionResult.essayEvaluations || {}).some(item => (item as { confidence: number }).confidence > 0)
+                  ? 'Phần tự luận đã được AI sơ khảo theo rubric và chuyển giáo viên thẩm định.'
+                  : 'AI chưa có kết quả đáng tin cậy; phần tự luận đang chờ giáo viên chấm.'}
               </p>
             )}
             <p className="flex items-center gap-2 text-slate-400">
               <ShieldCheck className="w-4 h-4 text-cyan-400 shrink-0" />
-              Kết quả đã đồng bộ an toàn tới Google Sheets của lớp học.
+              {submissionResult.syncStatus === 'success'
+                ? 'Google Sheets đã xác nhận đồng bộ kết quả.'
+                : submissionResult.status === 'needs_review'
+                  ? 'Kết quả sẽ đồng bộ sau khi giáo viên duyệt điểm cuối cùng.'
+                  : 'Kết quả đã lưu; trạng thái Google Sheets đang chờ hoặc cần kiểm tra.'}
             </p>
           </div>
 
@@ -177,7 +201,7 @@ export const ExamTakingRoom: React.FC<ExamTakingRoomProps> = ({
     );
   }
 
-  const answeredCount = Object.keys(answers).length;
+  const answeredCount = Object.values(answers).filter(value => String(value).trim()).length;
   const totalCount = exam.questions.length;
   const isUrgent = timeLeft < 300; // under 5 minutes
 
@@ -247,12 +271,13 @@ export const ExamTakingRoom: React.FC<ExamTakingRoomProps> = ({
         {exam.questions.map((q, idx) => {
           const isAnswered = !!answers[q.id];
           const isEssay = q.type === 'essay';
+          const isShortAnswer = q.type === 'short_answer';
 
           return (
             <div key={q.id || idx} className="bg-slate-900 rounded-3xl border border-slate-800 p-6 sm:p-7 shadow-xl space-y-4">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-emerald-400 text-xs">
-                  Câu {idx + 1} ({isEssay ? 'Tự luận' : 'Trắc nghiệm'}) • {q.points || 2.5} điểm
+                  Câu {idx + 1} ({isEssay ? 'Tự luận' : isShortAnswer ? 'Trả lời ngắn' : 'Trắc nghiệm'}) • {q.points || 2.5} điểm
                 </span>
                 <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
                   isAnswered ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-500'
@@ -264,7 +289,7 @@ export const ExamTakingRoom: React.FC<ExamTakingRoomProps> = ({
               <p className="text-sm sm:text-base font-bold text-white leading-relaxed">{q.question}</p>
 
               {/* Multiple Choice Options with touch target >= 44px */}
-              {!isEssay && q.options && (
+              {!isEssay && !isShortAnswer && q.options && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                   {q.options.map((opt, oi) => {
                     const isSelected = answers[q.id] === opt;
@@ -283,6 +308,19 @@ export const ExamTakingRoom: React.FC<ExamTakingRoomProps> = ({
                     );
                   })}
                 </div>
+              )}
+
+              {isShortAnswer && (
+                <label className="block space-y-2 pt-2">
+                  <span className="text-xs font-semibold text-slate-300">Câu trả lời ngắn</span>
+                  <input
+                    aria-label={`Câu trả lời ngắn câu ${idx + 1}`}
+                    value={answers[q.id] || ''}
+                    onChange={(event) => handleEssayChange(q.id, event.target.value)}
+                    placeholder="Nhập đáp án..."
+                    className="min-h-[48px] w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 text-sm text-white focus:border-emerald-500 focus:outline-none"
+                  />
+                </label>
               )}
 
               {/* Essay Text Area */}

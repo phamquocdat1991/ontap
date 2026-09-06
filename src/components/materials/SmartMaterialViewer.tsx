@@ -23,20 +23,22 @@ export const SmartMaterialViewer: React.FC<SmartMaterialViewerProps> = ({
   onProgressUpdate
 }) => {
   const { addToast } = useToast();
+  const initialMaterialProgress = initialProgress?.materialProgress?.[material.id];
 
   // Progress state
-  const [currentPage, setCurrentPage] = useState(initialProgress?.lastPosition || 1);
-  const totalPages = material.pageCount || material.slideCount || 8;
-  const [viewedPages, setViewedPages] = useState<number[]>(initialProgress?.viewedPages || [1]);
+  const [currentPage, setCurrentPage] = useState(initialMaterialProgress?.lastPosition || 1);
+  const totalPages = Math.max(1, material.pageCount || material.slideCount || 1);
+  const [viewedPages, setViewedPages] = useState<number[]>(initialMaterialProgress?.viewedPages || []);
   
   // Video tracking state
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoCurrentTime, setVideoCurrentTime] = useState(0);
   const [lastSegmentStart, setLastSegmentStart] = useState(0);
-  const [watchedSegments, setWatchedSegments] = useState<[number, number][]>(initialProgress?.watchedSegments || []);
-  const [completionPercentage, setCompletionPercentage] = useState(initialProgress?.percentage || 0);
-  const [isCompleted, setIsCompleted] = useState(initialProgress?.isCompleted || false);
+  const [watchedSegments, setWatchedSegments] = useState<[number, number][]>(initialMaterialProgress?.watchedSegments || []);
+  const [completionPercentage, setCompletionPercentage] = useState(initialMaterialProgress?.percentage || 0);
+  const [isCompleted, setIsCompleted] = useState(initialMaterialProgress?.isCompleted || false);
   const [syncing, setSyncing] = useState(false);
+  const completionNotifiedRef = useRef(false);
 
   // Sync progress for PDF / PPT page navigation
   const recordPageView = async (pageNum: number) => {
@@ -49,11 +51,14 @@ export const SmartMaterialViewer: React.FC<SmartMaterialViewerProps> = ({
       const res = await api.trackProgress({
         userId,
         lessonId,
+        materialId: material.id,
         pageViewed: pageNum,
         totalPages
       });
-      setCompletionPercentage(res.percentage);
-      if (res.isCompleted && !isCompleted) {
+      const materialResult = res.materialProgress?.[material.id];
+      setCompletionPercentage(materialResult?.percentage ?? res.percentage);
+      if (materialResult?.isCompleted && !completionNotifiedRef.current) {
+        completionNotifiedRef.current = true;
         setIsCompleted(true);
         addToast('Chúc mừng!', 'Bạn đã hoàn thành yêu cầu đọc tài liệu bài học này!', 'success');
       }
@@ -65,14 +70,8 @@ export const SmartMaterialViewer: React.FC<SmartMaterialViewerProps> = ({
     }
   };
 
-  // Video interval tracking (Anti-skip engine)
-  const handleVideoTimeUpdate = async () => {
-    if (!videoRef.current) return;
-    const current = videoRef.current.currentTime;
-    setVideoCurrentTime(current);
-
-    // If played at least 4 seconds continuously, record interval
-    if (Math.abs(current - lastSegmentStart) >= 4) {
+  const syncVideoSegment = async (current: number) => {
+    if (current > lastSegmentStart) {
       const segStart = Math.min(lastSegmentStart, current);
       const segEnd = Math.max(lastSegmentStart, current);
       setLastSegmentStart(current);
@@ -81,12 +80,15 @@ export const SmartMaterialViewer: React.FC<SmartMaterialViewerProps> = ({
         const res = await api.trackProgress({
           userId,
           lessonId,
+          materialId: material.id,
           videoSegment: [Math.floor(segStart), Math.floor(segEnd)],
           totalDuration: material.duration || 360
         });
-        setCompletionPercentage(res.percentage);
-        setWatchedSegments(res.watchedSegments || []);
-        if (res.isCompleted && !isCompleted) {
+        const materialResult = res.materialProgress?.[material.id];
+        setCompletionPercentage(materialResult?.percentage ?? res.percentage);
+        setWatchedSegments(materialResult?.watchedSegments || []);
+        if (materialResult?.isCompleted && !completionNotifiedRef.current) {
+          completionNotifiedRef.current = true;
           setIsCompleted(true);
           addToast('Tuyệt vời!', 'Bạn đã hoàn thành theo dõi toàn bộ video bài giảng!', 'success');
         }
@@ -97,11 +99,35 @@ export const SmartMaterialViewer: React.FC<SmartMaterialViewerProps> = ({
     }
   };
 
+  // Record continuous playback in small chunks; seeking starts a new chunk.
+  const handleVideoTimeUpdate = async () => {
+    if (!videoRef.current) return;
+    const current = videoRef.current.currentTime;
+    setVideoCurrentTime(current);
+    if (Math.abs(current - lastSegmentStart) >= 4) {
+      await syncVideoSegment(current);
+    }
+  };
+
+  const flushVideoSegment = () => {
+    if (!videoRef.current) return;
+    void syncVideoSegment(videoRef.current.currentTime);
+  };
+
   const handleVideoSeeking = () => {
     if (videoRef.current) {
       setLastSegmentStart(videoRef.current.currentTime);
     }
   };
+
+  useEffect(() => {
+    completionNotifiedRef.current = Boolean(initialMaterialProgress?.isCompleted);
+    if (material.type !== 'video') {
+      void recordPageView(initialMaterialProgress?.lastPosition || 1);
+    }
+    // The parent remounts this viewer whenever the selected material changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [material.id]);
 
   return (
     <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
@@ -114,7 +140,7 @@ export const SmartMaterialViewer: React.FC<SmartMaterialViewerProps> = ({
           <div>
             <p className="text-xs font-bold text-white line-clamp-1">{material.filename}</p>
             <p className="text-[11px] text-slate-400">
-              {material.type.toUpperCase()} • {material.fileSize || '2.4 MB'} • {material.type === 'video' ? `${Math.floor((material.duration || 360)/60)} phút` : `${totalPages} trang`}
+              {material.type.toUpperCase()} {material.fileSize ? `• ${material.fileSize}` : ''} • {material.type === 'video' ? `${Math.floor((material.duration || 0)/60)} phút` : `${totalPages} trang/slide khai báo`}
             </p>
           </div>
         </div>
@@ -153,8 +179,10 @@ export const SmartMaterialViewer: React.FC<SmartMaterialViewerProps> = ({
               controls
               onTimeUpdate={handleVideoTimeUpdate}
               onSeeking={handleVideoSeeking}
+              onPause={flushVideoSegment}
+              onEnded={flushVideoSegment}
               className="w-full rounded-xl bg-black aspect-video border border-slate-800 shadow-2xl"
-              src={material.storageUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'}
+              src={material.storageUrl}
             >
               Trình duyệt không hỗ trợ phát video HTML5.
             </video>
@@ -168,16 +196,15 @@ export const SmartMaterialViewer: React.FC<SmartMaterialViewerProps> = ({
             </div>
           </div>
         ) : (
-          /* PDF / Presentation / Document Simulator */
+          /* Original learning material with declared-page progress controls */
           <div className="w-full max-w-3xl flex flex-col items-center">
-            {/* Simulated Document Canvas Sheet */}
             <div className="w-full bg-slate-900 rounded-xl border border-slate-800 p-6 sm:p-8 shadow-2xl relative min-h-[320px] flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-emerald-400" />
                     <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                      Tài liệu Chuyên đề Chuẩn GDPT 2018
+                      Học liệu gốc do giáo viên cung cấp
                     </span>
                   </div>
                   <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-800 text-emerald-400 border border-slate-700">
@@ -185,21 +212,22 @@ export const SmartMaterialViewer: React.FC<SmartMaterialViewerProps> = ({
                   </span>
                 </div>
 
-                {/* Simulated Content of Current Page */}
-                <div className="space-y-3 text-slate-300 text-sm leading-relaxed">
-                  <h3 className="font-bold text-white text-base">
-                    Phần {currentPage}: {currentPage === 1 ? 'Khái niệm & Định nghĩa Nền tảng' : currentPage === 2 ? 'Quy tắc 3 Điểm & Quy tắc Hình bình hành' : currentPage === 3 ? 'Biểu thức Tọa độ trong Hệ trục Oxy' : `Chuyên đề Nâng cao & Ứng dụng Thực tiễn (Trang ${currentPage})`}
-                  </h3>
-                  <p className="text-slate-400 text-xs sm:text-sm">
-                    {currentPage === 1 && 'Vectơ là một đoạn thẳng có hướng. Trong hình học giải tích và cơ học, vectơ biểu diễn hướng và độ lớn của lực, vận tốc và độ dời. Hai vectơ bằng nhau khi và chỉ khi chúng cùng phương, cùng hướng và có cùng độ dài.'}
-                    {currentPage === 2 && 'Quy tắc ba điểm: Cho 3 điểm phân biệt A, B, C bất kì, ta luôn có đẳng thức vectơ: AB + BC = AC. Phép trừ tương đương: AB - AC = CB. Quy tắc hình bình hành cho ta AB + AD = AC khi ABCD là hình bình hành.'}
-                    {currentPage === 3 && 'Trong mặt phẳng tọa độ Oxy, mỗi vectơ u được biểu diễn duy nhất qua 2 vectơ đơn vị i và j: u = x*i + y*j, ký hiệu u = (x; y). Độ dài |u| = sqrt(x^2 + y^2).'}
-                    {currentPage > 3 && `Nội dung đào sâu và bài toán phát triển năng lực cho học sinh trang ${currentPage}. Hãy đọc kĩ từng trang để ghi nhận tiến độ học tập chính xác vào hệ thống.`}
-                  </p>
-
-                  <div className="bg-slate-950/80 p-3 rounded-lg border border-slate-800 text-xs font-mono text-emerald-300">
-                    💡 Ghi chú cốt lõi: Đọc và tương tác từng trang giúp học sinh nắm trọn vẹn mạch tư duy bài học.
-                  </div>
+                <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-950">
+                  {material.type === 'image' ? (
+                    <img src={material.storageUrl} alt={material.filename} className="max-h-[560px] w-full object-contain" />
+                  ) : material.type === 'pdf' ? (
+                    <iframe title={material.filename} src={`${material.storageUrl}#page=${currentPage}`} className="h-[520px] w-full bg-white" />
+                  ) : (
+                    <div className="flex min-h-[260px] flex-col items-center justify-center gap-3 p-8 text-center">
+                      <FileText className="h-10 w-10 text-emerald-400" />
+                      <p className="text-sm font-bold text-white">Trình duyệt không xem trực tiếp định dạng {material.type.toUpperCase()}.</p>
+                      <a href={material.storageUrl} target="_blank" rel="noreferrer" className="rounded-xl bg-emerald-600 px-4 py-3 text-xs font-bold text-white">Mở học liệu gốc</a>
+                    </div>
+                  )}
+                </div>
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <span className="text-slate-400">Chọn số trang sau khi đã đọc trang tương ứng.</span>
+                  <a href={material.storageUrl} target="_blank" rel="noreferrer" className="font-semibold text-emerald-400 hover:underline">Mở trong thẻ mới</a>
                 </div>
               </div>
 

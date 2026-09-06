@@ -57,7 +57,7 @@ export const ClassManager: React.FC = () => {
         email: newStudentEmail,
         role: 'student',
         classId: selectedClassId,
-        school: 'THPT Chuyên Lê Hồng Phong'
+        school: 'Trường THPT Mẫu'
       });
       setUsers(prev => [...prev, created]);
       setShowAddStudent(false);
@@ -154,9 +154,9 @@ export const ClassManager: React.FC = () => {
       <div className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
         <div className="p-4 bg-slate-800/60 border-b border-slate-700/60 flex items-center justify-between flex-wrap gap-2">
           <h2 className="text-xs font-bold text-slate-200 uppercase tracking-wider">
-            Danh sách học sinh: {currentClass?.name || '10A1'} ({studentsInClass.length} học sinh)
+            Danh sách học sinh: {currentClass?.name || 'Lớp mẫu'} ({studentsInClass.length} học sinh)
           </h2>
-          <span className="text-[11px] text-slate-400">Giáo viên phụ trách: {currentClass?.teacherName || 'Thầy Phạm Quốc Đạt'}</span>
+          <span className="text-[11px] text-slate-400">Giáo viên phụ trách: {currentClass?.teacherName || 'Giáo viên Mẫu'}</span>
         </div>
 
         <div className="overflow-x-auto">
@@ -186,7 +186,7 @@ export const ClassManager: React.FC = () => {
                     </div>
                   </td>
                   <td className="p-3.5 text-slate-300 font-mono">{st.email}</td>
-                  <td className="p-3.5 text-slate-400">{st.school || 'THPT Chuyên Lê Hồng Phong'}</td>
+                  <td className="p-3.5 text-slate-400">{st.school || 'Trường THPT Mẫu'}</td>
                   <td className="p-3.5">
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 uppercase">
                       Học sinh
@@ -243,7 +243,7 @@ export const ClassManager: React.FC = () => {
                   value={newStudentEmail}
                   onChange={(e) => setNewStudentEmail(e.target.value)}
                   required
-                  placeholder="VD: minhquan.10a1@school.edu.vn"
+                  placeholder="VD: student04@example.invalid"
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>

@@ -64,7 +64,7 @@ export const api = {
 
   // Materials
   getMaterials: (lessonId?: string) => request<Material[]>(`/api/materials${lessonId ? `?lessonId=${lessonId}` : ''}`),
-  uploadMaterial: (data: { lessonId: string; filename: string; type: string; pageCount?: number; slideCount?: number; duration?: number; sampleContent?: string }) => 
+  uploadMaterial: (data: { lessonId: string; filename: string; type: string; storageUrl: string; pageCount?: number; slideCount?: number; duration?: number; sampleContent?: string; required?: boolean }) =>
     request<{ material: Material; aiInsights?: any }>('/api/materials/upload', { method: 'POST', body: JSON.stringify(data) }),
 
   // Progress
@@ -74,6 +74,7 @@ export const api = {
   trackProgress: (data: {
     userId: string;
     lessonId: string;
+    materialId?: string;
     pageViewed?: number;
     totalPages?: number;
     videoSegment?: [number, number];
@@ -111,7 +112,7 @@ export const api = {
       });
       attemptId = startRes.id;
     }
-    const res = await request<{ attempt: PracticeAttempt; feedback: Record<string, { isCorrect: boolean; explanation: string; hint1?: string; hint2?: string; points: number }> }>(
+    const res = await request<{ attempt: PracticeAttempt; feedback: Record<string, { isCorrect: boolean; correctAnswer: string; explanation: string; hint1?: string; hint2?: string; points: number }> }>(
       '/api/practice/submit', 
       { method: 'POST', body: JSON.stringify({ attemptId, answers: data.answers }) }
     );

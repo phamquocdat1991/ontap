@@ -1,5 +1,5 @@
 import express from 'express';
-import { apiRouter } from './routes';
+import { apiRouter } from './routes.js';
 
 export function createApiApp() {
   const app = express();
@@ -9,7 +9,7 @@ export function createApiApp() {
   app.use(express.urlencoded({ extended: true }));
 
   // Middleware: Normalize Vercel rewrites and query param __route
-  app.use((req, res, next) => {
+  app.use((req: any, res: any, next: any) => {
     // Handle CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
@@ -37,7 +37,7 @@ export function createApiApp() {
   });
 
   // Health check endpoint
-  app.get('/health', (_req, res) => {
+  app.get(['/health', '/api/health'], (_req, res) => {
     res.json({ 
       status: 'ok', 
       service: 'AI Learning Hub API',
@@ -50,7 +50,7 @@ export function createApiApp() {
   app.use('/', apiRouter);
 
   // Global fallback error handler to prevent Function Crashes
-  app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  app.use((err: any, _req: any, res: any, _next: any) => {
     console.error('[API ERROR]', err);
     res.status(500).json({
       error: err?.message || 'Lỗi xử lý máy chủ nội bộ',
@@ -60,4 +60,3 @@ export function createApiApp() {
 
   return app;
 }
-

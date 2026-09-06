@@ -10,11 +10,13 @@ import { LoadingState } from '../common/StateViews';
 
 interface StudentDashboardProps {
   user: User;
+  viewMode?: 'overview' | 'courses' | 'practice' | 'exams';
   onOpenLesson: (lessonId: string) => void;
+  onStartPractice: (lessonId: string) => void;
   onTakeExam: (examId: string) => void;
 }
 
-export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onOpenLesson, onTakeExam }) => {
+export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, viewMode = 'overview', onOpenLesson, onStartPractice, onTakeExam }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [exams, setExams] = useState<Exam[]>([]);
@@ -62,22 +64,22 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onOpen
   const activeCourse = courses.find(c => c.id === selectedCourseId);
 
   // Calculations
-  const completedLessons = progressList.filter(p => p.status === 'completed' || p.progressPercentage >= 90).length;
+  const completedLessons = progressList.filter(progress => progress.isCompleted || progress.percentage >= 99).length;
   const totalLessons = lessons.length || 1;
   const overallPercentage = Math.min(100, Math.round((completedLessons / totalLessons) * 100));
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-16 md:pb-6">
       {/* 1. Welcoming Hero Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950/90 via-slate-900 to-teal-950/80 border border-emerald-800/40 p-6 sm:p-8 shadow-2xl">
+      <div className="theme-hero relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950/90 via-slate-900 to-teal-950/80 border border-emerald-800/40 p-6 sm:p-8 shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-xl">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                Học sinh • {user.className || 'Lớp 10A1'}
+                Học sinh • {user.className || 'Lớp mẫu'}
               </span>
-              <span className="flex items-center gap-1.5 text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
-                <Flame className="w-4 h-4 fill-amber-400" /> Chuỗi 5 ngày học liên tiếp
+              <span className="flex items-center gap-1.5 text-xs font-bold text-cyan-200 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-400/20">
+                <Target className="w-4 h-4" /> {completedLessons}/{lessons.length} bài đã hoàn thành
               </span>
             </div>
 
@@ -134,7 +136,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onOpen
       {/* 2. Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Col: Course Syllabus & Lessons (8 cols) */}
-        <div className="lg:col-span-8 space-y-6">
+        {(viewMode === 'overview' || viewMode === 'courses' || viewMode === 'practice') && <div className={`${viewMode === 'overview' ? 'lg:col-span-8' : 'lg:col-span-12'} space-y-6`}>
           <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6 sm:p-7 shadow-xl space-y-5">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
@@ -161,8 +163,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onOpen
               ) : (
                 filteredLessons.map((les) => {
                   const prog = progressList.find(p => p.lessonId === les.id);
-                  const isCompleted = prog?.status === 'completed' || (prog?.progressPercentage || 0) >= 90;
-                  const percent = prog?.progressPercentage || 0;
+                  const isCompleted = prog?.isCompleted || (prog?.percentage || 0) >= 99;
+                  const percent = Math.round(prog?.percentage || 0);
 
                   return (
                     <div
@@ -205,14 +207,14 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onOpen
 
                       <div className="shrink-0 flex items-center gap-2">
                         <button
-                          onClick={() => onOpenLesson(les.id)}
+                          onClick={() => viewMode === 'practice' ? onStartPractice(les.id) : onOpenLesson(les.id)}
                           className={`w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all min-h-[44px] ${
                             isCompleted
                               ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700'
                               : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-950/50'
                           }`}
                         >
-                          {isCompleted ? 'Ôn tập lại' : percent > 0 ? 'Học tiếp' : 'Bắt đầu học'}
+                          {viewMode === 'practice' ? 'Luyện tập ngay' : isCompleted ? 'Ôn tập lại' : percent > 0 ? 'Học tiếp' : 'Bắt đầu học'}
                           <ArrowRight className="w-4 h-4" />
                         </button>
                       </div>
@@ -222,12 +224,12 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onOpen
               )}
             </div>
           </div>
-        </div>
+        </div>}
 
         {/* Right Col: Exams & Target Challenges (4 cols) */}
-        <div className="lg:col-span-4 space-y-6">
+        {(viewMode === 'overview' || viewMode === 'exams') && <div className={`${viewMode === 'overview' ? 'lg:col-span-4' : 'lg:col-span-12'} space-y-6`}>
           {/* Active Assigned Exams */}
-          <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6 shadow-xl space-y-4">
+          {(viewMode === 'overview' || viewMode === 'exams') && <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6 shadow-xl space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <h2 className="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
                 <Award className="w-4 h-4 text-amber-400" />
@@ -273,10 +275,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onOpen
                 ))
               )}
             </div>
-          </div>
+          </div>}
 
           {/* Quick Learning Tip Card */}
-          <div className="bg-gradient-to-br from-slate-900 to-slate-950 rounded-3xl border border-slate-800 p-5 space-y-3 shadow-lg">
+          {viewMode === 'overview' && <div className="light-panel-gradient bg-gradient-to-br from-slate-900 to-slate-950 rounded-3xl border border-slate-800 p-5 space-y-3 shadow-lg">
             <div className="flex items-center gap-2 text-emerald-400">
               <Star className="w-4 h-4 fill-emerald-400" />
               <h3 className="text-xs font-bold uppercase tracking-wider">Mẹo học tập hiệu quả</h3>
@@ -284,8 +286,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, onOpen
             <p className="text-xs text-slate-300 leading-relaxed">
               Hãy chú ý phần <strong className="text-rose-400">Lỗi thường gặp</strong> trong mỗi bài học để tránh mất điểm đáng tiếc ở các bài toán vectơ nhé!
             </p>
-          </div>
-        </div>
+          </div>}
+        </div>}
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   onSelectView,
   onOpenMore 
 }) => {
-  const { isTeacher, isStudent } = useAuth();
+  const { isTeacher, isAdmin } = useAuth();
 
   const studentTabs = [
     { id: 'student-dashboard', label: 'Góc học tập', icon: LayoutDashboard },
@@ -33,7 +33,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
     { id: 'more', label: 'Thêm', icon: MoreHorizontal },
   ];
 
-  const tabs = isTeacher ? teacherTabs : studentTabs;
+  const tabs = isTeacher || isAdmin ? teacherTabs : studentTabs;
 
   return (
     <nav 

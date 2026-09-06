@@ -3,7 +3,7 @@ import path from 'path';
 import { 
   User, SchoolClass, Course, Chapter, Lesson, Material, LessonProgress,
   PracticeQuiz, PracticeAttempt, Exam, ExamAttempt, SheetSyncLog, SystemSettings, AnalyticsSummary 
-} from '../src/types';
+} from '../src/types/index.js';
 
 interface DatabaseSchema {
   users: User[];
@@ -24,91 +24,92 @@ interface DatabaseSchema {
 const DATA_DIR = path.join(process.cwd(), 'data');
 const STORE_FILE = path.join(DATA_DIR, 'store.json');
 
-// Initial seed data for Vietnamese K-12 EdTech
+// Synthetic seed data for Vietnamese K-12 EdTech demos.
+// Never place real student, teacher, school, or assessment records in this file.
 const initialData: DatabaseSchema = {
   users: [
     {
       id: 'teacher-1',
-      email: 'phamquocdat1991@gmail.com',
-      fullName: 'Thầy Phạm Quốc Đạt',
+      email: 'teacher01@example.invalid',
+      fullName: 'Giáo viên Mẫu 01',
       role: 'teacher',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-      school: 'THPT Chuyên Lê Hồng Phong',
+      avatar: 'https://api.dicebear.com/9.x/shapes/svg?seed=teacher-01',
+      school: 'Trường THPT Mẫu',
       subjectSpecialty: 'Toán học & Tin học',
       createdAt: '2024-09-01T00:00:00Z'
     },
     {
       id: 'teacher-2',
-      email: 'nguyenvana_teacher@school.edu.vn',
-      fullName: 'Cô Lê Hoàng Mai',
+      email: 'teacher02@example.invalid',
+      fullName: 'Giáo viên Mẫu 02',
       role: 'teacher',
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
-      school: 'THPT Chu Văn An',
+      avatar: 'https://api.dicebear.com/9.x/shapes/svg?seed=teacher-02',
+      school: 'Trường THPT Mẫu',
       subjectSpecialty: 'Vật lí & STEM',
       createdAt: '2024-09-01T00:00:00Z'
     },
     {
       id: 'student-1',
-      email: 'nguyenvanan.10a1@school.edu.vn',
-      fullName: 'Nguyễn Văn An',
+      email: 'student01@example.invalid',
+      fullName: 'Học sinh Mẫu 01',
       role: 'student',
-      avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://api.dicebear.com/9.x/shapes/svg?seed=student-01',
       classId: 'class-1',
-      className: '10A1 (Chuyên Toán)',
-      school: 'THPT Chuyên Lê Hồng Phong',
+      className: 'Lớp mẫu A',
+      school: 'Trường THPT Mẫu',
       createdAt: '2024-09-05T00:00:00Z'
     },
     {
       id: 'student-2',
-      email: 'tranthimai.10a1@school.edu.vn',
-      fullName: 'Trần Thị Mai',
+      email: 'student02@example.invalid',
+      fullName: 'Học sinh Mẫu 02',
       role: 'student',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://api.dicebear.com/9.x/shapes/svg?seed=student-02',
       classId: 'class-1',
-      className: '10A1 (Chuyên Toán)',
-      school: 'THPT Chuyên Lê Hồng Phong',
+      className: 'Lớp mẫu A',
+      school: 'Trường THPT Mẫu',
       createdAt: '2024-09-05T00:00:00Z'
     },
     {
       id: 'student-3',
-      email: 'leminhkhoi.10a2@school.edu.vn',
-      fullName: 'Lê Minh Khôi',
+      email: 'student03@example.invalid',
+      fullName: 'Học sinh Mẫu 03',
       role: 'student',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://api.dicebear.com/9.x/shapes/svg?seed=student-03',
       classId: 'class-2',
-      className: '10A2 (Chuyên Lí)',
-      school: 'THPT Chuyên Lê Hồng Phong',
+      className: 'Lớp mẫu B',
+      school: 'Trường THPT Mẫu',
       createdAt: '2024-09-05T00:00:00Z'
     },
     {
       id: 'admin-1',
-      email: 'admin.aihub@education.gov.vn',
-      fullName: 'Quản Trị Viên Hệ Thống',
+      email: 'admin@example.invalid',
+      fullName: 'Quản trị viên Mẫu',
       role: 'admin',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
-      school: 'Sở GD&ĐT',
+      avatar: 'https://api.dicebear.com/9.x/shapes/svg?seed=admin-01',
+      school: 'Đơn vị Giáo dục Mẫu',
       createdAt: '2024-08-01T00:00:00Z'
     }
   ],
   classes: [
     {
       id: 'class-1',
-      name: '10A1 (Toán Tin)',
+      name: 'Lớp mẫu A',
       grade: '10',
       academicYear: '2024 - 2025',
       teacherId: 'teacher-1',
-      teacherName: 'Thầy Phạm Quốc Đạt',
+      teacherName: 'Giáo viên Mẫu 01',
       studentCount: 38,
-      description: 'Lớp chuyên Toán Tin khóa 2024',
+      description: 'Lớp dữ liệu minh họa định hướng Toán - Tin',
       createdAt: '2024-09-01T00:00:00Z'
     },
     {
       id: 'class-2',
-      name: '10A2 (Tự Nhiên)',
+      name: 'Lớp mẫu B',
       grade: '10',
       academicYear: '2024 - 2025',
       teacherId: 'teacher-1',
-      teacherName: 'Thầy Phạm Quốc Đạt',
+      teacherName: 'Giáo viên Mẫu 01',
       studentCount: 40,
       description: 'Lớp khối tự nhiên định hướng STEM',
       createdAt: '2024-09-01T00:00:00Z'
@@ -408,7 +409,7 @@ const initialData: DatabaseSchema = {
       quizId: 'quiz-lesson-1',
       lessonId: 'lesson-1',
       userId: 'student-1',
-      studentName: 'Nguyễn Văn An',
+      studentName: 'Học sinh Mẫu 01',
       attemptNumber: 1,
       startedAt: '2024-09-08T15:00:00Z',
       deadline: '2024-09-08T15:15:00Z',
@@ -526,9 +527,9 @@ const initialData: DatabaseSchema = {
       id: 'eatt-1',
       examId: 'exam-1',
       userId: 'student-1',
-      studentName: 'Nguyễn Văn An',
+      studentName: 'Học sinh Mẫu 01',
       classId: 'class-1',
-      className: '10A1 (Toán Tin)',
+      className: 'Lớp mẫu A',
       startedAt: '2024-09-11T09:00:00Z',
       deadline: '2024-09-11T09:45:00Z',
       submittedAt: '2024-09-11T09:38:15Z',
@@ -566,8 +567,8 @@ const initialData: DatabaseSchema = {
       attemptId: 'eatt-1',
       submissionId: 'SUB-EXAM-20240911-001',
       studentId: 'student-1',
-      studentName: 'Nguyễn Văn An',
-      className: '10A1 (Toán Tin)',
+      studentName: 'Học sinh Mẫu 01',
+      className: 'Lớp mẫu A',
       subject: 'Toán học',
       chapter: 'Chương IV: Vectơ',
       lessonTitle: 'Kiểm tra Đánh giá Định kỳ (45 phút)',
@@ -583,21 +584,22 @@ const initialData: DatabaseSchema = {
     }
   ],
   settings: {
-    googleSheetsConnected: true,
-    spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-    spreadsheetUrl: 'https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit',
-    spreadsheetName: 'AI_Learning_Hub_BangDiem_Lop10A1',
+    googleSheetsConnected: false,
+    spreadsheetId: '',
+    spreadsheetUrl: '',
+    spreadsheetName: 'AI_Learning_Hub_DuLieuMau',
     autoSync: true,
     passingScoreThreshold: 80,
     videoWatchThreshold: 99,
     enableAiGrading: true,
-    schoolName: 'THPT Chuyên Lê Hồng Phong'
+    schoolName: 'Trường THPT Mẫu'
   }
 };
 
 function isReadOnlyFileSystem(): boolean {
   return Boolean(
     process.env.VERCEL || 
+    process.env.AI_HUB_PREVIEW === 'true' ||
     process.env.AWS_LAMBDA_FUNCTION_NAME || 
     process.env.LAMBDA_TASK_ROOT ||
     (process.env.NODE_ENV === 'production' && !process.env.PORT)
@@ -844,15 +846,15 @@ class Database {
     const totalClasses = this.data.classes.length;
     const publishedLessons = this.data.lessons.filter(l => l.status === 'published');
     const totalLessons = publishedLessons.length;
-    const totalExams = this.data.exams.length;
+    const totalExams = this.data.exams.filter(exam => exam.status === 'published').length;
 
-    // Completion rate
     const allProgress = this.data.lessonProgress;
-    let avgProgress = 0;
-    if (allProgress.length > 0) {
-      const sum = allProgress.reduce((acc, curr) => acc + curr.percentage, 0);
-      avgProgress = Math.round((sum / allProgress.length) * 10) / 10;
-    }
+    const progressSlots = students.flatMap(student => publishedLessons.map(lesson => (
+      allProgress.find(progress => progress.userId === student.id && progress.lessonId === lesson.id)?.percentage || 0
+    )));
+    const avgProgress = progressSlots.length
+      ? Math.round((progressSlots.reduce((sum, value) => sum + value, 0) / progressSlots.length) * 10) / 10
+      : 0;
 
     // Average exam score
     const gradedAttempts = this.data.examAttempts.filter(a => a.status === 'graded' && typeof a.score === 'number');
@@ -860,8 +862,6 @@ class Database {
     if (gradedAttempts.length > 0) {
       const sumScores = gradedAttempts.reduce((acc, curr) => acc + (curr.score || 0), 0);
       avgScore = Math.round((sumScores / gradedAttempts.length) * 10) / 10;
-    } else {
-      avgScore = 8.5; // default fallback metric
     }
 
     // Unengaged students
@@ -871,42 +871,55 @@ class Database {
       return {
         id: st.id,
         name: st.fullName,
-        className: st.className || '10A1',
+        className: st.className || 'Lớp mẫu',
         incompleteLessonsCount: Math.max(0, incompleteCount)
       };
     }).filter(s => s.incompleteLessonsCount > 0);
 
-    // Most failed questions from practice and exam attempts
-    const failedQuestions = [
-      {
-        questionId: 'eq4',
-        question: 'Chứng minh MA + MB + MC = 3MG qua trọng tâm',
-        failRate: 38.5,
-        totalAttempts: 13
-      },
-      {
-        questionId: 'q4',
-        question: 'Tính độ dài vectơ hiệu tam giác đều cạnh a',
-        failRate: 27.2,
-        totalAttempts: 22
-      },
-      {
-        questionId: 'eq3',
-        question: 'Tìm m để vectơ u vuông góc vectơ v trong Oxy',
-        failRate: 18.0,
-        totalAttempts: 28
+    const questionStats = new Map<string, { question: string; attempts: number; failed: number }>();
+    const normalize = (value: unknown) => String(value ?? '').trim().replace(/\s+/g, ' ').toLocaleLowerCase('vi');
+    for (const attempt of this.data.practiceAttempts.filter(item => item.status === 'submitted')) {
+      const quiz = this.getPracticeQuizById(attempt.quizId);
+      for (const question of quiz?.questions || []) {
+        const stats = questionStats.get(question.id) || { question: question.question, attempts: 0, failed: 0 };
+        stats.attempts += 1;
+        if (normalize(attempt.answers[question.id]) !== normalize(question.correctAnswer)) stats.failed += 1;
+        questionStats.set(question.id, stats);
       }
-    ];
+    }
+    for (const attempt of this.data.examAttempts.filter(item => ['graded', 'needs_review'].includes(item.status))) {
+      const exam = this.getExamById(attempt.examId);
+      for (const question of exam?.questions.filter(item => item.type !== 'essay') || []) {
+        const stats = questionStats.get(question.id) || { question: question.question, attempts: 0, failed: 0 };
+        stats.attempts += 1;
+        if (normalize(attempt.answers[question.id]) !== normalize(question.correctAnswer)) stats.failed += 1;
+        questionStats.set(question.id, stats);
+      }
+    }
+    const failedQuestions = [...questionStats.entries()]
+      .map(([questionId, stats]) => ({
+        questionId,
+        question: stats.question,
+        failRate: stats.attempts ? Math.round((stats.failed / stats.attempts) * 1000) / 10 : 0,
+        totalAttempts: stats.attempts
+      }))
+      .filter(item => item.totalAttempts > 0)
+      .sort((a, b) => b.failRate - a.failRate)
+      .slice(0, 5);
 
     // Hardest lessons
     const hardestLessons = publishedLessons.map(l => {
-      const pList = allProgress.filter(p => p.lessonId === l.id);
-      const avg = pList.length ? Math.round(pList.reduce((a, b) => a + b.percentage, 0) / pList.length) : 50;
+      const studentPercentages = students.map(student => (
+        allProgress.find(progress => progress.userId === student.id && progress.lessonId === l.id)?.percentage || 0
+      ));
+      const avg = studentPercentages.length
+        ? Math.round(studentPercentages.reduce((sum, value) => sum + value, 0) / studentPercentages.length)
+        : 0;
       return {
         lessonId: l.id,
         title: l.title,
         averageProgress: avg,
-        failRate: Math.max(10, 100 - avg)
+        failRate: Math.max(0, 100 - avg)
       };
     });
 
@@ -915,8 +928,8 @@ class Database {
       totalClasses,
       totalLessons,
       totalExams,
-      averageCompletionRate: avgProgress || 78.5,
-      averageExamScore: avgScore || 8.2,
+      averageCompletionRate: avgProgress,
+      averageExamScore: avgScore,
       unengagedStudents: unengaged,
       mostFailedQuestions: failedQuestions,
       hardestLessons: hardestLessons

@@ -10,12 +10,12 @@ import { useToast } from '../../context/ToastContext';
 export const TeacherSettings: React.FC = () => {
   const { addToast } = useToast();
   const [settings, setSettings] = useState<SystemSettings>({
-    googleSheetsConnected: true,
+    googleSheetsConnected: false,
     autoSync: true,
     passingScoreThreshold: 80,
     videoWatchThreshold: 99,
     enableAiGrading: true,
-    schoolName: 'THPT Chuyên Lê Hồng Phong'
+    schoolName: 'Trường THPT Mẫu'
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -53,7 +53,7 @@ export const TeacherSettings: React.FC = () => {
           Cài Đặt Hệ Thống & Tham Số Sư Phạm
         </h1>
         <p className="text-xs text-slate-400 mt-1">
-          Thiết lập ngưỡng hoàn thành bài học, tiêu chuẩn điểm đạt, cấu hình AI và lưu trữ đám mây an toàn.
+          Thiết lập ngưỡng hoàn thành, điểm đạt và các tích hợp phía máy chủ.
         </p>
       </div>
 
@@ -117,7 +117,7 @@ export const TeacherSettings: React.FC = () => {
             <label className="flex items-center justify-between p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 cursor-pointer">
               <div>
                 <p className="text-xs font-bold text-white">Bật Trợ Lý Chấm Điểm Tự Luận Gemini AI</p>
-                <p className="text-[11px] text-slate-400">AI tự động đề xuất điểm số và nhận xét sư phạm theo thang Rubric.</p>
+                <p className="text-[11px] text-slate-400">Cần GEMINI_API_KEY; khi AI không khả dụng, bài tự luận được chuyển giáo viên duyệt với điểm đề xuất 0.</p>
               </div>
               <input
                 type="checkbox"
@@ -130,7 +130,7 @@ export const TeacherSettings: React.FC = () => {
             <label className="flex items-center justify-between p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 cursor-pointer">
               <div>
                 <p className="text-xs font-bold text-white">Tự Động Đồng Bộ Google Sheets</p>
-                <p className="text-[11px] text-slate-400">Ghi nhận tức thì dòng kết quả 15 cột ngay khi học sinh nộp bài thi.</p>
+                <p className="text-[11px] text-slate-400">Chỉ ghi Google Sheets sau khi điểm cuối cùng đã được chấm hoặc giáo viên duyệt.</p>
               </div>
               <input
                 type="checkbox"
@@ -150,12 +150,12 @@ export const TeacherSettings: React.FC = () => {
           </h2>
           <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 text-xs text-slate-300 leading-relaxed font-mono">
             <p className="text-emerald-400 font-bold font-sans">
-              📌 Hướng dẫn kích hoạt Firebase Storage hoặc Google Cloud Storage thực tế:
+              📌 Tích hợp lưu trữ tệp đề xuất cho phiên bản tiếp theo:
             </p>
             <p>1. Truy cập Firebase Console &rarr; Chọn Dự án của bạn &rarr; Mở thẻ <strong>Storage</strong>.</p>
             <p>2. Nhấn <strong>Get Started</strong> và chọn Cloud Region (khuyến nghị: <code>asia-southeast1</code>).</p>
             <p>3. Thiết lập Security Rules kiểm soát quyền truy cập: Cho phép Giáo viên ghi (Write) và Học sinh đọc (Read).</p>
-            <p>4. Khai báo <code>FIREBASE_STORAGE_BUCKET</code> vào biến môi trường hệ thống.</p>
+            <p>4. Khai báo <code>FIREBASE_STORAGE_BUCKET</code> và triển khai API upload có chữ ký. Hiện tại ứng dụng lưu URL học liệu có sẵn.</p>
           </div>
         </div>
 

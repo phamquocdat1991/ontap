@@ -28,6 +28,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onCloseMobile = () => {}
 }) => {
   const { isTeacher, isStudent, isAdmin, user } = useAuth();
+  const canManage = isTeacher || isAdmin;
 
   const teacherNavItems: NavItem[] = [
     { id: 'dashboard', label: 'Tổng quan & Phân tích', icon: LayoutDashboard, badge: 'KPI' },
@@ -67,7 +68,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="min-w-0 flex-1">
             <p className="text-xs font-bold text-white truncate">{user?.fullName}</p>
             <p className="text-[11px] text-emerald-400 font-medium truncate mt-0.5">
-              {isTeacher ? (user?.subjectSpecialty || 'Giáo viên Toán THPT') : isStudent ? (user?.className || 'Học sinh 10A1') : 'Quản trị viên'}
+              {isTeacher ? (user?.subjectSpecialty || 'Giáo viên') : isStudent ? (user?.className || 'Học sinh') : 'Quản trị viên'}
             </p>
           </div>
         </div>
@@ -87,7 +88,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="flex-1 py-4 px-3 space-y-1.5 overflow-y-auto">
         <div className="px-3 mb-2 flex items-center justify-between">
           <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-            {isTeacher ? 'DANH MỤC QUẢN TRỊ' : 'LỘ TRÌNH HỌC TẬP'}
+            {canManage ? 'DANH MỤC QUẢN TRỊ' : 'LỘ TRÌNH HỌC TẬP'}
           </p>
           <span className="text-[10px] text-slate-400 font-medium">GDPT 2018</span>
         </div>
@@ -134,7 +135,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-4 border-t border-slate-800/80 bg-slate-900/60">
         <div className="flex items-center gap-2 text-[11px] text-slate-400">
           <Shield className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-          <span className="truncate">GDPT 2018 • Server-Side Gemini</span>
+          <span className="truncate">GDPT 2018 • AI cấu hình phía máy chủ</span>
         </div>
       </div>
     </div>

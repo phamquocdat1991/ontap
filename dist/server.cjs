@@ -41,86 +41,86 @@ var initialData = {
   users: [
     {
       id: "teacher-1",
-      email: "phamquocdat1991@gmail.com",
-      fullName: "Th\u1EA7y Ph\u1EA1m Qu\u1ED1c \u0110\u1EA1t",
+      email: "teacher01@example.invalid",
+      fullName: "Gi\xE1o vi\xEAn M\u1EABu 01",
       role: "teacher",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
-      school: "THPT Chuy\xEAn L\xEA H\u1ED3ng Phong",
+      avatar: "https://api.dicebear.com/9.x/shapes/svg?seed=teacher-01",
+      school: "Tr\u01B0\u1EDDng THPT M\u1EABu",
       subjectSpecialty: "To\xE1n h\u1ECDc & Tin h\u1ECDc",
       createdAt: "2024-09-01T00:00:00Z"
     },
     {
       id: "teacher-2",
-      email: "nguyenvana_teacher@school.edu.vn",
-      fullName: "C\xF4 L\xEA Ho\xE0ng Mai",
+      email: "teacher02@example.invalid",
+      fullName: "Gi\xE1o vi\xEAn M\u1EABu 02",
       role: "teacher",
-      avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
-      school: "THPT Chu V\u0103n An",
+      avatar: "https://api.dicebear.com/9.x/shapes/svg?seed=teacher-02",
+      school: "Tr\u01B0\u1EDDng THPT M\u1EABu",
       subjectSpecialty: "V\u1EADt l\xED & STEM",
       createdAt: "2024-09-01T00:00:00Z"
     },
     {
       id: "student-1",
-      email: "nguyenvanan.10a1@school.edu.vn",
-      fullName: "Nguy\u1EC5n V\u0103n An",
+      email: "student01@example.invalid",
+      fullName: "H\u1ECDc sinh M\u1EABu 01",
       role: "student",
-      avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80",
+      avatar: "https://api.dicebear.com/9.x/shapes/svg?seed=student-01",
       classId: "class-1",
-      className: "10A1 (Chuy\xEAn To\xE1n)",
-      school: "THPT Chuy\xEAn L\xEA H\u1ED3ng Phong",
+      className: "L\u1EDBp m\u1EABu A",
+      school: "Tr\u01B0\u1EDDng THPT M\u1EABu",
       createdAt: "2024-09-05T00:00:00Z"
     },
     {
       id: "student-2",
-      email: "tranthimai.10a1@school.edu.vn",
-      fullName: "Tr\u1EA7n Th\u1ECB Mai",
+      email: "student02@example.invalid",
+      fullName: "H\u1ECDc sinh M\u1EABu 02",
       role: "student",
-      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80",
+      avatar: "https://api.dicebear.com/9.x/shapes/svg?seed=student-02",
       classId: "class-1",
-      className: "10A1 (Chuy\xEAn To\xE1n)",
-      school: "THPT Chuy\xEAn L\xEA H\u1ED3ng Phong",
+      className: "L\u1EDBp m\u1EABu A",
+      school: "Tr\u01B0\u1EDDng THPT M\u1EABu",
       createdAt: "2024-09-05T00:00:00Z"
     },
     {
       id: "student-3",
-      email: "leminhkhoi.10a2@school.edu.vn",
-      fullName: "L\xEA Minh Kh\xF4i",
+      email: "student03@example.invalid",
+      fullName: "H\u1ECDc sinh M\u1EABu 03",
       role: "student",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      avatar: "https://api.dicebear.com/9.x/shapes/svg?seed=student-03",
       classId: "class-2",
-      className: "10A2 (Chuy\xEAn L\xED)",
-      school: "THPT Chuy\xEAn L\xEA H\u1ED3ng Phong",
+      className: "L\u1EDBp m\u1EABu B",
+      school: "Tr\u01B0\u1EDDng THPT M\u1EABu",
       createdAt: "2024-09-05T00:00:00Z"
     },
     {
       id: "admin-1",
-      email: "admin.aihub@education.gov.vn",
-      fullName: "Qu\u1EA3n Tr\u1ECB Vi\xEAn H\u1EC7 Th\u1ED1ng",
+      email: "admin@example.invalid",
+      fullName: "Qu\u1EA3n tr\u1ECB vi\xEAn M\u1EABu",
       role: "admin",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80",
-      school: "S\u1EDF GD&\u0110T",
+      avatar: "https://api.dicebear.com/9.x/shapes/svg?seed=admin-01",
+      school: "\u0110\u01A1n v\u1ECB Gi\xE1o d\u1EE5c M\u1EABu",
       createdAt: "2024-08-01T00:00:00Z"
     }
   ],
   classes: [
     {
       id: "class-1",
-      name: "10A1 (To\xE1n Tin)",
+      name: "L\u1EDBp m\u1EABu A",
       grade: "10",
       academicYear: "2024 - 2025",
       teacherId: "teacher-1",
-      teacherName: "Th\u1EA7y Ph\u1EA1m Qu\u1ED1c \u0110\u1EA1t",
+      teacherName: "Gi\xE1o vi\xEAn M\u1EABu 01",
       studentCount: 38,
-      description: "L\u1EDBp chuy\xEAn To\xE1n Tin kh\xF3a 2024",
+      description: "L\u1EDBp d\u1EEF li\u1EC7u minh h\u1ECDa \u0111\u1ECBnh h\u01B0\u1EDBng To\xE1n - Tin",
       createdAt: "2024-09-01T00:00:00Z"
     },
     {
       id: "class-2",
-      name: "10A2 (T\u1EF1 Nhi\xEAn)",
+      name: "L\u1EDBp m\u1EABu B",
       grade: "10",
       academicYear: "2024 - 2025",
       teacherId: "teacher-1",
-      teacherName: "Th\u1EA7y Ph\u1EA1m Qu\u1ED1c \u0110\u1EA1t",
+      teacherName: "Gi\xE1o vi\xEAn M\u1EABu 01",
       studentCount: 40,
       description: "L\u1EDBp kh\u1ED1i t\u1EF1 nhi\xEAn \u0111\u1ECBnh h\u01B0\u1EDBng STEM",
       createdAt: "2024-09-01T00:00:00Z"
@@ -421,7 +421,7 @@ var initialData = {
       quizId: "quiz-lesson-1",
       lessonId: "lesson-1",
       userId: "student-1",
-      studentName: "Nguy\u1EC5n V\u0103n An",
+      studentName: "H\u1ECDc sinh M\u1EABu 01",
       attemptNumber: 1,
       startedAt: "2024-09-08T15:00:00Z",
       deadline: "2024-09-08T15:15:00Z",
@@ -539,9 +539,9 @@ var initialData = {
       id: "eatt-1",
       examId: "exam-1",
       userId: "student-1",
-      studentName: "Nguy\u1EC5n V\u0103n An",
+      studentName: "H\u1ECDc sinh M\u1EABu 01",
       classId: "class-1",
-      className: "10A1 (To\xE1n Tin)",
+      className: "L\u1EDBp m\u1EABu A",
       startedAt: "2024-09-11T09:00:00Z",
       deadline: "2024-09-11T09:45:00Z",
       submittedAt: "2024-09-11T09:38:15Z",
@@ -579,8 +579,8 @@ var initialData = {
       attemptId: "eatt-1",
       submissionId: "SUB-EXAM-20240911-001",
       studentId: "student-1",
-      studentName: "Nguy\u1EC5n V\u0103n An",
-      className: "10A1 (To\xE1n Tin)",
+      studentName: "H\u1ECDc sinh M\u1EABu 01",
+      className: "L\u1EDBp m\u1EABu A",
       subject: "To\xE1n h\u1ECDc",
       chapter: "Ch\u01B0\u01A1ng IV: Vect\u01A1",
       lessonTitle: "Ki\u1EC3m tra \u0110\xE1nh gi\xE1 \u0110\u1ECBnh k\u1EF3 (45 ph\xFAt)",
@@ -596,24 +596,28 @@ var initialData = {
     }
   ],
   settings: {
-    googleSheetsConnected: true,
-    spreadsheetId: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
-    spreadsheetUrl: "https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit",
-    spreadsheetName: "AI_Learning_Hub_BangDiem_Lop10A1",
+    googleSheetsConnected: false,
+    spreadsheetId: "",
+    spreadsheetUrl: "",
+    spreadsheetName: "AI_Learning_Hub_DuLieuMau",
     autoSync: true,
     passingScoreThreshold: 80,
     videoWatchThreshold: 99,
     enableAiGrading: true,
-    schoolName: "THPT Chuy\xEAn L\xEA H\u1ED3ng Phong"
+    schoolName: "Tr\u01B0\u1EDDng THPT M\u1EABu"
   }
 };
+function isReadOnlyFileSystem() {
+  return Boolean(
+    process.env.VERCEL || process.env.AI_HUB_PREVIEW === "true" || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.LAMBDA_TASK_ROOT || process.env.NODE_ENV === "production" && !process.env.PORT
+  );
+}
 var Database = class {
   constructor() {
-    this.isReadOnlyEnv = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
     this.data = this.loadData();
   }
   loadData() {
-    if (this.isReadOnlyEnv) {
+    if (isReadOnlyFileSystem()) {
       return JSON.parse(JSON.stringify(initialData));
     }
     try {
@@ -631,7 +635,7 @@ var Database = class {
     return JSON.parse(JSON.stringify(initialData));
   }
   saveDataDirect(data) {
-    if (this.isReadOnlyEnv) return;
+    if (isReadOnlyFileSystem()) return;
     try {
       if (!import_fs.default.existsSync(DATA_DIR)) {
         import_fs.default.mkdirSync(DATA_DIR, { recursive: true });
@@ -848,20 +852,15 @@ var Database = class {
     const totalClasses = this.data.classes.length;
     const publishedLessons = this.data.lessons.filter((l) => l.status === "published");
     const totalLessons = publishedLessons.length;
-    const totalExams = this.data.exams.length;
+    const totalExams = this.data.exams.filter((exam) => exam.status === "published").length;
     const allProgress = this.data.lessonProgress;
-    let avgProgress = 0;
-    if (allProgress.length > 0) {
-      const sum = allProgress.reduce((acc, curr) => acc + curr.percentage, 0);
-      avgProgress = Math.round(sum / allProgress.length * 10) / 10;
-    }
+    const progressSlots = students.flatMap((student) => publishedLessons.map((lesson) => allProgress.find((progress) => progress.userId === student.id && progress.lessonId === lesson.id)?.percentage || 0));
+    const avgProgress = progressSlots.length ? Math.round(progressSlots.reduce((sum, value) => sum + value, 0) / progressSlots.length * 10) / 10 : 0;
     const gradedAttempts = this.data.examAttempts.filter((a) => a.status === "graded" && typeof a.score === "number");
     let avgScore = 0;
     if (gradedAttempts.length > 0) {
       const sumScores = gradedAttempts.reduce((acc, curr) => acc + (curr.score || 0), 0);
       avgScore = Math.round(sumScores / gradedAttempts.length * 10) / 10;
-    } else {
-      avgScore = 8.5;
     }
     const unengaged = students.map((st) => {
       const userProg = allProgress.filter((p) => p.userId === st.id && p.isCompleted);
@@ -869,38 +868,44 @@ var Database = class {
       return {
         id: st.id,
         name: st.fullName,
-        className: st.className || "10A1",
+        className: st.className || "L\u1EDBp m\u1EABu",
         incompleteLessonsCount: Math.max(0, incompleteCount)
       };
     }).filter((s) => s.incompleteLessonsCount > 0);
-    const failedQuestions = [
-      {
-        questionId: "eq4",
-        question: "Ch\u1EE9ng minh MA + MB + MC = 3MG qua tr\u1ECDng t\xE2m",
-        failRate: 38.5,
-        totalAttempts: 13
-      },
-      {
-        questionId: "q4",
-        question: "T\xEDnh \u0111\u1ED9 d\xE0i vect\u01A1 hi\u1EC7u tam gi\xE1c \u0111\u1EC1u c\u1EA1nh a",
-        failRate: 27.2,
-        totalAttempts: 22
-      },
-      {
-        questionId: "eq3",
-        question: "T\xECm m \u0111\u1EC3 vect\u01A1 u vu\xF4ng g\xF3c vect\u01A1 v trong Oxy",
-        failRate: 18,
-        totalAttempts: 28
+    const questionStats = /* @__PURE__ */ new Map();
+    const normalize = (value) => String(value ?? "").trim().replace(/\s+/g, " ").toLocaleLowerCase("vi");
+    for (const attempt of this.data.practiceAttempts.filter((item) => item.status === "submitted")) {
+      const quiz = this.getPracticeQuizById(attempt.quizId);
+      for (const question of quiz?.questions || []) {
+        const stats = questionStats.get(question.id) || { question: question.question, attempts: 0, failed: 0 };
+        stats.attempts += 1;
+        if (normalize(attempt.answers[question.id]) !== normalize(question.correctAnswer)) stats.failed += 1;
+        questionStats.set(question.id, stats);
       }
-    ];
+    }
+    for (const attempt of this.data.examAttempts.filter((item) => ["graded", "needs_review"].includes(item.status))) {
+      const exam = this.getExamById(attempt.examId);
+      for (const question of exam?.questions.filter((item) => item.type !== "essay") || []) {
+        const stats = questionStats.get(question.id) || { question: question.question, attempts: 0, failed: 0 };
+        stats.attempts += 1;
+        if (normalize(attempt.answers[question.id]) !== normalize(question.correctAnswer)) stats.failed += 1;
+        questionStats.set(question.id, stats);
+      }
+    }
+    const failedQuestions = [...questionStats.entries()].map(([questionId, stats]) => ({
+      questionId,
+      question: stats.question,
+      failRate: stats.attempts ? Math.round(stats.failed / stats.attempts * 1e3) / 10 : 0,
+      totalAttempts: stats.attempts
+    })).filter((item) => item.totalAttempts > 0).sort((a, b) => b.failRate - a.failRate).slice(0, 5);
     const hardestLessons = publishedLessons.map((l) => {
-      const pList = allProgress.filter((p) => p.lessonId === l.id);
-      const avg = pList.length ? Math.round(pList.reduce((a, b) => a + b.percentage, 0) / pList.length) : 50;
+      const studentPercentages = students.map((student) => allProgress.find((progress) => progress.userId === student.id && progress.lessonId === l.id)?.percentage || 0);
+      const avg = studentPercentages.length ? Math.round(studentPercentages.reduce((sum, value) => sum + value, 0) / studentPercentages.length) : 0;
       return {
         lessonId: l.id,
         title: l.title,
         averageProgress: avg,
-        failRate: Math.max(10, 100 - avg)
+        failRate: Math.max(0, 100 - avg)
       };
     });
     return {
@@ -908,8 +913,8 @@ var Database = class {
       totalClasses,
       totalLessons,
       totalExams,
-      averageCompletionRate: avgProgress || 78.5,
-      averageExamScore: avgScore || 8.2,
+      averageCompletionRate: avgProgress,
+      averageExamScore: avgScore,
       unengagedStudents: unengaged,
       mostFailedQuestions: failedQuestions,
       hardestLessons
@@ -925,10 +930,10 @@ function getAiClient() {
   if (!aiClient) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      console.warn("GEMINI_API_KEY not found in environment. AI features will fallback to high-quality heuristic responses.");
+      throw new Error("Ch\u01B0a c\u1EA5u h\xECnh GEMINI_API_KEY tr\xEAn m\xE1y ch\u1EE7; h\u1EC7 th\u1ED1ng kh\xF4ng sinh n\u1ED9i dung m\u1EABu \u0111\u1EC3 tr\xE1nh sai ki\u1EBFn th\u1EE9c.");
     }
     aiClient = new import_genai.GoogleGenAI({
-      apiKey: apiKey || "DUMMY_KEY_FOR_INITIALIZATION",
+      apiKey,
       httpOptions: {
         headers: {
           "User-Agent": "aistudio-build"
@@ -997,12 +1002,16 @@ H\xE3y tr\u1EA3 v\u1EC1 JSON theo \u0111\xFAng \u0111\u1ECBnh d\u1EA1ng sau:
       });
       if (response.text) {
         const parsed = JSON.parse(response.text.trim());
+        if (!parsed?.title || !Array.isArray(parsed.objectives) || !Array.isArray(parsed.keyKnowledge)) {
+          throw new Error("Gemini tr\u1EA3 v\u1EC1 b\xE0i h\u1ECDc thi\u1EBFu c\xE1c tr\u01B0\u1EDDng b\u1EAFt bu\u1ED9c.");
+        }
         return parsed;
       }
     }
   } catch (error) {
-    console.error("Gemini generateLessonKnowledge error, using high-quality pedagogical fallback:", error);
+    throw new Error(error instanceof Error ? error.message : "Gemini kh\xF4ng tr\u1EA3 v\u1EC1 b\xE0i h\u1ECDc h\u1EE3p l\u1EC7.");
   }
+  throw new Error("Gemini kh\xF4ng tr\u1EA3 v\u1EC1 b\xE0i h\u1ECDc h\u1EE3p l\u1EC7.");
   return {
     title: `${input.lesson} - ${input.subject} ${input.grade} (${input.bookSeries})`,
     objectives: [
@@ -1091,24 +1100,37 @@ Tr\u1EA3 v\u1EC1 m\u1EA3ng JSON c\xE2u h\u1ECFi.
       });
       if (response.text) {
         const list = JSON.parse(response.text.trim());
-        return (Array.isArray(list) ? list : list.questions || []).map((q, idx) => ({
-          id: `q_ai_${Date.now()}_${idx + 1}`,
-          question: q.question || "C\xE2u h\u1ECFi",
-          type: q.type || "multiple_choice",
-          options: q.options || (q.type === "true_false" ? ["\u0110\xFAng", "Sai"] : ["A. Ph\u01B0\u01A1ng \xE1n 1", "B. Ph\u01B0\u01A1ng \xE1n 2", "C. Ph\u01B0\u01A1ng \xE1n 3", "D. Ph\u01B0\u01A1ng \xE1n 4"]),
-          correctAnswer: q.correctAnswer || "A. Ph\u01B0\u01A1ng \xE1n 1",
-          explanation: q.explanation || "Gi\u1EA3i th\xEDch chi ti\u1EBFt",
-          hint1: q.hint1 || "H\xE3y nh\u1EDB l\u1EA1i kh\xE1i ni\u1EC7m c\u01A1 b\u1EA3n trong b\xE0i.",
-          hint2: q.hint2 || "\xC1p d\u1EE5ng c\xF4ng th\u1EE9c v\xE0 quy t\u1EAFc bi\u1EBFn \u0111\u1ED5i t\u01B0\u01A1ng \u0111\u01B0\u01A1ng.",
-          difficulty: q.difficulty || "thong_hieu",
-          learningObjective: q.learningObjective || "N\u1EAFm v\u1EEFng ki\u1EBFn th\u1EE9c b\xE0i h\u1ECDc",
-          points: q.points || 10 / questionCount
-        }));
+        const questions = Array.isArray(list) ? list : list.questions;
+        if (!Array.isArray(questions) || questions.length === 0) {
+          throw new Error("Gemini kh\xF4ng tr\u1EA3 v\u1EC1 danh s\xE1ch c\xE2u h\u1ECFi.");
+        }
+        return questions.map((q, idx) => {
+          if (!q?.question || !["multiple_choice", "true_false", "short_answer"].includes(q?.type) || !q?.correctAnswer || !q?.explanation) {
+            throw new Error(`C\xE2u h\u1ECFi ${idx + 1} thi\u1EBFu \u0111\u1EC1 b\xE0i, lo\u1EA1i, \u0111\xE1p \xE1n ho\u1EB7c l\u1EDDi gi\u1EA3i.`);
+          }
+          if (["multiple_choice", "true_false"].includes(q.type) && (!Array.isArray(q.options) || q.options.length < 2)) {
+            throw new Error(`C\xE2u h\u1ECFi ${idx + 1} thi\u1EBFu c\xE1c ph\u01B0\u01A1ng \xE1n l\u1EF1a ch\u1ECDn.`);
+          }
+          return {
+            id: `q_ai_${Date.now()}_${idx + 1}`,
+            question: q.question,
+            type: q.type,
+            options: q.options,
+            correctAnswer: q.correctAnswer,
+            explanation: q.explanation,
+            hint1: q.hint1,
+            hint2: q.hint2,
+            difficulty: q.difficulty || "thong_hieu",
+            learningObjective: q.learningObjective || "",
+            points: q.points || 10 / questionCount
+          };
+        });
       }
     }
   } catch (error) {
-    console.error("Gemini generatePracticeQuiz error, using fallback:", error);
+    throw new Error(error instanceof Error ? error.message : "Gemini kh\xF4ng tr\u1EA3 v\u1EC1 b\u1ED9 c\xE2u h\u1ECFi h\u1EE3p l\u1EC7.");
   }
+  throw new Error("Gemini kh\xF4ng tr\u1EA3 v\u1EC1 b\u1ED9 c\xE2u h\u1ECFi h\u1EE3p l\u1EC7.");
   return [
     {
       id: `q_fb_1`,
@@ -1223,12 +1245,17 @@ Tr\u1EA3 v\u1EC1 JSON c\u1EA5u tr\xFAc sau:
         }
       });
       if (response.text) {
-        return JSON.parse(response.text.trim());
+        const parsed = JSON.parse(response.text.trim());
+        if (!Array.isArray(parsed?.cells) || parsed.cells.length === 0) {
+          throw new Error("Gemini tr\u1EA3 v\u1EC1 ma tr\u1EADn thi\u1EBFu c\xE1c \xF4 ph\xE2n b\u1ED5 n\u1ED9i dung.");
+        }
+        return parsed;
       }
     }
   } catch (error) {
-    console.error("Gemini generateExamMatrix error, using fallback:", error);
+    throw new Error(error instanceof Error ? error.message : "Gemini kh\xF4ng tr\u1EA3 v\u1EC1 ma tr\u1EADn h\u1EE3p l\u1EC7.");
   }
+  throw new Error("Gemini kh\xF4ng tr\u1EA3 v\u1EC1 ma tr\u1EADn h\u1EE3p l\u1EC7.");
   return {
     subject: params.subject,
     grade: params.grade,
@@ -1298,27 +1325,39 @@ Tr\u1EA3 v\u1EC1 JSON \u0111\u1ECBnh d\u1EA1ng:
       });
       if (response.text) {
         const parsed = JSON.parse(response.text.trim());
+        if (!Array.isArray(parsed?.questions) || parsed.questions.length === 0) {
+          throw new Error("Gemini kh\xF4ng tr\u1EA3 v\u1EC1 danh s\xE1ch c\xE2u h\u1ECFi cho \u0111\u1EC1 thi.");
+        }
         return {
-          questions: (parsed.questions || []).map((q, idx) => ({
-            id: `eq_gen_${Date.now()}_${idx + 1}`,
-            question: q.question,
-            type: q.type || "multiple_choice",
-            options: q.options || (q.type === "multiple_choice" ? ["A. L\u1EF1a ch\u1ECDn 1", "B. L\u1EF1a ch\u1ECDn 2", "C. L\u1EF1a ch\u1ECDn 3", "D. L\u1EF1a ch\u1ECDn 4"] : void 0),
-            correctAnswer: q.correctAnswer || "",
-            explanation: q.explanation || "",
-            difficulty: q.difficulty || "thong_hieu",
-            learningObjective: q.learningObjective || "",
-            points: q.points || matrix.totalScore / matrix.questionCount
-          })),
-          rubric: parsed.rubric || "Thang \u0111i\u1EC3m t\u1EF1 lu\u1EADn theo t\u1EEBng b\u01B0\u1EDBc l\u1EADp lu\u1EADn.",
-          scoringGuide: parsed.scoringGuide || "Ch\u1EA5m tr\u1EAFc nghi\u1EC7m t\u1EF1 \u0111\u1ED9ng, ch\u1EA5m t\u1EF1 lu\u1EADn \u0111\u1ED1i chi\u1EBFu rubric.",
-          specification: parsed.specification || "B\u1EA3n \u0111\u1EB7c t\u1EA3 \u0111\u1EC1 thi chu\u1EA9n GDPT 2018."
+          questions: parsed.questions.map((q, idx) => {
+            if (!q?.question || !["multiple_choice", "true_false", "short_answer", "essay"].includes(q?.type) || !q?.correctAnswer || !q?.explanation) {
+              throw new Error(`C\xE2u thi ${idx + 1} thi\u1EBFu d\u1EEF li\u1EC7u b\u1EAFt bu\u1ED9c.`);
+            }
+            if (["multiple_choice", "true_false"].includes(q.type) && (!Array.isArray(q.options) || q.options.length < 2)) {
+              throw new Error(`C\xE2u thi ${idx + 1} thi\u1EBFu c\xE1c ph\u01B0\u01A1ng \xE1n l\u1EF1a ch\u1ECDn.`);
+            }
+            return {
+              id: `eq_gen_${Date.now()}_${idx + 1}`,
+              question: q.question,
+              type: q.type,
+              options: q.options,
+              correctAnswer: q.correctAnswer,
+              explanation: q.explanation,
+              difficulty: q.difficulty || "thong_hieu",
+              learningObjective: q.learningObjective || "",
+              points: q.points || matrix.totalScore / matrix.questionCount
+            };
+          }),
+          rubric: parsed.rubric || "",
+          scoringGuide: parsed.scoringGuide || "",
+          specification: parsed.specification || ""
         };
       }
     }
   } catch (error) {
-    console.error("Gemini generateExamFromApprovedMatrix error, using fallback:", error);
+    throw new Error(error instanceof Error ? error.message : "Gemini kh\xF4ng tr\u1EA3 v\u1EC1 \u0111\u1EC1 thi h\u1EE3p l\u1EC7.");
   }
+  throw new Error("Gemini kh\xF4ng tr\u1EA3 v\u1EC1 \u0111\u1EC1 thi h\u1EE3p l\u1EC7.");
   const pointsPerQ = Math.round(matrix.totalScore / matrix.questionCount * 10) / 10;
   return {
     specification: `B\u1EA3n \u0111\u1EB7c t\u1EA3 \u0111\u1EC1 thi m\xF4n ${matrix.subject} ${matrix.grade} (${scope}). Ki\u1EC3m tra kh\u1EA3 n\u0103ng nh\u1EADn di\u1EC7n \u0111\u1ECBnh ngh\u0129a, v\u1EADn d\u1EE5ng c\xF4ng th\u1EE9c v\xE0 t\u01B0 duy gi\u1EA3i quy\u1EBFt v\u1EA5n \u0111\u1EC1 th\u1EF1c t\u1EBF.`,
@@ -1384,6 +1423,16 @@ Tr\u1EA3 v\u1EC1 JSON \u0111\u1ECBnh d\u1EA1ng:
   };
 }
 async function gradeStudentEssay(question, studentAnswer, rubric, maxScore, officialAnswer) {
+  if (!process.env.GEMINI_API_KEY) {
+    return {
+      questionId: "",
+      scoreProposal: 0,
+      maxScore,
+      reasoningSummary: studentAnswer.trim() ? "Ch\u01B0a c\u1EA5u h\xECnh Gemini; gi\xE1o vi\xEAn c\u1EA7n duy\u1EC7t tr\u1EF1c ti\u1EBFp theo rubric." : "H\u1ECDc sinh ch\u01B0a tr\u1EA3 l\u1EDDi c\xE2u t\u1EF1 lu\u1EADn.",
+      confidence: 0,
+      needsTeacherReview: true
+    };
+  }
   const prompt = `
 B\u1EA1n l\xE0 Gi\xE1m kh\u1EA3o ch\u1EA5m thi s\u01B0 ph\u1EA1m kh\xE1ch quan, c\xF4ng t\xE2m.
 H\xE3y \u0111\xE1nh gi\xE1 b\xE0i l\xE0m t\u1EF1 lu\u1EADn c\u1EE7a h\u1ECDc sinh:
@@ -1425,51 +1474,32 @@ Tr\u1EA3 v\u1EC1 JSON:
       });
       if (response.text) {
         const parsed = JSON.parse(response.text.trim());
+        const confidence = Number(parsed.confidence);
+        const normalizedConfidence = Number.isFinite(confidence) ? Math.min(1, Math.max(0, confidence)) : 0;
         return {
           questionId: "",
           scoreProposal: Math.min(maxScore, Math.max(0, Number(parsed.scoreProposal) || 0)),
           maxScore,
           reasoningSummary: parsed.reasoningSummary || "AI \u0111\xE3 ph\xE2n t\xEDch b\xE0i l\xE0m d\u1EF1a tr\xEAn ti\xEAu ch\xED rubric.",
-          confidence: Number(parsed.confidence) || 0.9,
-          needsTeacherReview: Boolean(parsed.needsTeacherReview)
+          confidence: normalizedConfidence,
+          needsTeacherReview: Boolean(parsed.needsTeacherReview) || normalizedConfidence < 0.85
         };
       }
     }
   } catch (error) {
-    console.error("Gemini gradeStudentEssay error, using rule-based scoring:", error);
-  }
-  const textLength = (studentAnswer || "").trim().length;
-  let scoreProposal = 0;
-  let reasoning = "";
-  let confidence = 0.85;
-  let needsReview = false;
-  if (textLength === 0) {
-    scoreProposal = 0;
-    reasoning = "H\u1ECDc sinh \u0111\u1EC3 tr\u1ED1ng b\xE0i l\xE0m.";
-    confidence = 1;
-  } else if (textLength < 30) {
-    scoreProposal = Math.round(maxScore * 0.3 * 10) / 10;
-    reasoning = "B\xE0i l\xE0m qu\xE1 ng\u1EAFn, m\u1EDBi n\xEAu \xFD t\u01B0\u1EDFng ban \u0111\u1EA7u nh\u01B0ng ch\u01B0a ho\xE0n ch\u1EC9nh c\xE1c b\u01B0\u1EDBc gi\u1EA3i.";
-    needsReview = true;
-  } else if (textLength < 100) {
-    scoreProposal = Math.round(maxScore * 0.75 * 10) / 10;
-    reasoning = "H\u1ECDc sinh tr\xECnh b\xE0y kh\xE1 \u0111\u1EE7 c\xE1c b\u01B0\u1EDBc c\u01A1 b\u1EA3n, c\u1EA7n \u0111\u1ED1i chi\u1EBFu chi ti\u1EBFt c\xE1c b\u01B0\u1EDBc bi\u1EBFn \u0111\u1ED5i.";
-    needsReview = true;
-  } else {
-    scoreProposal = Math.round(maxScore * 0.9 * 10) / 10;
-    reasoning = "B\xE0i l\xE0m \u0111\u1EA7y \u0111\u1EE7, r\xF5 r\xE0ng c\xE1c b\u01B0\u1EDBc l\u1EADp lu\u1EADn theo y\xEAu c\u1EA7u c\u1EE7a \u0111\u1EC1 b\xE0i.";
-    confidence = 0.92;
+    console.error("Gemini gradeStudentEssay error:", error);
   }
   return {
     questionId: "",
-    scoreProposal,
+    scoreProposal: 0,
     maxScore,
-    reasoningSummary: reasoning,
-    confidence,
-    needsTeacherReview: needsReview
+    reasoningSummary: studentAnswer.trim() ? "Ch\u01B0a c\xF3 k\u1EBFt qu\u1EA3 ch\u1EA5m AI \u0111\xE1ng tin c\u1EADy; gi\xE1o vi\xEAn c\u1EA7n duy\u1EC7t tr\u1EF1c ti\u1EBFp theo rubric." : "H\u1ECDc sinh ch\u01B0a tr\u1EA3 l\u1EDDi c\xE2u t\u1EF1 lu\u1EADn.",
+    confidence: 0,
+    needsTeacherReview: true
   };
 }
 async function analyzeLearningMaterial(filename, fileType, sampleContent) {
+  if (!process.env.GEMINI_API_KEY) return null;
   const prompt = `
 Ph\xE2n t\xEDch t\xE0i li\u1EC7u h\u1ECDc t\u1EADp: "${filename}" (\u0110\u1ECBnh d\u1EA1ng: ${fileType}).
 N\u1ED9i dung t\xE0i li\u1EC7u tr\xEDch xu\u1EA5t m\u1EABu:
@@ -1496,148 +1526,271 @@ Tr\u1EA3 v\u1EC1 JSON:
         }
       });
       if (response.text) {
-        return JSON.parse(response.text.trim());
+        const parsed = JSON.parse(response.text.trim());
+        if (!parsed?.summary || !Array.isArray(parsed.keyTopics) || !Array.isArray(parsed.recommendedQuestionTypes)) {
+          throw new Error("Gemini tr\u1EA3 v\u1EC1 k\u1EBFt qu\u1EA3 ph\xE2n t\xEDch t\xE0i li\u1EC7u kh\xF4ng h\u1EE3p l\u1EC7.");
+        }
+        return parsed;
       }
     }
   } catch (error) {
     console.error("Gemini analyzeLearningMaterial error:", error);
   }
-  return {
-    summary: `T\xE0i li\u1EC7u ${filename} ch\u1EE9a c\xE1c n\u1ED9i dung ki\u1EBFn th\u1EE9c chuy\xEAn s\xE2u v\xE0 b\xE0i t\u1EADp v\u1EADn d\u1EE5ng m\xF4n h\u1ECDc.`,
-    keyTopics: ["Ki\u1EBFn th\u1EE9c tr\u1ECDng t\xE2m", "V\xED d\u1EE5 minh h\u1ECDa", "B\xE0i t\u1EADp luy\u1EC7n t\u1EADp"],
-    recommendedQuestionTypes: ["Tr\u1EAFc nghi\u1EC7m 4 l\u1EF1a ch\u1ECDn", "B\xE0i t\u1EADp t\u1EF1 lu\u1EADn ng\u1EAFn"]
-  };
+  return null;
 }
 
 // server/sheets.ts
+var import_google_auth_library = require("google-auth-library");
+var SHEETS_SCOPE = "https://www.googleapis.com/auth/spreadsheets";
+function getGoogleCredentials() {
+  const rawServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
+  if (rawServiceAccount) {
+    try {
+      return JSON.parse(rawServiceAccount);
+    } catch {
+      throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON kh\xF4ng ph\u1EA3i JSON h\u1EE3p l\u1EC7.");
+    }
+  }
+  const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY || process.env.FIREBASE_PRIVATE_KEY;
+  const projectId = process.env.GOOGLE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID;
+  if (!clientEmail || !privateKey) return void 0;
+  return {
+    client_email: clientEmail,
+    private_key: privateKey.replace(/\\n/g, "\n"),
+    project_id: projectId
+  };
+}
+function rowValues(row) {
+  return [
+    row.timestamp,
+    row.studentId,
+    row.studentName,
+    row.className,
+    row.subject,
+    row.chapter,
+    row.lesson,
+    row.assessmentType,
+    row.attempt,
+    row.correct,
+    row.incorrect,
+    row.score,
+    row.duration,
+    row.lessonProgress,
+    row.submissionId
+  ];
+}
+async function appendRow(row) {
+  const settings = db.getSettings();
+  if (!settings.googleSheetsConnected || !settings.spreadsheetId) {
+    throw new Error("Ch\u01B0a c\u1EA5u h\xECnh Spreadsheet ID trong ph\u1EA7n c\xE0i \u0111\u1EB7t.");
+  }
+  const credentials = getGoogleCredentials();
+  if (!credentials) {
+    throw new Error("Ch\u01B0a c\u1EA5u h\xECnh t\xE0i kho\u1EA3n d\u1ECBch v\u1EE5 Google Sheets tr\xEAn m\xE1y ch\u1EE7.");
+  }
+  const range = process.env.GOOGLE_SHEETS_RANGE || "BangDiem!A:O";
+  const auth = new import_google_auth_library.GoogleAuth({ credentials, scopes: [SHEETS_SCOPE] });
+  const client = await auth.getClient();
+  await client.request({
+    url: `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(settings.spreadsheetId)}/values/${encodeURIComponent(range)}:append`,
+    method: "POST",
+    params: { valueInputOption: "USER_ENTERED", insertDataOption: "INSERT_ROWS" },
+    data: { values: [rowValues(row)] }
+  });
+}
+function durationLabel(durationSeconds) {
+  const total = Math.max(0, Math.round(durationSeconds || 0));
+  return `${Math.floor(total / 60)} ph\xFAt ${total % 60} gi\xE2y`;
+}
+function newSubmissionId(prefix) {
+  return `SUB-${prefix}-${Date.now().toString(36).toUpperCase()}-${Math.floor(Math.random() * 1e3)}`;
+}
+async function syncRow(row, details) {
+  const log = {
+    id: `sync-log-${Date.now()}-${Math.floor(Math.random() * 1e3)}`,
+    submissionId: row.submissionId,
+    ...details,
+    status: "pending",
+    syncedAt: (/* @__PURE__ */ new Date()).toISOString()
+  };
+  db.addSheetSyncLog(log);
+  try {
+    await appendRow(row);
+    return db.updateSheetSyncLog(log.id, {
+      status: "success",
+      errorMsg: void 0,
+      syncedAt: (/* @__PURE__ */ new Date()).toISOString()
+    }) || log;
+  } catch (error) {
+    return db.updateSheetSyncLog(log.id, {
+      status: "failed",
+      errorMsg: error instanceof Error ? error.message : "Kh\xF4ng th\u1EC3 ghi d\u1EEF li\u1EC7u v\xE0o Google Sheets.",
+      syncedAt: (/* @__PURE__ */ new Date()).toISOString()
+    }) || log;
+  }
+}
 var GoogleSheetsService = class {
-  /**
-   * Sync an exam attempt to Google Sheets
-   */
   static async syncExamAttempt(attempt, studentId) {
     const student = db.getUserById(studentId);
     const exam = db.getExamById(attempt.examId);
     const course = exam ? db.getCourseById(exam.courseId) : void 0;
-    const progress = exam ? db.getUserProgressList(studentId) : [];
-    const avgProgress = progress.length ? Math.round(progress.reduce((acc, p) => acc + p.percentage, 0) / progress.length) : 100;
-    const durationMins = attempt.durationSeconds ? Math.floor(attempt.durationSeconds / 60) : 0;
-    const durationSecs = attempt.durationSeconds ? attempt.durationSeconds % 60 : 0;
-    const durationFormatted = `${durationMins} ph\xFAt ${durationSecs} gi\xE2y`;
-    const submissionId = `SUB-EXAM-${Date.now().toString(36).toUpperCase()}-${Math.floor(Math.random() * 1e3)}`;
-    const rowData = {
+    const progress = db.getUserProgressList(studentId);
+    const avgProgress = progress.length ? Math.round(progress.reduce((sum, item) => sum + item.percentage, 0) / progress.length) : 0;
+    const submissionId = newSubmissionId("EXAM");
+    const row = {
       timestamp: (/* @__PURE__ */ new Date()).toISOString(),
       studentId,
       studentName: student?.fullName || attempt.studentName || "H\u1ECDc sinh",
-      className: student?.className || attempt.className || "10A1",
-      subject: course?.subject || "To\xE1n h\u1ECDc",
-      chapter: exam?.scope || "Ki\u1EC3m tra \u0111\u1ECBnh k\u1EF3",
+      className: student?.className || attempt.className || "",
+      subject: course?.subject || "",
+      chapter: exam?.scope || "",
       lesson: exam?.title || "\u0110\u1EC1 ki\u1EC3m tra",
       assessmentType: "Exam",
       attempt: 1,
       correct: attempt.correctCount || 0,
       incorrect: attempt.incorrectCount || 0,
       score: attempt.score || 0,
-      duration: durationFormatted,
+      duration: durationLabel(attempt.durationSeconds),
       lessonProgress: `${avgProgress}%`,
       submissionId
     };
-    const settings = db.getSettings();
-    const isSuccess = settings.googleSheetsConnected;
-    const log = {
-      id: `sync-log-${Date.now()}-${Math.floor(Math.random() * 1e3)}`,
+    const log = await syncRow(row, {
       attemptId: attempt.id,
-      submissionId,
-      studentId: rowData.studentId,
-      studentName: rowData.studentName,
-      className: rowData.className,
-      subject: rowData.subject,
-      chapter: rowData.chapter,
-      lessonTitle: rowData.lesson,
+      studentId: row.studentId,
+      studentName: row.studentName,
+      className: row.className,
+      subject: row.subject,
+      chapter: row.chapter,
+      lessonTitle: row.lesson,
       assessmentType: "Exam",
       attemptNumber: 1,
-      correct: rowData.correct,
-      incorrect: rowData.incorrect,
-      score: rowData.score,
-      duration: rowData.duration,
-      lessonProgress: rowData.lessonProgress,
-      status: isSuccess ? "success" : "failed",
-      errorMsg: isSuccess ? void 0 : "Google Sheets ch\u01B0a \u0111\u01B0\u1EE3c c\u1EA5p quy\u1EC1n ho\u1EB7c Spreadsheet ID kh\xF4ng h\u1EE3p l\u1EC7.",
-      syncedAt: (/* @__PURE__ */ new Date()).toISOString()
-    };
-    db.addSheetSyncLog(log);
-    db.updateExamAttempt(attempt.id, {
-      syncStatus: isSuccess ? "success" : "failed"
+      correct: row.correct,
+      incorrect: row.incorrect,
+      score: row.score,
+      duration: row.duration,
+      lessonProgress: row.lessonProgress
     });
+    db.updateExamAttempt(attempt.id, { syncStatus: log.status === "success" ? "success" : "failed" });
     return log;
   }
-  /**
-   * Sync a practice quiz attempt to Google Sheets
-   */
   static async syncPracticeAttempt(attempt, studentId) {
     const student = db.getUserById(studentId);
     const quiz = db.getPracticeQuizById(attempt.quizId);
     const lesson = quiz ? db.getLessonById(quiz.lessonId) : void 0;
     const course = lesson ? db.getCourseById(lesson.courseId) : void 0;
     const progress = lesson ? db.getLessonProgress(studentId, lesson.id) : void 0;
-    const correctCount = attempt.score ? Math.round(attempt.score / (attempt.totalScore || 10) * (quiz?.questions.length || 4)) : 0;
-    const incorrectCount = (quiz?.questions.length || 4) - correctCount;
-    const durationMins = attempt.durationSeconds ? Math.floor(attempt.durationSeconds / 60) : 0;
-    const durationSecs = attempt.durationSeconds ? attempt.durationSeconds % 60 : 0;
-    const durationFormatted = `${durationMins} ph\xFAt ${durationSecs} gi\xE2y`;
-    const submissionId = `SUB-PRAC-${Date.now().toString(36).toUpperCase()}-${Math.floor(Math.random() * 1e3)}`;
-    const settings = db.getSettings();
-    const isSuccess = settings.googleSheetsConnected;
-    const log = {
-      id: `sync-log-${Date.now()}-${Math.floor(Math.random() * 1e3)}`,
-      attemptId: attempt.id,
-      submissionId,
+    const correct = attempt.correctCount || 0;
+    const total = attempt.totalQuestions || quiz?.questions.length || 0;
+    const submissionId = newSubmissionId("PRAC");
+    const row = {
+      timestamp: (/* @__PURE__ */ new Date()).toISOString(),
       studentId,
       studentName: student?.fullName || attempt.studentName || "H\u1ECDc sinh",
-      className: student?.className || "10A1",
-      subject: course?.subject || "To\xE1n h\u1ECDc",
+      className: student?.className || "",
+      subject: course?.subject || "",
       chapter: "Luy\u1EC7n t\u1EADp b\xE0i h\u1ECDc",
-      lessonTitle: lesson?.title || quiz?.title || "B\xE0i luy\u1EC7n t\u1EADp",
+      lesson: lesson?.title || quiz?.title || "B\xE0i luy\u1EC7n t\u1EADp",
+      assessmentType: "Practice",
+      attempt: attempt.attemptNumber,
+      correct,
+      incorrect: Math.max(0, total - correct),
+      score: attempt.score || 0,
+      duration: durationLabel(attempt.durationSeconds),
+      lessonProgress: `${progress?.percentage || 0}%`,
+      submissionId
+    };
+    return syncRow(row, {
+      attemptId: attempt.id,
+      studentId: row.studentId,
+      studentName: row.studentName,
+      className: row.className,
+      subject: row.subject,
+      chapter: row.chapter,
+      lessonTitle: row.lesson,
       assessmentType: "Practice",
       attemptNumber: attempt.attemptNumber,
-      correct: correctCount,
-      incorrect: Math.max(0, incorrectCount),
-      score: attempt.score || 0,
-      duration: durationFormatted,
-      lessonProgress: `${progress?.percentage || 100}%`,
-      status: isSuccess ? "success" : "failed",
-      errorMsg: isSuccess ? void 0 : "Ch\u01B0a k\u1EBFt n\u1ED1i Google Spreadsheet ID",
-      syncedAt: (/* @__PURE__ */ new Date()).toISOString()
-    };
-    db.addSheetSyncLog(log);
-    return log;
-  }
-  /**
-   * Retry syncing a failed log entry
-   */
-  static async retrySync(logId) {
-    const logs = db.getSheetSyncLogs();
-    const target = logs.find((l) => l.id === logId);
-    if (!target) return void 0;
-    const settings = db.getSettings();
-    const isSuccess = settings.googleSheetsConnected && Boolean(settings.spreadsheetId);
-    const updated = db.updateSheetSyncLog(logId, {
-      status: isSuccess ? "success" : "failed",
-      errorMsg: isSuccess ? void 0 : "K\u1EBFt n\u1ED1i th\u1EA5t b\u1EA1i. Vui l\xF2ng ki\u1EC3m tra l\u1EA1i Google Sheet ID.",
-      syncedAt: (/* @__PURE__ */ new Date()).toISOString()
+      correct: row.correct,
+      incorrect: row.incorrect,
+      score: row.score,
+      duration: row.duration,
+      lessonProgress: row.lessonProgress
     });
-    if (updated && updated.attemptId) {
-      db.updateExamAttempt(updated.attemptId, {
-        syncStatus: isSuccess ? "success" : "failed"
+  }
+  static async retrySync(logId) {
+    const target = db.getSheetSyncLogs().find((log) => log.id === logId);
+    if (!target) return void 0;
+    const row = {
+      timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+      studentId: target.studentId,
+      studentName: target.studentName,
+      className: target.className,
+      subject: target.subject,
+      chapter: target.chapter,
+      lesson: target.lessonTitle,
+      assessmentType: target.assessmentType,
+      attempt: target.attemptNumber,
+      correct: target.correct,
+      incorrect: target.incorrect,
+      score: target.score,
+      duration: target.duration,
+      lessonProgress: target.lessonProgress,
+      submissionId: target.submissionId
+    };
+    try {
+      await appendRow(row);
+      const updated = db.updateSheetSyncLog(logId, {
+        status: "success",
+        errorMsg: void 0,
+        syncedAt: (/* @__PURE__ */ new Date()).toISOString()
       });
+      if (updated?.assessmentType === "Exam") db.updateExamAttempt(updated.attemptId, { syncStatus: "success" });
+      return updated;
+    } catch (error) {
+      const updated = db.updateSheetSyncLog(logId, {
+        status: "failed",
+        errorMsg: error instanceof Error ? error.message : "Kh\xF4ng th\u1EC3 ghi d\u1EEF li\u1EC7u v\xE0o Google Sheets.",
+        syncedAt: (/* @__PURE__ */ new Date()).toISOString()
+      });
+      if (updated?.assessmentType === "Exam") db.updateExamAttempt(updated.attemptId, { syncStatus: "failed" });
+      return updated;
     }
-    return updated;
   }
 };
 
 // server/routes.ts
 var apiRouter = import_express.default.Router();
+var SUBMISSION_GRACE_MS = 1e4;
+function sanitizeQuestionForStudent(question) {
+  const { correctAnswer: _correctAnswer, explanation: _explanation, rubric: _rubric, ...safeQuestion } = question;
+  return safeQuestion;
+}
+function isPublishedCourse(courseId) {
+  return db.getCourseById(courseId)?.status === "published";
+}
+function isPublishedLesson(lessonId) {
+  const lesson = db.getLessonById(lessonId);
+  return Boolean(lesson && lesson.status === "published" && isPublishedCourse(lesson.courseId));
+}
+function normalizeAnswer(value) {
+  return String(value ?? "").trim().replace(/\s+/g, " ").toLocaleLowerCase("vi");
+}
+function mergeSegments(segments) {
+  const sorted = [...segments].filter(([start, end]) => Number.isFinite(start) && Number.isFinite(end) && end > start).sort((a, b) => a[0] - b[0]);
+  const merged = [];
+  for (const segment of sorted) {
+    const previous = merged[merged.length - 1];
+    if (!previous || segment[0] > previous[1]) {
+      merged.push([...segment]);
+    } else {
+      previous[1] = Math.max(previous[1], segment[1]);
+    }
+  }
+  return merged;
+}
 function getAuthUser(req) {
-  const userId = req.headers["x-user-id"] || "teacher-1";
+  const userId = req.headers["x-user-id"];
+  if (!userId) return void 0;
   return db.getUserById(userId);
 }
 function requireAuth(req, res, next) {
@@ -1657,9 +1810,11 @@ function requireTeacherOrAdmin(req, res, next) {
   next();
 }
 apiRouter.get("/auth/me", (req, res) => {
-  const user = getAuthUser(req) || db.getUsers()[0];
+  const user = getAuthUser(req);
+  if (!user) return res.status(401).json({ error: "Phi\xEAn \u0111\u0103ng nh\u1EADp kh\xF4ng h\u1EE3p l\u1EC7." });
   res.json(user);
 });
+apiRouter.use(requireAuth);
 apiRouter.get("/users", (req, res) => {
   const currentUser = getAuthUser(req);
   if (currentUser?.role === "student") {
@@ -1678,7 +1833,7 @@ apiRouter.post("/users", requireTeacherOrAdmin, (req, res) => {
     fullName,
     role,
     classId,
-    school: school || "THPT Chuy\xEAn L\xEA H\u1ED3ng Phong",
+    school: school || "Tr\u01B0\u1EDDng THPT M\u1EABu",
     subjectSpecialty,
     avatar: role === "teacher" ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" : "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80",
     createdAt: (/* @__PURE__ */ new Date()).toISOString()
@@ -1692,7 +1847,12 @@ apiRouter.delete("/users/:id", requireTeacherOrAdmin, (req, res) => {
   res.json({ success: true, message: "\u0110\xE3 x\xF3a h\u1ECDc sinh v\xE0 to\xE0n b\u1ED9 d\u1EEF li\u1EC7u li\xEAn quan." });
 });
 apiRouter.get("/classes", (req, res) => {
-  res.json(db.getClasses());
+  const user = getAuthUser(req);
+  const classes = db.getClasses();
+  if (user?.role === "student") {
+    return res.json(classes.filter((cls) => cls.id === user.classId));
+  }
+  res.json(classes);
 });
 apiRouter.post("/classes", requireTeacherOrAdmin, (req, res) => {
   const user = req.user;
@@ -1710,7 +1870,12 @@ apiRouter.post("/classes", requireTeacherOrAdmin, (req, res) => {
   res.json(newClass);
 });
 apiRouter.get("/courses", (req, res) => {
-  res.json(db.getCourses());
+  const user = getAuthUser(req);
+  const courses = db.getCourses();
+  if (user?.role === "student") {
+    return res.json(courses.filter((course) => course.status === "published"));
+  }
+  res.json(courses);
 });
 apiRouter.post("/courses", requireTeacherOrAdmin, (req, res) => {
   const user = req.user;
@@ -1731,8 +1896,13 @@ apiRouter.post("/courses", requireTeacherOrAdmin, (req, res) => {
   res.json(newCourse);
 });
 apiRouter.get("/chapters", (req, res) => {
+  const user = getAuthUser(req);
   const courseId = req.query.courseId;
-  res.json(db.getChapters(courseId));
+  let chapters = db.getChapters(courseId);
+  if (user?.role === "student") {
+    chapters = chapters.filter((chapter) => isPublishedCourse(chapter.courseId));
+  }
+  res.json(chapters);
 });
 apiRouter.post("/chapters", requireTeacherOrAdmin, (req, res) => {
   const { courseId, title, order, description } = req.body;
@@ -1752,7 +1922,7 @@ apiRouter.get("/lessons", (req, res) => {
   const chapterId = req.query.chapterId;
   let list = db.getLessons(courseId, chapterId);
   if (user?.role === "student") {
-    list = list.filter((l) => l.status === "published");
+    list = list.filter((lesson) => lesson.status === "published" && isPublishedCourse(lesson.courseId));
   }
   res.json(list);
 });
@@ -1762,7 +1932,7 @@ apiRouter.get("/lessons/:id", (req, res) => {
   if (!lesson) {
     return res.status(404).json({ error: "Kh\xF4ng t\xECm th\u1EA5y b\xE0i h\u1ECDc" });
   }
-  if (user?.role === "student" && lesson.status !== "published") {
+  if (user?.role === "student" && !isPublishedLesson(lesson.id)) {
     return res.status(403).json({ error: "B\xE0i h\u1ECDc \u0111ang trong tr\u1EA1ng th\xE1i so\u1EA1n th\u1EA3o, ch\u01B0a \u0111\u01B0\u1EE3c c\xF4ng b\u1ED1." });
   }
   res.json(lesson);
@@ -1794,35 +1964,46 @@ apiRouter.patch("/lessons/:id", requireTeacherOrAdmin, (req, res) => {
 });
 apiRouter.get("/materials", (req, res) => {
   const lessonId = req.query.lessonId;
+  const user = getAuthUser(req);
+  if (user?.role === "student") {
+    if (!lessonId) return res.status(400).json({ error: "C\u1EA7n ch\u1ECDn b\xE0i h\u1ECDc tr\u01B0\u1EDBc khi xem h\u1ECDc li\u1EC7u." });
+    const lesson = db.getLessonById(lessonId);
+    if (!lesson || !isPublishedLesson(lesson.id)) {
+      return res.status(403).json({ error: "H\u1ECDc li\u1EC7u n\xE0y ch\u01B0a \u0111\u01B0\u1EE3c c\xF4ng b\u1ED1." });
+    }
+  }
   res.json(db.getMaterials(lessonId));
 });
 apiRouter.post("/materials/upload", requireTeacherOrAdmin, async (req, res) => {
-  const { lessonId, filename, type, pageCount, slideCount, duration, sampleContent } = req.body;
-  let detectedPageCount = pageCount;
-  let detectedSlideCount = slideCount;
-  let detectedDuration = duration;
-  if (type === "pdf" && !detectedPageCount) {
-    detectedPageCount = Math.floor(Math.random() * 8) + 4;
-  } else if (type === "pptx" && !detectedSlideCount) {
-    detectedSlideCount = Math.floor(Math.random() * 15) + 8;
-  } else if (type === "video" && !detectedDuration) {
-    detectedDuration = 420;
+  const { lessonId, filename, type, storageUrl, pageCount, slideCount, duration, sampleContent, required } = req.body;
+  const validTypes = ["pdf", "docx", "pptx", "image", "video"];
+  if (!lessonId || !db.getLessonById(lessonId)) {
+    return res.status(400).json({ error: "Vui l\xF2ng ch\u1ECDn m\u1ED9t b\xE0i h\u1ECDc h\u1EE3p l\u1EC7." });
+  }
+  if (!filename || !storageUrl || !validTypes.includes(type)) {
+    return res.status(400).json({ error: "C\u1EA7n nh\u1EADp t\xEAn, lo\u1EA1i v\xE0 URL h\u1ECDc li\u1EC7u h\u1EE3p l\u1EC7." });
+  }
+  try {
+    const parsedUrl = new URL(storageUrl);
+    if (!["http:", "https:"].includes(parsedUrl.protocol)) throw new Error("unsupported protocol");
+  } catch {
+    return res.status(400).json({ error: "URL h\u1ECDc li\u1EC7u ph\u1EA3i b\u1EAFt \u0111\u1EA7u b\u1EB1ng http:// ho\u1EB7c https://." });
   }
   const newMaterial = db.addMaterial({
     id: `mat-${Date.now()}`,
-    lessonId: lessonId || "lesson-1",
-    type: type || "pdf",
-    filename: filename || "Tai_lieu_hoc_tap.pdf",
-    storageUrl: type === "video" ? "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" : "https://storage.googleapis.com/eduhub-assets/samples/sample-document.pdf",
-    pageCount: detectedPageCount,
-    slideCount: detectedSlideCount,
-    duration: detectedDuration,
-    required: true,
-    fileSize: `${(Math.random() * 5 + 1).toFixed(1)} MB`,
+    lessonId,
+    type,
+    filename,
+    storageUrl,
+    pageCount: pageCount ? Number(pageCount) : void 0,
+    slideCount: slideCount ? Number(slideCount) : void 0,
+    duration: duration ? Number(duration) : void 0,
+    required: required !== false,
+    fileSize: req.body.fileSize || void 0,
     createdAt: (/* @__PURE__ */ new Date()).toISOString()
   });
   let aiInsights = null;
-  if (sampleContent || filename) {
+  if (sampleContent) {
     try {
       aiInsights = await analyzeLearningMaterial(filename, type, sampleContent);
     } catch (e) {
@@ -1831,28 +2012,7 @@ apiRouter.post("/materials/upload", requireTeacherOrAdmin, async (req, res) => {
   }
   res.json({ material: newMaterial, aiInsights });
 });
-apiRouter.get("/progress/:userId/:lessonId", (req, res) => {
-  const { userId, lessonId } = req.params;
-  const currentAuth = getAuthUser(req);
-  if (currentAuth?.role === "student" && currentAuth.id !== userId) {
-    return res.status(403).json({ error: "Kh\xF4ng c\xF3 quy\u1EC1n xem ti\u1EBFn \u0111\u1ED9 c\u1EE7a h\u1ECDc sinh kh\xE1c" });
-  }
-  const prog = db.getLessonProgress(userId, lessonId) || {
-    id: `prog-${userId}-${lessonId}`,
-    userId,
-    lessonId,
-    completedUnits: 0,
-    totalUnits: 10,
-    percentage: 0,
-    lastPosition: 1,
-    viewedPages: [],
-    watchedSegments: [],
-    isCompleted: false,
-    lastOpenedAt: (/* @__PURE__ */ new Date()).toISOString()
-  };
-  res.json(prog);
-});
-apiRouter.get("/progress/user/:userId", (req, res) => {
+apiRouter.get("/progress/user/:userId", requireAuth, (req, res) => {
   const { userId } = req.params;
   const currentAuth = getAuthUser(req);
   if (currentAuth?.role === "student" && currentAuth.id !== userId) {
@@ -1860,8 +2020,30 @@ apiRouter.get("/progress/user/:userId", (req, res) => {
   }
   res.json(db.getUserProgressList(userId));
 });
-apiRouter.post("/progress/track", (req, res) => {
-  const { userId, lessonId, pageViewed, totalPages, videoSegment, totalDuration } = req.body;
+apiRouter.get("/progress/:userId/:lessonId", requireAuth, (req, res) => {
+  const { userId, lessonId } = req.params;
+  const currentAuth = getAuthUser(req);
+  if (currentAuth?.role === "student" && currentAuth.id !== userId) {
+    return res.status(403).json({ error: "Kh\xF4ng c\xF3 quy\u1EC1n xem ti\u1EBFn \u0111\u1ED9 c\u1EE7a h\u1ECDc sinh kh\xE1c" });
+  }
+  const progress = db.getLessonProgress(userId, lessonId) || {
+    id: `prog-${userId}-${lessonId}`,
+    userId,
+    lessonId,
+    completedUnits: 0,
+    totalUnits: 100,
+    percentage: 0,
+    lastPosition: 1,
+    viewedPages: [],
+    watchedSegments: [],
+    materialProgress: {},
+    isCompleted: false,
+    lastOpenedAt: (/* @__PURE__ */ new Date()).toISOString()
+  };
+  res.json(progress);
+});
+apiRouter.post("/progress/track", requireAuth, (req, res) => {
+  const { userId, lessonId, materialId, pageViewed, totalPages, videoSegment, totalDuration } = req.body;
   const currentAuth = getAuthUser(req);
   if (!userId || !lessonId) {
     return res.status(400).json({ error: "Thi\u1EBFu userId ho\u1EB7c lessonId" });
@@ -1869,6 +2051,15 @@ apiRouter.post("/progress/track", (req, res) => {
   if (currentAuth?.role === "student" && currentAuth.id !== userId) {
     return res.status(403).json({ error: "Kh\xF4ng h\u1EE3p l\u1EC7" });
   }
+  const lesson = db.getLessonById(lessonId);
+  if (!lesson) return res.status(404).json({ error: "B\xE0i h\u1ECDc kh\xF4ng t\u1ED3n t\u1EA1i." });
+  if (currentAuth?.role === "student" && !isPublishedLesson(lesson.id)) {
+    return res.status(403).json({ error: "B\xE0i h\u1ECDc ch\u01B0a \u0111\u01B0\u1EE3c c\xF4ng b\u1ED1." });
+  }
+  const lessonMaterials = db.getMaterials(lessonId);
+  const resolvedMaterialId = materialId || (typeof pageViewed === "number" ? lessonMaterials.find((material2) => material2.type !== "video")?.id : lessonMaterials.find((material2) => material2.type === "video")?.id);
+  const material = lessonMaterials.find((item) => item.id === resolvedMaterialId);
+  if (!material) return res.status(400).json({ error: "H\u1ECDc li\u1EC7u kh\xF4ng h\u1EE3p l\u1EC7." });
   let existing = db.getLessonProgress(userId, lessonId);
   const now = (/* @__PURE__ */ new Date()).toISOString();
   if (!existing) {
@@ -1877,69 +2068,124 @@ apiRouter.post("/progress/track", (req, res) => {
       userId,
       lessonId,
       completedUnits: 0,
-      totalUnits: totalPages || (totalDuration ? Math.floor(totalDuration / 10) : 10),
+      totalUnits: 100,
       percentage: 0,
-      lastPosition: pageViewed || 1,
+      lastPosition: 1,
       viewedPages: [],
       watchedSegments: [],
+      materialProgress: {},
       isCompleted: false,
       lastOpenedAt: now
     };
   }
   existing.lastOpenedAt = now;
-  if (typeof pageViewed === "number") {
-    existing.lastPosition = pageViewed;
-    const viewedSet = new Set(existing.viewedPages || []);
-    viewedSet.add(pageViewed);
-    existing.viewedPages = Array.from(viewedSet).sort((a, b) => a - b);
-    const total = totalPages || existing.totalUnits || 8;
-    existing.totalUnits = total;
-    existing.completedUnits = existing.viewedPages.length;
-    existing.percentage = Math.min(100, Math.round(existing.completedUnits / total * 100));
-  }
-  if (Array.isArray(videoSegment) && videoSegment.length === 2) {
-    const [start, end] = videoSegment;
-    existing.lastPosition = end;
-    const segments = existing.watchedSegments || [];
-    segments.push([start, end]);
-    segments.sort((a, b) => a[0] - b[0]);
-    const merged = [];
-    for (const seg of segments) {
-      if (!merged.length) {
-        merged.push(seg);
-      } else {
-        const prev = merged[merged.length - 1];
-        if (seg[0] <= prev[1]) {
-          prev[1] = Math.max(prev[1], seg[1]);
-        } else {
-          merged.push(seg);
-        }
+  const materialProgress = { ...existing.materialProgress || {} };
+  if (Object.keys(materialProgress).length === 0) {
+    for (const item of lessonMaterials) {
+      if (item.type === "video" && (existing.watchedSegments || []).length > 0) {
+        const duration = item.duration || totalDuration || 1;
+        const segments = mergeSegments(existing.watchedSegments || []);
+        const watched = segments.reduce((sum, [start, end]) => sum + (end - start), 0);
+        materialProgress[item.id] = {
+          materialId: item.id,
+          watchedSegments: segments,
+          completedUnits: watched,
+          totalUnits: duration,
+          percentage: Math.min(100, Math.round(watched / duration * 100)),
+          lastPosition: existing.lastPosition || 0,
+          isCompleted: watched / duration >= (db.getSettings().videoWatchThreshold || 99) / 100
+        };
+      } else if (item.type !== "video" && (existing.viewedPages || []).length > 0) {
+        const pages = item.pageCount || item.slideCount || totalPages || 1;
+        const viewed = [...new Set(existing.viewedPages || [])].filter((page) => page >= 1 && page <= pages);
+        materialProgress[item.id] = {
+          materialId: item.id,
+          viewedPages: viewed,
+          completedUnits: viewed.length,
+          totalUnits: pages,
+          percentage: Math.min(100, Math.round(viewed.length / pages * 100)),
+          lastPosition: existing.lastPosition || 1,
+          isCompleted: viewed.length >= pages
+        };
       }
     }
-    existing.watchedSegments = merged;
-    const totalWatchedSecs = merged.reduce((acc, curr) => acc + Math.max(0, curr[1] - curr[0]), 0);
-    const videoTotal = totalDuration || 360;
-    const pct = Math.min(100, Math.round(totalWatchedSecs / videoTotal * 100));
-    existing.completedUnits = Math.round(totalWatchedSecs);
-    existing.totalUnits = videoTotal;
-    existing.percentage = Math.max(existing.percentage, pct);
   }
-  const settings = db.getSettings();
-  const threshold = settings.videoWatchThreshold || 99;
-  if (existing.percentage >= threshold && !existing.isCompleted) {
-    existing.isCompleted = true;
-    existing.completedAt = now;
+  const fallbackTotal = material.type === "video" ? material.duration || Number(totalDuration) || 1 : material.pageCount || material.slideCount || Number(totalPages) || 1;
+  const current = materialProgress[material.id] || {
+    materialId: material.id,
+    viewedPages: [],
+    watchedSegments: [],
+    completedUnits: 0,
+    totalUnits: fallbackTotal,
+    percentage: 0,
+    lastPosition: material.type === "video" ? 0 : 1,
+    isCompleted: false
+  };
+  if (typeof pageViewed === "number" && material.type !== "video") {
+    const pageTotal = material.pageCount || material.slideCount || Number(totalPages) || 1;
+    if (!Number.isInteger(pageViewed) || pageViewed < 1 || pageViewed > pageTotal) {
+      return res.status(400).json({ error: "S\u1ED1 trang kh\xF4ng h\u1EE3p l\u1EC7." });
+    }
+    const pages = [.../* @__PURE__ */ new Set([...current.viewedPages || [], pageViewed])].sort((a, b) => a - b);
+    current.viewedPages = pages;
+    current.completedUnits = pages.length;
+    current.totalUnits = pageTotal;
+    current.percentage = Math.min(100, Math.round(pages.length / pageTotal * 100));
+    current.lastPosition = pageViewed;
+    current.isCompleted = pages.length >= pageTotal;
   }
+  if (Array.isArray(videoSegment) && videoSegment.length === 2 && material.type === "video") {
+    const duration = material.duration || Number(totalDuration) || 1;
+    const start = Math.max(0, Math.min(duration, Number(videoSegment[0])));
+    const end = Math.max(0, Math.min(duration, Number(videoSegment[1])));
+    if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) {
+      return res.status(400).json({ error: "Ph\xE2n \u0111o\u1EA1n video kh\xF4ng h\u1EE3p l\u1EC7." });
+    }
+    const segments = mergeSegments([...current.watchedSegments || [], [start, end]]);
+    const watched = segments.reduce((sum, [segmentStart, segmentEnd]) => sum + (segmentEnd - segmentStart), 0);
+    current.watchedSegments = segments;
+    current.completedUnits = Math.round(watched);
+    current.totalUnits = duration;
+    current.percentage = Math.min(100, Math.round(watched / duration * 100));
+    current.lastPosition = end;
+    current.isCompleted = current.percentage >= (db.getSettings().videoWatchThreshold || 99);
+  }
+  materialProgress[material.id] = current;
+  const requiredMaterials = lessonMaterials.filter((item) => item.required);
+  const trackedMaterials = requiredMaterials.length > 0 ? requiredMaterials : lessonMaterials;
+  const aggregatePercentage = trackedMaterials.length > 0 ? Math.round(trackedMaterials.reduce((sum, item) => sum + (materialProgress[item.id]?.percentage || 0), 0) / trackedMaterials.length) : current.percentage;
+  const completed = trackedMaterials.length > 0 ? trackedMaterials.every((item) => materialProgress[item.id]?.isCompleted) : current.isCompleted;
+  existing.materialProgress = materialProgress;
+  existing.completedUnits = aggregatePercentage;
+  existing.totalUnits = 100;
+  existing.percentage = aggregatePercentage;
+  existing.lastPosition = current.lastPosition;
+  existing.viewedPages = current.viewedPages || [];
+  existing.watchedSegments = current.watchedSegments || [];
+  existing.isCompleted = completed;
+  existing.completedAt = completed ? existing.completedAt || now : void 0;
   db.saveLessonProgress(existing);
   res.json(existing);
 });
-apiRouter.get("/practice/quizzes", (req, res) => {
+apiRouter.get("/practice/quizzes", requireAuth, (req, res) => {
+  const user = getAuthUser(req);
   const lessonId = req.query.lessonId;
-  res.json(db.getPracticeQuizzes(lessonId));
+  let quizzes = db.getPracticeQuizzes(lessonId);
+  if (user?.role === "student") {
+    quizzes = quizzes.filter((quiz) => quiz.status === "published" && isPublishedLesson(quiz.lessonId)).map((quiz) => ({ ...quiz, questions: quiz.questions.map(sanitizeQuestionForStudent) }));
+  }
+  res.json(quizzes);
 });
-apiRouter.get("/practice/quizzes/:id", (req, res) => {
+apiRouter.get("/practice/quizzes/:id", requireAuth, (req, res) => {
+  const user = getAuthUser(req);
   const quiz = db.getPracticeQuizById(req.params.id);
   if (!quiz) return res.status(404).json({ error: "Kh\xF4ng t\xECm th\u1EA5y b\xE0i luy\u1EC7n t\u1EADp" });
+  if (user?.role === "student") {
+    if (quiz.status !== "published" || !isPublishedLesson(quiz.lessonId)) {
+      return res.status(403).json({ error: "B\xE0i luy\u1EC7n t\u1EADp ch\u01B0a \u0111\u01B0\u1EE3c c\xF4ng b\u1ED1." });
+    }
+    return res.json({ ...quiz, questions: quiz.questions.map(sanitizeQuestionForStudent) });
+  }
   res.json(quiz);
 });
 apiRouter.post("/practice/quizzes", requireTeacherOrAdmin, (req, res) => {
@@ -1968,23 +2214,36 @@ apiRouter.post("/practice/start", requireAuth, (req, res) => {
   const user = req.user;
   const quiz = db.getPracticeQuizById(quizId);
   if (!quiz) return res.status(404).json({ error: "B\xE0i luy\u1EC7n t\u1EADp kh\xF4ng t\u1ED3n t\u1EA1i" });
-  const previousAttempts = db.getPracticeAttempts(user.id, quizId);
-  if (previousAttempts.length >= (quiz.maxAttempts || 3)) {
-    return res.status(400).json({ error: "B\u1EA1n \u0111\xE3 ho\xE0n th\xE0nh t\u1ED1i \u0111a 3 l\u01B0\u1EE3t l\xE0m b\xE0i cho b\xE0i luy\u1EC7n t\u1EADp n\xE0y." });
+  if (!quiz.questions.length) return res.status(400).json({ error: "B\xE0i luy\u1EC7n t\u1EADp ch\u01B0a c\xF3 c\xE2u h\u1ECFi." });
+  if (user.role === "student" && (quiz.status !== "published" || !isPublishedLesson(quiz.lessonId))) {
+    return res.status(403).json({ error: "B\xE0i luy\u1EC7n t\u1EADp ch\u01B0a \u0111\u01B0\u1EE3c c\xF4ng b\u1ED1." });
   }
+  const previousAttempts = db.getPracticeAttempts(user.id, quizId);
   const inProgress = previousAttempts.find((a) => a.status === "in_progress");
   if (inProgress) {
-    return res.json(inProgress);
+    if (new Date(inProgress.deadline).getTime() < Date.now()) {
+      db.updatePracticeAttempt(inProgress.id, { status: "timed_out" });
+    } else {
+      return res.json(inProgress);
+    }
+  }
+  const completedAttempts = previousAttempts.filter((a) => a.status !== "in_progress");
+  if (completedAttempts.length >= (quiz.maxAttempts || 3)) {
+    return res.status(400).json({ error: `B\u1EA1n \u0111\xE3 s\u1EED d\u1EE5ng \u0111\u1EE7 ${quiz.maxAttempts || 3} l\u01B0\u1EE3t l\xE0m b\xE0i.` });
+  }
+  const activeAfterTimeoutCheck = db.getPracticeAttempts(user.id, quizId).find((a) => a.status === "in_progress");
+  if (activeAfterTimeoutCheck) {
+    return res.json(activeAfterTimeoutCheck);
   }
   const now = /* @__PURE__ */ new Date();
   const deadline = new Date(now.getTime() + quiz.timeLimitMinutes * 60 * 1e3);
   const newAttempt = {
     id: `patt-${Date.now()}-${user.id}`,
     quizId,
-    lessonId: lessonId || quiz.lessonId,
+    lessonId: quiz.lessonId,
     userId: user.id,
     studentName: user.fullName,
-    attemptNumber: previousAttempts.length + 1,
+    attemptNumber: completedAttempts.length + 1,
     startedAt: now.toISOString(),
     deadline: deadline.toISOString(),
     answers: {},
@@ -2002,6 +2261,16 @@ apiRouter.post("/practice/submit", requireAuth, async (req, res) => {
   if (attempt.userId !== user.id && user.role === "student") {
     return res.status(403).json({ error: "Kh\xF4ng h\u1EE3p l\u1EC7" });
   }
+  if (attempt.status !== "in_progress") {
+    return res.status(409).json({ error: "L\u01B0\u1EE3t l\xE0m b\xE0i n\xE0y \u0111\xE3 k\u1EBFt th\xFAc v\xE0 kh\xF4ng th\u1EC3 n\u1ED9p l\u1EA1i." });
+  }
+  if (new Date(attempt.deadline).getTime() + SUBMISSION_GRACE_MS < Date.now()) {
+    db.updatePracticeAttempt(attempt.id, { status: "timed_out" });
+    return res.status(409).json({ error: "\u0110\xE3 h\u1EBFt th\u1EDDi gian l\xE0m b\xE0i." });
+  }
+  if (!answers || typeof answers !== "object" || Array.isArray(answers)) {
+    return res.status(400).json({ error: "D\u1EEF li\u1EC7u c\xE2u tr\u1EA3 l\u1EDDi kh\xF4ng h\u1EE3p l\u1EC7." });
+  }
   const quiz = db.getPracticeQuizById(attempt.quizId);
   if (!quiz) return res.status(404).json({ error: "Kh\xF4ng t\xECm th\u1EA5y th\xF4ng tin \u0111\u1EC1 luy\u1EC7n t\u1EADp" });
   const now = /* @__PURE__ */ new Date();
@@ -2017,7 +2286,7 @@ apiRouter.post("/practice/submit", requireAuth, async (req, res) => {
     const correctAns = (q.correctAnswer || "").toString().trim();
     let isCorrect = false;
     if (q.type === "short_answer") {
-      isCorrect = studentAns.toLowerCase() === correctAns.toLowerCase();
+      isCorrect = normalizeAnswer(studentAns) === normalizeAnswer(correctAns);
     } else {
       isCorrect = studentAns === correctAns;
     }
@@ -2026,25 +2295,30 @@ apiRouter.post("/practice/submit", requireAuth, async (req, res) => {
     }
     questionFeedback[q.id] = {
       isCorrect,
-      explanation: isCorrect ? q.explanation : "Ch\u01B0a ch\xEDnh x\xE1c. B\u1EA1n c\xF3 th\u1EC3 s\u1EED d\u1EE5ng g\u1EE3i \xFD \u0111\u1EC3 suy ngh\u0129 l\u1EA1i!",
+      correctAnswer: q.correctAnswer,
+      explanation: q.explanation || (isCorrect ? "C\xE2u tr\u1EA3 l\u1EDDi ch\xEDnh x\xE1c." : "H\xE3y xem l\u1EA1i n\u1ED9i dung b\xE0i h\u1ECDc v\xE0 th\u1EED l\u1EA1i."),
       hint1: isCorrect ? void 0 : q.hint1,
       hint2: isCorrect ? void 0 : q.hint2,
       points: isCorrect ? qPoints : 0
     };
   });
-  const percentage = Math.round(earnedScore / totalScore * 100);
-  const passed = percentage >= (quiz.passPercentage || 80);
+  const percentage = totalScore > 0 ? Math.round(earnedScore / totalScore * 100) : 0;
+  const passed = percentage >= (quiz.passPercentage || db.getSettings().passingScoreThreshold || 80);
+  const correctCount = Object.values(questionFeedback).filter((item) => item.isCorrect).length;
   const updated = db.updatePracticeAttempt(attemptId, {
     answers,
     score: Math.round(earnedScore * 10) / 10,
     totalScore,
     percentage,
     passed,
+    isPassed: passed,
+    correctCount,
+    totalQuestions: quiz.questions.length,
     status: "submitted",
     submittedAt: now.toISOString(),
     durationSeconds
   });
-  if (updated) {
+  if (updated && db.getSettings().autoSync) {
     GoogleSheetsService.syncPracticeAttempt(updated, user.id).catch(console.error);
   }
   res.json({
@@ -2056,7 +2330,7 @@ apiRouter.get("/exams", (req, res) => {
   const user = getAuthUser(req);
   let exams = db.getExams();
   if (user?.role === "student") {
-    exams = exams.filter((e) => e.status === "published");
+    exams = exams.filter((exam) => exam.status === "published" && (!exam.classIds?.length || !!user.classId && exam.classIds.includes(user.classId)));
     exams = exams.map((e) => ({
       ...e,
       questions: e.questions.map((q) => ({
@@ -2076,6 +2350,9 @@ apiRouter.get("/exams/:id", (req, res) => {
   if (user?.role === "student") {
     if (exam.status !== "published") {
       return res.status(403).json({ error: "\u0110\u1EC1 thi ch\u01B0a \u0111\u01B0\u1EE3c c\xF4ng b\u1ED1" });
+    }
+    if (exam.classIds?.length && (!user.classId || !exam.classIds.includes(user.classId))) {
+      return res.status(403).json({ error: "\u0110\u1EC1 thi kh\xF4ng \u0111\u01B0\u1EE3c giao cho l\u1EDBp c\u1EE7a b\u1EA1n." });
     }
     const safeExam = {
       ...exam,
@@ -2135,10 +2412,18 @@ apiRouter.post("/exams/start", requireAuth, (req, res) => {
   const exam = db.getExamById(examId);
   if (!exam) return res.status(404).json({ error: "Kh\xF4ng t\xECm th\u1EA5y \u0111\u1EC1 thi" });
   if (exam.status !== "published") return res.status(400).json({ error: "\u0110\u1EC1 thi ch\u01B0a \u0111\u01B0\u1EE3c c\xF4ng b\u1ED1." });
+  if (user.role === "student" && exam.classIds?.length && (!user.classId || !exam.classIds.includes(user.classId))) {
+    return res.status(403).json({ error: "\u0110\u1EC1 thi kh\xF4ng \u0111\u01B0\u1EE3c giao cho l\u1EDBp c\u1EE7a b\u1EA1n." });
+  }
   const existingAttempts = db.getExamAttempts(examId, user.id);
+  const completed = existingAttempts.filter((attempt) => ["submitted", "graded", "needs_review"].includes(attempt.status)).sort((a, b) => new Date(b.submittedAt || b.createdAt).getTime() - new Date(a.submittedAt || a.createdAt).getTime())[0];
+  if (completed) return res.json(completed);
   const inProgress = existingAttempts.find((a) => a.status === "in_progress");
   if (inProgress) {
-    return res.json(inProgress);
+    if (new Date(inProgress.deadline).getTime() >= Date.now()) {
+      return res.json(inProgress);
+    }
+    db.updateExamAttempt(inProgress.id, { status: "timed_out" });
   }
   const now = /* @__PURE__ */ new Date();
   const deadline = new Date(now.getTime() + exam.durationMinutes * 60 * 1e3);
@@ -2148,7 +2433,7 @@ apiRouter.post("/exams/start", requireAuth, (req, res) => {
     userId: user.id,
     studentName: user.fullName,
     classId: user.classId || "class-1",
-    className: user.className || "10A1",
+    className: user.className || "L\u1EDBp m\u1EABu",
     startedAt: now.toISOString(),
     deadline: deadline.toISOString(),
     answers: {},
@@ -2167,6 +2452,16 @@ apiRouter.post("/exams/submit", requireAuth, async (req, res) => {
   if (!attempt) return res.status(404).json({ error: "Kh\xF4ng t\xECm th\u1EA5y b\xE0i l\xE0m" });
   if (attempt.userId !== user.id && user.role === "student") {
     return res.status(403).json({ error: "Kh\xF4ng c\xF3 quy\u1EC1n n\u1ED9p b\xE0i" });
+  }
+  if (attempt.status !== "in_progress") {
+    return res.status(409).json({ error: "B\xE0i thi n\xE0y \u0111\xE3 k\u1EBFt th\xFAc v\xE0 kh\xF4ng th\u1EC3 n\u1ED9p l\u1EA1i." });
+  }
+  if (new Date(attempt.deadline).getTime() + SUBMISSION_GRACE_MS < Date.now()) {
+    db.updateExamAttempt(attempt.id, { status: "timed_out" });
+    return res.status(409).json({ error: "\u0110\xE3 h\u1EBFt th\u1EDDi gian l\xE0m b\xE0i." });
+  }
+  if (!answers || typeof answers !== "object" || Array.isArray(answers)) {
+    return res.status(400).json({ error: "D\u1EEF li\u1EC7u c\xE2u tr\u1EA3 l\u1EDDi kh\xF4ng h\u1EE3p l\u1EC7." });
   }
   const exam = db.getExamById(attempt.examId);
   if (!exam) return res.status(404).json({ error: "Kh\xF4ng t\xECm th\u1EA5y \u0111\u1EC1 thi g\u1ED1c" });
@@ -2190,7 +2485,7 @@ apiRouter.post("/exams/submit", requireAuth, async (req, res) => {
         incorrectCount++;
       }
     } else if (q.type === "short_answer") {
-      const isMatch = studentAns.toLowerCase() === correctAns.toLowerCase();
+      const isMatch = normalizeAnswer(studentAns) === normalizeAnswer(correctAns);
       if (isMatch) {
         earnedScore += qPoints;
         correctCount++;
@@ -2198,6 +2493,19 @@ apiRouter.post("/exams/submit", requireAuth, async (req, res) => {
         incorrectCount++;
       }
     } else if (q.type === "essay") {
+      const aiGradingEnabled = db.getSettings().enableAiGrading;
+      if (!studentAns || !aiGradingEnabled) {
+        hasEssayNeedingReview = true;
+        essayEvaluations[q.id] = {
+          questionId: q.id,
+          scoreProposal: 0,
+          maxScore: qPoints,
+          reasoningSummary: !studentAns ? "H\u1ECDc sinh ch\u01B0a tr\u1EA3 l\u1EDDi c\xE2u t\u1EF1 lu\u1EADn." : "Ch\u1EA5m s\u01A1 kh\u1EA3o AI \u0111ang t\u1EAFt; gi\xE1o vi\xEAn c\u1EA7n duy\u1EC7t tr\u1EF1c ti\u1EBFp theo rubric.",
+          confidence: 0,
+          needsTeacherReview: true
+        };
+        continue;
+      }
       try {
         const evalResult = await gradeStudentEssay(
           q.question,
@@ -2217,10 +2525,10 @@ apiRouter.post("/exams/submit", requireAuth, async (req, res) => {
         hasEssayNeedingReview = true;
         essayEvaluations[q.id] = {
           questionId: q.id,
-          scoreProposal: Math.round(qPoints * 0.7 * 10) / 10,
+          scoreProposal: 0,
           maxScore: qPoints,
-          reasoningSummary: "H\u1ECDc sinh \u0111\xE3 n\u1ED9p b\xE0i gi\u1EA3i, gi\xE1o vi\xEAn c\u1EA7n \u0111\u1ED1i chi\u1EBFu rubric.",
-          confidence: 0.75,
+          reasoningSummary: "Kh\xF4ng th\u1EC3 ch\u1EA5m s\u01A1 kh\u1EA3o t\u1EF1 \u0111\u1ED9ng; gi\xE1o vi\xEAn c\u1EA7n \u0111\u1ED1i chi\u1EBFu rubric.",
+          confidence: 0,
           needsTeacherReview: true
         };
       }
@@ -2238,7 +2546,7 @@ apiRouter.post("/exams/submit", requireAuth, async (req, res) => {
     essayEvaluations,
     submittedAt: now.toISOString()
   });
-  if (updated) {
+  if (updated && updated.status === "graded" && db.getSettings().autoSync) {
     GoogleSheetsService.syncExamAttempt(updated, user.id).catch(console.error);
   }
   res.json(updated);
@@ -2246,12 +2554,21 @@ apiRouter.post("/exams/submit", requireAuth, async (req, res) => {
 apiRouter.patch("/exams/attempts/:id/review", requireTeacherOrAdmin, (req, res) => {
   const id = req.params.id;
   const { score, essayEvaluations, teacherNotes } = req.body;
+  const attempt = db.getExamAttemptById(id);
+  if (!attempt) return res.status(404).json({ error: "Kh\xF4ng t\xECm th\u1EA5y b\xE0i l\xE0m" });
+  const reviewedScore = Number(score);
+  if (!Number.isFinite(reviewedScore) || reviewedScore < 0 || reviewedScore > attempt.totalScore) {
+    return res.status(400).json({ error: `\u0110i\u1EC3m ph\u1EA3i n\u1EB1m trong kho\u1EA3ng 0 \u0111\u1EBFn ${attempt.totalScore}.` });
+  }
   const updated = db.updateExamAttempt(id, {
-    score: Number(score),
-    essayEvaluations,
+    score: reviewedScore,
+    essayEvaluations: essayEvaluations || attempt.essayEvaluations,
+    teacherNotes: typeof teacherNotes === "string" ? teacherNotes.trim() : attempt.teacherNotes,
     status: "graded"
   });
-  if (!updated) return res.status(404).json({ error: "Kh\xF4ng t\xECm th\u1EA5y b\xE0i l\xE0m" });
+  if (updated && db.getSettings().autoSync) {
+    GoogleSheetsService.syncExamAttempt(updated, updated.userId).catch(console.error);
+  }
   res.json(updated);
 });
 apiRouter.post("/ai/generate-lesson", requireTeacherOrAdmin, async (req, res) => {
@@ -2259,7 +2576,7 @@ apiRouter.post("/ai/generate-lesson", requireTeacherOrAdmin, async (req, res) =>
     const result = await generateLessonKnowledge(req.body);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message || "L\u1ED7i t\u1EA1o b\xE0i h\u1ECDc AI" });
+    res.status(503).json({ error: error.message || "Kh\xF4ng th\u1EC3 k\u1EBFt n\u1ED1i Gemini \u0111\u1EC3 t\u1EA1o b\xE0i h\u1ECDc." });
   }
 });
 apiRouter.post("/ai/generate-practice", requireTeacherOrAdmin, async (req, res) => {
@@ -2268,7 +2585,7 @@ apiRouter.post("/ai/generate-practice", requireTeacherOrAdmin, async (req, res) 
     const questions = await generatePracticeQuiz(lessonTitle, subject, grade, lessonContent, Number(questionCount) || 4);
     res.json(questions);
   } catch (error) {
-    res.status(500).json({ error: error.message || "L\u1ED7i t\u1EA1o c\xE2u h\u1ECFi luy\u1EC7n t\u1EADp" });
+    res.status(503).json({ error: error.message || "Kh\xF4ng th\u1EC3 k\u1EBFt n\u1ED1i Gemini \u0111\u1EC3 t\u1EA1o c\xE2u h\u1ECFi." });
   }
 });
 apiRouter.post("/ai/generate-matrix", requireTeacherOrAdmin, async (req, res) => {
@@ -2276,7 +2593,7 @@ apiRouter.post("/ai/generate-matrix", requireTeacherOrAdmin, async (req, res) =>
     const matrix = await generateExamMatrix(req.body);
     res.json(matrix);
   } catch (error) {
-    res.status(500).json({ error: error.message || "L\u1ED7i t\u1EA1o ma tr\u1EADn \u0111\u1EC1 ki\u1EC3m tra" });
+    res.status(503).json({ error: error.message || "Kh\xF4ng th\u1EC3 k\u1EBFt n\u1ED1i Gemini \u0111\u1EC3 t\u1EA1o ma tr\u1EADn." });
   }
 });
 apiRouter.post("/ai/generate-exam-from-matrix", requireTeacherOrAdmin, async (req, res) => {
@@ -2285,7 +2602,7 @@ apiRouter.post("/ai/generate-exam-from-matrix", requireTeacherOrAdmin, async (re
     const generated = await generateExamFromApprovedMatrix(matrix, scope);
     res.json(generated);
   } catch (error) {
-    res.status(500).json({ error: error.message || "L\u1ED7i sinh \u0111\u1EC1 thi t\u1EEB ma tr\u1EADn" });
+    res.status(503).json({ error: error.message || "Kh\xF4ng th\u1EC3 k\u1EBFt n\u1ED1i Gemini \u0111\u1EC3 sinh \u0111\u1EC1 thi." });
   }
 });
 apiRouter.get("/sheets/logs", requireTeacherOrAdmin, (req, res) => {
@@ -2300,10 +2617,13 @@ apiRouter.post("/sheets/retry-sync", requireTeacherOrAdmin, async (req, res) => 
 });
 apiRouter.post("/sheets/connect", requireTeacherOrAdmin, (req, res) => {
   const { spreadsheetId, spreadsheetUrl, spreadsheetName } = req.body;
+  if (!spreadsheetId || !/^[a-zA-Z0-9_-]{20,}$/.test(spreadsheetId)) {
+    return res.status(400).json({ error: "Spreadsheet ID kh\xF4ng h\u1EE3p l\u1EC7." });
+  }
   const updatedSettings = db.updateSettings({
     googleSheetsConnected: true,
-    spreadsheetId: spreadsheetId || "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms",
-    spreadsheetUrl: spreadsheetUrl || `https://docs.google.com/spreadsheets/d/${spreadsheetId || "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms"}/edit`,
+    spreadsheetId,
+    spreadsheetUrl: spreadsheetUrl || `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`,
     spreadsheetName: spreadsheetName || "AI_Learning_Hub_BangDiem"
   });
   res.json(updatedSettings);
@@ -2312,10 +2632,32 @@ apiRouter.get("/analytics/dashboard", requireTeacherOrAdmin, (req, res) => {
   res.json(db.getAnalyticsSummary());
 });
 apiRouter.get("/settings", (req, res) => {
-  res.json(db.getSettings());
+  const user = getAuthUser(req);
+  const settings = db.getSettings();
+  if (user?.role === "student") {
+    return res.json({
+      passingScoreThreshold: settings.passingScoreThreshold,
+      videoWatchThreshold: settings.videoWatchThreshold,
+      enableAiGrading: settings.enableAiGrading,
+      schoolName: settings.schoolName,
+      googleSheetsConnected: false,
+      autoSync: false
+    });
+  }
+  res.json(settings);
 });
 apiRouter.patch("/settings", requireTeacherOrAdmin, (req, res) => {
-  res.json(db.updateSettings(req.body));
+  const updates = { ...req.body };
+  for (const key of ["passingScoreThreshold", "videoWatchThreshold"]) {
+    if (key in updates) {
+      const value = Number(updates[key]);
+      if (!Number.isFinite(value) || value < 0 || value > 100) {
+        return res.status(400).json({ error: `${key} ph\u1EA3i n\u1EB1m trong kho\u1EA3ng 0 \u0111\u1EBFn 100.` });
+      }
+      updates[key] = value;
+    }
+  }
+  res.json(db.updateSettings(updates));
 });
 
 // server/app.ts
@@ -2323,7 +2665,28 @@ function createApiApp() {
   const app = (0, import_express2.default)();
   app.use(import_express2.default.json({ limit: "10mb" }));
   app.use(import_express2.default.urlencoded({ extended: true }));
-  app.get("/health", (_req, res) => {
+  app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, x-user-id");
+    if (req.method === "OPTIONS") {
+      return res.status(200).end();
+    }
+    const qIndex = req.url.indexOf("?");
+    const queryStr = qIndex !== -1 ? req.url.substring(qIndex + 1) : "";
+    const params = new URLSearchParams(queryStr);
+    const routeParam = params.get("__route");
+    if (routeParam !== null && routeParam !== void 0) {
+      const cleanPath = routeParam.startsWith("/") ? routeParam : `/${routeParam}`;
+      params.delete("__route");
+      const restQuery = params.toString();
+      req.url = restQuery ? `${cleanPath}?${restQuery}` : cleanPath;
+    } else if (req.url.startsWith("/api/index")) {
+      req.url = req.url.replace("/api/index", "") || "/";
+    }
+    next();
+  });
+  app.get(["/health", "/api/health"], (_req, res) => {
     res.json({
       status: "ok",
       service: "AI Learning Hub API",
@@ -2332,6 +2695,13 @@ function createApiApp() {
   });
   app.use("/api", apiRouter);
   app.use("/", apiRouter);
+  app.use((err, _req, res, _next) => {
+    console.error("[API ERROR]", err);
+    res.status(500).json({
+      error: err?.message || "L\u1ED7i x\u1EED l\xFD m\xE1y ch\u1EE7 n\u1ED9i b\u1ED9",
+      timestamp: (/* @__PURE__ */ new Date()).toISOString()
+    });
+  });
   return app;
 }
 

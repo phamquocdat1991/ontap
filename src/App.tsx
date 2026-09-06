@@ -24,7 +24,8 @@ import { PracticeQuizRunner } from './components/student/PracticeQuizRunner';
 import { ExamTakingRoom } from './components/student/ExamTakingRoom';
 
 const MainApp: React.FC = () => {
-  const { user, isTeacher, isStudent, isLoading } = useAuth();
+  const { user, isTeacher, isStudent, isAdmin, isLoading, isOffline } = useAuth();
+  const canManage = isTeacher || isAdmin;
   
   // Navigation State
   const [currentView, setCurrentView] = useState<string>('dashboard');
@@ -35,12 +36,12 @@ const MainApp: React.FC = () => {
   // Handle switching views based on user role changes
   useEffect(() => {
     if (!user) return;
-    if (isTeacher && (currentView.startsWith('student-') || currentView === 'exam-room' || currentView === 'practice-runner' || currentView === 'lesson-view')) {
+    if (canManage && (currentView.startsWith('student-') || currentView === 'exam-room' || currentView === 'practice-runner' || currentView === 'lesson-view')) {
       setCurrentView('dashboard');
     } else if (isStudent && !currentView.startsWith('student-') && currentView !== 'exam-room' && currentView !== 'practice-runner' && currentView !== 'lesson-view') {
       setCurrentView('student-dashboard');
     }
-  }, [user?.role, isTeacher, isStudent]);
+  }, [user?.role, canManage, isStudent]);
 
   const [showRetryPrompt, setShowRetryPrompt] = useState<boolean>(false);
   useEffect(() => {
@@ -50,13 +51,13 @@ const MainApp: React.FC = () => {
 
   if (isLoading || !user) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-100 p-4">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center text-slate-900 dark:text-slate-100 p-4">
         <div className="flex flex-col items-center gap-4 text-center max-w-md">
           <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
             <div className="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
           </div>
           <div>
-            <h2 className="text-base font-bold text-white tracking-wide">AI LEARNING HUB • GDPT 2018</h2>
+            <h2 className="text-base font-bold text-slate-950 dark:text-white tracking-wide">AI LEARNING HUB • GDPT 2018</h2>
             <p className="text-xs text-slate-400 mt-1">Đang nạp dữ liệu giáo dục và cấu hình sư phạm số...</p>
           </div>
           {showRetryPrompt && (
@@ -89,7 +90,7 @@ const MainApp: React.FC = () => {
   };
 
   const handleHeaderNav = (tab: string) => {
-    if (tab === 'dashboard') setCurrentView(isTeacher ? 'dashboard' : 'student-dashboard');
+    if (tab === 'dashboard') setCurrentView(canManage ? 'dashboard' : 'student-dashboard');
     else if (tab === 'ai-lesson-gen') setCurrentView('lesson-ai');
     else if (tab === 'exam-matrix') setCurrentView('exam-matrix');
     else if (tab === 'grading') setCurrentView('grading');
@@ -100,13 +101,20 @@ const MainApp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950">
+    <div className="app-shell min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950">
+      <a href="#main-content" className="skip-link">Bỏ qua tới nội dung chính</a>
       {/* Top Universal Header */}
       <Header 
         currentTab={currentView} 
         onSelectTab={handleHeaderNav} 
         toggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />
+
+      {isOffline && (
+        <div role="status" className="border-b border-amber-300 bg-amber-50 px-4 py-2 text-center text-xs font-semibold text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/50 dark:text-amber-200">
+          Đang dùng dữ liệu minh họa cục bộ vì API chưa phản hồi. Một số thao tác lưu sẽ không khả dụng.
+        </div>
+      )}
 
       <div className="flex-1 flex overflow-hidden">
         {/* Role-Based Sidebar Navigation (Desktop + Mobile Drawer) */}
@@ -120,9 +128,9 @@ const MainApp: React.FC = () => {
         )}
 
         {/* Main Content Area */}
-        <main className={`flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 ${currentView === 'exam-room' ? 'max-w-5xl mx-auto w-full' : ''}`}>
+        <main id="main-content" className={`flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 ${currentView === 'exam-room' ? 'max-w-5xl mx-auto w-full' : ''}`}>
           {/* TEACHER & ADMIN VIEWS */}
-          {isTeacher && (
+          {canManage && (
             <>
               {currentView === 'dashboard' && (
                 <TeacherDashboard
@@ -163,7 +171,9 @@ const MainApp: React.FC = () => {
               {(currentView === 'student-dashboard' || currentView === 'student-courses' || currentView === 'student-exams') && (
                 <StudentDashboard
                   user={user}
+                  viewMode={currentView === 'student-courses' ? 'courses' : currentView === 'student-exams' ? 'exams' : 'overview'}
                   onOpenLesson={handleOpenLesson}
+                  onStartPractice={handleStartPractice}
                   onTakeExam={handleTakeExam}
                 />
               )}
@@ -193,7 +203,9 @@ const MainApp: React.FC = () => {
               {currentView === 'student-practice' && (
                 <StudentDashboard
                   user={user}
+                  viewMode="practice"
                   onOpenLesson={handleOpenLesson}
+                  onStartPractice={handleStartPractice}
                   onTakeExam={handleTakeExam}
                 />
               )}

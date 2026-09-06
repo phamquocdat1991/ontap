@@ -93,6 +93,17 @@ export interface Material {
   createdAt: string;
 }
 
+export interface MaterialProgress {
+  materialId: string;
+  viewedPages?: number[];
+  watchedSegments?: [number, number][];
+  completedUnits: number;
+  totalUnits: number;
+  percentage: number;
+  lastPosition: number;
+  isCompleted: boolean;
+}
+
 export interface LessonProgress {
   id: string;
   userId: string;
@@ -103,6 +114,7 @@ export interface LessonProgress {
   lastPosition: number; // page number or seconds in video
   viewedPages?: number[]; // list of distinct pages/slides viewed
   watchedSegments?: [number, number][]; // [startTime, endTime] watched
+  materialProgress?: Record<string, MaterialProgress>;
   isCompleted: boolean;
   lastOpenedAt: string;
   completedAt?: string;
@@ -231,9 +243,10 @@ export interface ExamAttempt {
   totalScore: number;
   correctCount?: number;
   incorrectCount?: number;
-  status: 'in_progress' | 'submitted' | 'graded' | 'needs_review';
+  status: 'in_progress' | 'submitted' | 'graded' | 'needs_review' | 'timed_out';
   syncStatus: 'pending' | 'success' | 'failed';
   essayEvaluations?: Record<string, EssayGradingResult>;
+  teacherNotes?: string;
   durationSeconds?: number;
   createdAt: string;
 }

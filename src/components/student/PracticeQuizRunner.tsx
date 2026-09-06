@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { 
   HelpCircle, ArrowLeft, CheckCircle2, XCircle, Lightbulb, 
-  Sparkles, Award, RefreshCw, ChevronRight, BookOpen 
+  Sparkles, Award, RefreshCw, Clock
 } from 'lucide-react';
-import { PracticeQuiz, Question } from '../../types';
+import { PracticeQuiz, PracticeAttempt } from '../../types';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { LoadingState, EmptyState } from '../common/StateViews';
@@ -21,10 +21,15 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
 }) => {
   const { addToast } = useToast();
   const [quiz, setQuiz] = useState<PracticeQuiz | null>(null);
+  const [attempt, setAttempt] = useState<PracticeAttempt | null>(null);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
   const [hintsRevealed, setHintsRevealed] = useState<Record<string, { hint1?: boolean; hint2?: boolean }>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [resultScore, setResultScore] = useState<number | null>(null);
+  const [feedback, setFeedback] = useState<Record<string, { isCorrect: boolean; correctAnswer: string; explanation: string; hint1?: string; hint2?: string; points: number }>>({});
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadError, setLoadError] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,16 +38,28 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
         setLoading(true);
         const qList = await api.getPracticeQuizzes(lessonId);
         if (qList.length > 0) {
-          setQuiz(qList[0]);
+          const selectedQuiz = qList[0];
+          setQuiz(selectedQuiz);
+          const activeAttempt = await api.startPracticeAttempt(selectedQuiz.id, lessonId);
+          setAttempt(activeAttempt);
+          setUserAnswers(activeAttempt.answers || {});
+          setTimeLeft(Math.max(0, Math.floor((new Date(activeAttempt.deadline).getTime() - Date.now()) / 1000)));
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to load quiz:', err);
+        setLoadError(err.message || 'Không thể mở bài luyện tập.');
       } finally {
         setLoading(false);
       }
     };
     fetchQuiz();
-  }, [lessonId]);
+  }, [lessonId, studentId]);
+
+  useEffect(() => {
+    if (!attempt || isSubmitted || timeLeft <= 0) return;
+    const timer = window.setInterval(() => setTimeLeft(value => Math.max(0, value - 1)), 1000);
+    return () => window.clearInterval(timer);
+  }, [attempt?.id, isSubmitted, timeLeft <= 0]);
 
   const handleSelectAnswer = (qId: string, ans: string) => {
     if (isSubmitted) return;
@@ -60,14 +77,16 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
   };
 
   const handleSubmitQuiz = async () => {
-    if (!quiz) return;
+    if (!quiz || !attempt || isSubmitting || timeLeft <= 0) return;
     try {
+      setIsSubmitting(true);
       const res = await api.submitPracticeAttempt({
-        practiceQuizId: quiz.id,
-        lessonId,
+        attemptId: attempt.id,
         answers: userAnswers
       });
       setResultScore(res.score);
+      setAttempt(res.attempt);
+      setFeedback(res.feedback);
       setIsSubmitted(true);
       if (res.isPassed) {
         addToast('Luyện tập xuất sắc!', `Bạn đã đạt ${res.score}/10 điểm (${res.correctCount}/${res.totalQuestions} câu đúng).`, 'success');
@@ -76,8 +95,30 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
       }
     } catch (err: any) {
       addToast('Lỗi nộp bài', err.message, 'error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  const restartQuiz = async () => {
+    if (!quiz) return;
+    try {
+      setLoading(true);
+      const nextAttempt = await api.startPracticeAttempt(quiz.id, lessonId);
+      setAttempt(nextAttempt);
+      setUserAnswers(nextAttempt.answers || {});
+      setFeedback({});
+      setResultScore(null);
+      setIsSubmitted(false);
+      setTimeLeft(Math.max(0, Math.floor((new Date(nextAttempt.deadline).getTime() - Date.now()) / 1000)));
+    } catch (err: any) {
+      addToast('Không thể bắt đầu lượt mới', err.message, 'warning');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatTime = (seconds: number) => `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
 
   if (loading) {
     return <LoadingState message="Đang nạp bài luyện tập cho bạn..." />;
@@ -87,8 +128,8 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
     return (
       <EmptyState
         icon={HelpCircle}
-        title="Chưa có câu hỏi luyện tập cho bài học này"
-        description="Giáo viên đang hoàn thiện ngân hàng câu hỏi. Bạn có thể quay lại học bài hoặc thử sức với bài khác."
+        title={loadError ? 'Chưa thể mở bài luyện tập' : 'Chưa có câu hỏi luyện tập cho bài học này'}
+        description={loadError || 'Giáo viên đang hoàn thiện ngân hàng câu hỏi. Bạn có thể quay lại học bài hoặc thử sức với bài khác.'}
         actionText="Quay lại bài học"
         onAction={onBack}
       />
@@ -124,14 +165,20 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
             </div>
           </div>
         )}
+        {!isSubmitted && attempt && (
+          <div className={`flex items-center gap-2 rounded-2xl border px-3 py-2 text-xs font-mono font-bold ${timeLeft < 60 ? 'border-amber-500/40 bg-amber-500/10 text-amber-400' : 'border-slate-800 bg-slate-900 text-slate-300'}`}>
+            <Clock className="h-4 w-4" /> {formatTime(timeLeft)}
+          </div>
+        )}
       </div>
 
       {/* Questions list */}
       <div className="space-y-6">
         {quiz.questions.map((q, idx) => {
           const selected = userAnswers[q.id];
-          const isCorrect = isSubmitted && selected === q.correctAnswer;
-          const isWrong = isSubmitted && selected && selected !== q.correctAnswer;
+          const questionFeedback = feedback[q.id];
+          const isCorrect = isSubmitted && questionFeedback?.isCorrect;
+          const isWrong = isSubmitted && Boolean(selected) && !questionFeedback?.isCorrect;
           const qHints = hintsRevealed[q.id] || {};
 
           return (
@@ -161,7 +208,7 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                   {q.options.map((opt, oi) => {
                     const isOptSelected = selected === opt;
-                    const isOptCorrect = isSubmitted && opt === q.correctAnswer;
+                    const isOptCorrect = isSubmitted && opt === questionFeedback?.correctAnswer;
 
                     return (
                       <button
@@ -183,6 +230,20 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
                     );
                   })}
                 </div>
+              )}
+
+              {!q.options && q.type === 'short_answer' && (
+                <label className="block space-y-2 pt-2">
+                  <span className="text-xs font-semibold text-slate-300">Câu trả lời ngắn</span>
+                  <input
+                    aria-label={`Câu trả lời câu ${idx + 1}`}
+                    value={selected || ''}
+                    disabled={isSubmitted}
+                    onChange={(event) => handleSelectAnswer(q.id, event.target.value)}
+                    placeholder="Nhập đáp án..."
+                    className="min-h-[48px] w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 text-sm text-white focus:border-emerald-500 focus:outline-none"
+                  />
+                </label>
               )}
 
               {/* Progressive Hints (Pedagogy) */}
@@ -240,9 +301,9 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
                       </span>
                     )}
                   </div>
-                  <p className="text-emerald-300 font-semibold">Đáp án đúng: {q.correctAnswer}</p>
+                  <p className="text-emerald-300 font-semibold">Đáp án đúng: {questionFeedback?.correctAnswer}</p>
                   <p className="text-slate-300 leading-relaxed font-mono pt-1">
-                    📖 Lời giải chi tiết: {q.explanation}
+                    📖 Lời giải chi tiết: {questionFeedback?.explanation}
                   </p>
                 </div>
               )}
@@ -255,14 +316,15 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
       {!isSubmitted ? (
         <div className="sticky bottom-6 bg-slate-900/95 backdrop-blur-md p-4 rounded-3xl border border-slate-800 shadow-2xl flex items-center justify-between">
           <span className="text-xs text-slate-300">
-            Đã làm <strong className="text-emerald-400 font-bold">{Object.keys(userAnswers).length}/{quiz.questions.length}</strong> câu
+            Đã làm <strong className="text-emerald-400 font-bold">{Object.values(userAnswers).filter(value => String(value).trim()).length}/{quiz.questions.length}</strong> câu
           </span>
 
           <button
             onClick={handleSubmitQuiz}
+            disabled={isSubmitting || timeLeft <= 0}
             className="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-bold shadow-lg shadow-emerald-950/60 transition-all min-h-[44px]"
           >
-            Nộp Bài Luyện Tập
+            {isSubmitting ? 'Đang nộp...' : timeLeft <= 0 ? 'Đã hết thời gian' : 'Nộp Bài Luyện Tập'}
           </button>
         </div>
       ) : (
@@ -274,11 +336,7 @@ export const PracticeQuizRunner: React.FC<PracticeQuizRunnerProps> = ({
             Quay lại bài học
           </button>
           <button
-            onClick={() => {
-              setIsSubmitted(false);
-              setUserAnswers({});
-              setResultScore(null);
-            }}
+            onClick={restartQuiz}
             className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 min-h-[44px]"
           >
             <RefreshCw className="w-4 h-4" />

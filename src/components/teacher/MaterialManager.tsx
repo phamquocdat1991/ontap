@@ -17,7 +17,8 @@ export const MaterialManager: React.FC = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [targetLessonId, setTargetLessonId] = useState('lesson-1');
   const [filename, setFilename] = useState('');
-  const [fileType, setFileType] = useState<'pdf' | 'video' | 'pptx' | 'docx'>('pdf');
+  const [storageUrl, setStorageUrl] = useState('');
+  const [fileType, setFileType] = useState<'pdf' | 'video' | 'pptx' | 'docx' | 'image'>('pdf');
   const [sampleContent, setSampleContent] = useState('');
   const [pageCount, setPageCount] = useState(8);
   const [durationMins, setDurationMins] = useState(6);
@@ -45,8 +46,8 @@ export const MaterialManager: React.FC = () => {
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!filename.trim()) {
-      addToast('Thiếu thông tin', 'Vui lòng nhập tên tệp tài liệu', 'warning');
+    if (!filename.trim() || !storageUrl.trim()) {
+      addToast('Thiếu thông tin', 'Vui lòng nhập tên và URL học liệu.', 'warning');
       return;
     }
 
@@ -56,6 +57,7 @@ export const MaterialManager: React.FC = () => {
         lessonId: targetLessonId,
         filename,
         type: fileType,
+        storageUrl,
         pageCount: fileType === 'pdf' || fileType === 'docx' ? pageCount : undefined,
         slideCount: fileType === 'pptx' ? pageCount : undefined,
         duration: fileType === 'video' ? durationMins * 60 : undefined,
@@ -65,9 +67,10 @@ export const MaterialManager: React.FC = () => {
       setMaterials(prev => [...prev, res.material]);
       setShowUploadModal(false);
       setFilename('');
+      setStorageUrl('');
       setSampleContent('');
 
-      let message = 'Tài liệu đã được tải lên thành công.';
+      let message = 'Liên kết học liệu đã được lưu thành công.';
       if (res.aiInsights?.summary) {
         message += ` AI đã phân tích nội dung: ${res.aiInsights.summary}`;
       }
@@ -89,7 +92,7 @@ export const MaterialManager: React.FC = () => {
             Kho Học Liệu & Video Bài Giảng
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Lưu trữ PDF, Slide bài giảng, Video chuyên đề với công nghệ đếm trang và phân đoạn theo dõi tự động.
+            Quản lý liên kết PDF, slide, hình ảnh và video; theo dõi tiến độ đọc/xem theo từng học liệu.
           </p>
         </div>
 
@@ -98,7 +101,7 @@ export const MaterialManager: React.FC = () => {
           className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-950/50 transition-all"
         >
           <Upload className="w-4 h-4" />
-          Tải lên học liệu mới
+          Thêm học liệu mới
         </button>
       </div>
 
@@ -127,12 +130,12 @@ export const MaterialManager: React.FC = () => {
               </div>
 
               <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                <span>{mat.fileSize || '2.4 MB'}</span>
+                <a href={mat.storageUrl} target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">Mở tệp gốc</a>
                 <span>
-                  {mat.type === 'video' ? `${Math.floor((mat.duration || 360)/60)} phút` : `${mat.pageCount || 8} trang`}
+                  {mat.type === 'video' ? `${Math.floor((mat.duration || 0)/60)} phút` : `${mat.pageCount || mat.slideCount || 0} trang`}
                 </span>
                 <span className="text-emerald-400 font-semibold flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Bắt buộc
+                  <CheckCircle2 className="w-3.5 h-3.5" /> {mat.required ? 'Bắt buộc' : 'Tham khảo'}
                 </span>
               </div>
             </div>
@@ -175,6 +178,7 @@ export const MaterialManager: React.FC = () => {
                     <option value="video">Video Bài giảng MP4</option>
                     <option value="pptx">Slide PowerPoint (PPTX)</option>
                     <option value="docx">Tài liệu Word (DOCX)</option>
+                    <option value="image">Hình ảnh (PNG/JPG/WebP)</option>
                   </select>
                 </div>
 
@@ -204,6 +208,19 @@ export const MaterialManager: React.FC = () => {
               </div>
 
               <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">URL học liệu *</label>
+                <input
+                  type="url"
+                  value={storageUrl}
+                  onChange={(e) => setStorageUrl(e.target.value)}
+                  required
+                  placeholder="https://.../tai-lieu.pdf"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono"
+                />
+                <p className="text-[11px] text-slate-400 mt-1">Phiên bản này lưu URL tệp có sẵn; chưa tải tệp nhị phân lên máy chủ.</p>
+              </div>
+
+              <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1">Trích đoạn tóm tắt nội dung (Dành cho Gemini AI phân tích)</label>
                 <textarea
                   rows={2}
@@ -227,7 +244,7 @@ export const MaterialManager: React.FC = () => {
                   disabled={isUploading}
                   className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-950/60"
                 >
-                  {isUploading ? 'Đang phân tích & tải lên...' : 'Lưu tài liệu'}
+                  {isUploading ? 'Đang phân tích & lưu...' : 'Lưu học liệu'}
                 </button>
               </div>
             </form>

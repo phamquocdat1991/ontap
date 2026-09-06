@@ -45,28 +45,16 @@ export const GradingManager: React.FC = () => {
   const openAttemptReview = (att: ExamAttempt) => {
     setSelectedAttempt(att);
     setOverrideScore(att.score || 0);
-    const firstEssayKey = att.essayEvaluations ? Object.keys(att.essayEvaluations)[0] : null;
-    const firstEssay = firstEssayKey ? att.essayEvaluations[firstEssayKey] : null;
-    setTeacherNote(firstEssay?.teacherNote || '');
+    setTeacherNote(att.teacherNotes || '');
   };
 
   const handleSaveReview = async () => {
     if (!selectedAttempt) return;
     try {
       setIsSavingReview(true);
-      const updatedEvaluations = { ...(selectedAttempt.essayEvaluations || {}) };
-      Object.keys(updatedEvaluations).forEach(k => {
-        updatedEvaluations[k] = {
-          ...updatedEvaluations[k],
-          teacherApprovedScore: overrideScore,
-          teacherNote: teacherNote,
-          needsTeacherReview: false
-        };
-      });
-
       const res = await api.reviewExamAttempt(selectedAttempt.id, {
         score: overrideScore,
-        essayEvaluations: updatedEvaluations,
+        essayEvaluations: selectedAttempt.essayEvaluations,
         teacherNotes: teacherNote
       });
 
@@ -114,6 +102,7 @@ export const GradingManager: React.FC = () => {
 
           <button
             onClick={fetchExamsAndAttempts}
+            aria-label="Làm mới danh sách bài nộp"
             className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl border border-slate-700 transition-colors"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -157,7 +146,7 @@ export const GradingManager: React.FC = () => {
                       </div>
                       {att.studentName}
                     </td>
-                    <td className="p-3.5 text-slate-300">{att.className || '10A1'}</td>
+                    <td className="p-3.5 text-slate-300">{att.className || 'Lớp mẫu'}</td>
                     <td className="p-3.5 text-slate-400">
                       {att.submittedAt ? new Date(att.submittedAt).toLocaleTimeString('vi-VN') : 'Đang làm bài'}
                       <span className="block text-[10px] text-slate-500">{durationMins} phút</span>
@@ -263,10 +252,10 @@ export const GradingManager: React.FC = () => {
                         <div className="flex items-center justify-between text-xs">
                           <span className="font-bold text-purple-300 flex items-center gap-1.5">
                             <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                            Gemini AI Đánh Giá Tự Luận Theo Rubric:
+                            {essayEval.confidence > 0 ? 'AI sơ khảo tự luận theo rubric:' : 'Chờ giáo viên đánh giá theo rubric:'}
                           </span>
                           <span className="font-mono font-bold text-amber-300">
-                            Điểm AI đề xuất: {essayEval.scoreProposal} / {essayEval.maxScore}đ (Độ tin cậy: {Math.round(essayEval.confidence * 100)}%)
+                            {essayEval.confidence > 0 ? `Điểm AI đề xuất: ${essayEval.scoreProposal} / ${essayEval.maxScore}đ (Độ tin cậy: ${Math.round(essayEval.confidence * 100)}%)` : `Chưa có điểm AI đáng tin cậy • tối đa ${essayEval.maxScore}đ`}
                           </span>
                         </div>
 
@@ -295,11 +284,11 @@ export const GradingManager: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Điểm Tổng Chốt (/10)</label>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1">Điểm Tổng Chốt (/{selectedAttempt.totalScore})</label>
                   <input
                     type="number"
                     step="0.25"
-                    max="10"
+                    max={selectedAttempt.totalScore}
                     min="0"
                     value={overrideScore}
                     onChange={(e) => setOverrideScore(Number(e.target.value))}

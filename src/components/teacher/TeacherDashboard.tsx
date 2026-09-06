@@ -62,7 +62,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-16 md:pb-6">
       {/* 1. Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-850 to-emerald-950/80 p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
+      <div className="theme-hero bg-gradient-to-r from-slate-900 via-slate-850 to-emerald-950/80 p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
         <div className="relative z-10 max-w-3xl space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
             <Sparkles className="w-3.5 h-3.5" />

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   html {
@@ -7,10 +8,111 @@
     scroll-behavior: smooth;
   }
 
+  body {
+    margin: 0;
+    background: #f4f7fb;
+  }
+
+  button, a, input, select, textarea {
+    outline-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: 3px solid rgba(16, 185, 129, 0.38);
+  }
+
   code, pre, kbd {
     font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
 }
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -5rem;
+  z-index: 100;
+  border-radius: 0.75rem;
+  background: #047857;
+  color: white;
+  padding: 0.7rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: top 160ms ease;
+}
+
+.skip-link:focus { top: 1rem; }
+
+html.light .app-shell {
+  background:
+    radial-gradient(circle at 85% 0%, rgba(16, 185, 129, 0.08), transparent 24rem),
+    #f4f7fb;
+}
+
+html.light .app-shell .bg-slate-950,
+html.light .app-shell .bg-slate-950\/80,
+html.light .app-shell .bg-slate-950\/70,
+html.light .app-shell .bg-slate-950\/60,
+html.light .app-shell .bg-slate-950\/40 {
+  background-color: #f8fafc;
+}
+
+html.light .app-shell .bg-slate-900,
+html.light .app-shell .bg-slate-900\/95,
+html.light .app-shell .bg-slate-900\/90,
+html.light .app-shell .bg-slate-900\/80,
+html.light .app-shell .bg-slate-900\/60 {
+  background-color: rgba(255, 255, 255, 0.94);
+}
+
+html.light .app-shell .bg-slate-800,
+html.light .app-shell .bg-slate-800\/90,
+html.light .app-shell .bg-slate-800\/80,
+html.light .app-shell .bg-slate-800\/60,
+html.light .app-shell .bg-slate-800\/40 {
+  background-color: #eef2f7;
+}
+
+html.light .app-shell .border-slate-800,
+html.light .app-shell .border-slate-800\/80,
+html.light .app-shell .border-slate-700,
+html.light .app-shell .border-slate-700\/80,
+html.light .app-shell .border-slate-700\/60 {
+  border-color: #dce4ee;
+}
+
+html.light .app-shell .text-slate-100,
+html.light .app-shell .text-slate-200 { color: #1e293b; }
+html.light .app-shell .text-slate-300 { color: #334155; }
+html.light .app-shell .text-slate-400 { color: #64748b; }
+html.light .app-shell .text-slate-500 { color: #64748b; }
+
+html.light .app-shell .text-white { color: #0f172a; }
+html.light .app-shell [class*="bg-emerald-5"][class*="text-white"],
+html.light .app-shell [class*="bg-emerald-6"][class*="text-white"],
+html.light .app-shell [class*="bg-rose-6"][class*="text-white"],
+html.light .app-shell [class*="bg-gradient"][class*="text-white"],
+html.light .app-shell .theme-hero .text-white { color: white; }
+html.light .app-shell .theme-hero .text-slate-300 { color: #dbeafe; }
+html.light .app-shell .theme-hero .text-slate-400 { color: #cbd5e1; }
+html.light .app-shell .light-panel-gradient { background-image: none; background-color: white; }
+
+html.light .app-shell .shadow-xl,
+html.light .app-shell .shadow-2xl,
+html.light .app-shell .shadow-lg {
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.07);
+}
+
+html.light .app-shell input,
+html.light .app-shell textarea,
+html.light .app-shell select {
+  color: #0f172a;
+}
+
+html.light .app-shell input::placeholder,
+html.light .app-shell textarea::placeholder { color: #94a3b8; }
+
+html.light ::-webkit-scrollbar-track { background: #eef2f7; }
+html.light ::-webkit-scrollbar-thumb { background: #cbd5e1; }
 
 /* Custom subtle scrollbars */
 ::-webkit-scrollbar {
@@ -39,4 +141,13 @@
 
 .animate-pulse-subtle {
   animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -8,7 +8,6 @@ import {
 import { Lesson, Material, LessonProgress, Course, Chapter } from '../../types';
 import { api } from '../../services/api';
 import { SmartMaterialViewer } from '../materials/SmartMaterialViewer';
-import { useToast } from '../../context/ToastContext';
 
 interface LessonViewerProps {
   lessonId: string;
@@ -25,7 +24,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   onBack,
   onStartPractice 
 }) => {
-  const { addToast } = useToast();
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [course, setCourse] = useState<Course | null>(null);
   const [chapter, setChapter] = useState<Chapter | null>(null);
@@ -86,37 +84,6 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
     setViewedSections(prev => ({ ...prev, [secId]: true }));
   };
 
-  const handleMaterialProgress = async (matProg: {
-    materialId: string;
-    completed: boolean;
-    pagesRead?: number[];
-    videoSecondsWatched?: number;
-    videoTotalSeconds?: number;
-  }) => {
-    if (!lesson) return;
-    try {
-      const updated = await api.updateProgress({
-        lessonId: lesson.id,
-        courseId: lesson.courseId,
-        materialProgress: {
-          [matProg.materialId]: {
-            materialId: matProg.materialId,
-            completed: matProg.completed,
-            pagesRead: matProg.pagesRead,
-            videoSecondsWatched: matProg.videoSecondsWatched,
-            videoTotalSeconds: matProg.videoTotalSeconds
-          }
-        }
-      });
-      setProgress(updated);
-      if (matProg.completed) {
-        addToast('Tuyệt vời!', 'Bạn đã hoàn thành xem tài liệu bài học này!', 'success');
-      }
-    } catch (err) {
-      console.error('Progress update error:', err);
-    }
-  };
-
   const currentSectionIndex = sectionsList.findIndex(s => s.id === activeSection);
   const hasPrev = currentSectionIndex > 0;
   const hasNext = currentSectionIndex < sectionsList.length - 1;
@@ -148,8 +115,8 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
   }
 
   const content = lesson.contentAI;
-  const progressPercent = progress?.progressPercentage || (Object.keys(viewedSections).length * 20);
-  const isLessonCompleted = progress?.status === 'completed' || progressPercent >= 90;
+  const progressPercent = Math.round(progress?.percentage || 0);
+  const isLessonCompleted = Boolean(progress?.isCompleted);
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-16 md:pb-6">
@@ -369,6 +336,7 @@ export const LessonViewer: React.FC<LessonViewerProps> = ({
 
                 {selectedMaterial ? (
                   <SmartMaterialViewer
+                    key={selectedMaterial.id}
                     material={selectedMaterial}
                     lessonId={lesson.id}
                     userId={studentId}

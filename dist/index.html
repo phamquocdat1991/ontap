@@ -2,8 +2,9 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>AI Learning Hub - Hệ Thống Học Tập & Khảo Thí Thông Minh GDPT 2018</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#059669" />
+    <title>Ôn tập AI — Không gian học tập GDPT 2018</title>
     <meta name="description" content="Hệ thống học tập, quản lý tiến độ, luyện tập và tạo đề kiểm tra thông minh chuẩn GDPT 2018 dành cho giáo viên và học sinh Việt Nam." />
     
     <!-- Google Fonts for crisp Vietnamese typography -->
@@ -14,11 +15,17 @@
     <meta property="og:title" content="AI Learning Hub GDPT 2018" />
     <meta property="og:description" content="Nền tảng sư phạm và khảo thí số chuẩn GDPT 2018." />
     <meta property="og:type" content="website" />
-    <script type="module" crossorigin src="/assets/index-V9OBi5zs.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index--e733xXv.css">
+    <script type="module" crossorigin src="/assets/index-RKowaGJo.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CUzRWMVu.css">
   </head>
-  <body class="bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen">
+  <body class="antialiased min-h-screen">
+    <script>
+      (() => {
+        const dark = localStorage.getItem('ontap-theme') === 'dark';
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.classList.toggle('light', !dark);
+      })();
+    </script>
     <div id="root"></div>
   </body>
 </html>
-

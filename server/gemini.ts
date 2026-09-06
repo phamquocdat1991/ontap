@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from '@google/genai';
-import { LessonContentAI, Question, ExamMatrix, EssayGradingResult } from '../src/types';
+import type { LessonContentAI, Question, ExamMatrix, EssayGradingResult } from '../src/types/index.js';
 
 // Lazy client initialization for Gemini API with user agent
 let aiClient: GoogleGenAI | null = null;
@@ -8,10 +8,10 @@ function getAiClient(): GoogleGenAI {
   if (!aiClient) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      console.warn('GEMINI_API_KEY not found in environment. AI features will fallback to high-quality heuristic responses.');
+      throw new Error('Chưa cấu hình GEMINI_API_KEY trên máy chủ; hệ thống không sinh nội dung mẫu để tránh sai kiến thức.');
     }
     aiClient = new GoogleGenAI({
-      apiKey: apiKey || 'DUMMY_KEY_FOR_INITIALIZATION',
+      apiKey,
       httpOptions: {
         headers: {
           'User-Agent': 'aistudio-build',
@@ -98,14 +98,18 @@ Hãy trả về JSON theo đúng định dạng sau:
 
       if (response.text) {
         const parsed = JSON.parse(response.text.trim());
+        if (!parsed?.title || !Array.isArray(parsed.objectives) || !Array.isArray(parsed.keyKnowledge)) {
+          throw new Error('Gemini trả về bài học thiếu các trường bắt buộc.');
+        }
         return parsed as LessonContentAI;
       }
     }
   } catch (error) {
-    console.error('Gemini generateLessonKnowledge error, using high-quality pedagogical fallback:', error);
+    throw new Error(error instanceof Error ? error.message : 'Gemini không trả về bài học hợp lệ.');
   }
 
-  // Pedagogical Fallback when API key unavailable or network error
+  throw new Error('Gemini không trả về bài học hợp lệ.');
+  /* istanbul ignore next -- legacy sample retained only as documentation, never returned */
   return {
     title: `${input.lesson} - ${input.subject} ${input.grade} (${input.bookSeries})`,
     objectives: [
@@ -209,26 +213,39 @@ Trả về mảng JSON câu hỏi.
 
       if (response.text) {
         const list = JSON.parse(response.text.trim());
-        return (Array.isArray(list) ? list : list.questions || []).map((q: any, idx: number) => ({
+        const questions = Array.isArray(list) ? list : list.questions;
+        if (!Array.isArray(questions) || questions.length === 0) {
+          throw new Error('Gemini không trả về danh sách câu hỏi.');
+        }
+        return questions.map((q: any, idx: number) => {
+          if (!q?.question || !['multiple_choice', 'true_false', 'short_answer'].includes(q?.type) || !q?.correctAnswer || !q?.explanation) {
+            throw new Error(`Câu hỏi ${idx + 1} thiếu đề bài, loại, đáp án hoặc lời giải.`);
+          }
+          if (['multiple_choice', 'true_false'].includes(q.type) && (!Array.isArray(q.options) || q.options.length < 2)) {
+            throw new Error(`Câu hỏi ${idx + 1} thiếu các phương án lựa chọn.`);
+          }
+          return {
           id: `q_ai_${Date.now()}_${idx + 1}`,
-          question: q.question || 'Câu hỏi',
-          type: q.type || 'multiple_choice',
-          options: q.options || (q.type === 'true_false' ? ['Đúng', 'Sai'] : ['A. Phương án 1', 'B. Phương án 2', 'C. Phương án 3', 'D. Phương án 4']),
-          correctAnswer: q.correctAnswer || 'A. Phương án 1',
-          explanation: q.explanation || 'Giải thích chi tiết',
-          hint1: q.hint1 || 'Hãy nhớ lại khái niệm cơ bản trong bài.',
-          hint2: q.hint2 || 'Áp dụng công thức và quy tắc biến đổi tương đương.',
+          question: q.question,
+          type: q.type,
+          options: q.options,
+          correctAnswer: q.correctAnswer,
+          explanation: q.explanation,
+          hint1: q.hint1,
+          hint2: q.hint2,
           difficulty: q.difficulty || 'thong_hieu',
-          learningObjective: q.learningObjective || 'Nắm vững kiến thức bài học',
+          learningObjective: q.learningObjective || '',
           points: q.points || (10 / questionCount)
-        }));
+          } as Question;
+        });
       }
     }
   } catch (error) {
-    console.error('Gemini generatePracticeQuiz error, using fallback:', error);
+    throw new Error(error instanceof Error ? error.message : 'Gemini không trả về bộ câu hỏi hợp lệ.');
   }
 
-  // Fallback questions
+  throw new Error('Gemini không trả về bộ câu hỏi hợp lệ.');
+  /* istanbul ignore next -- legacy sample retained only as documentation, never returned */
   return [
     {
       id: `q_fb_1`,
@@ -357,14 +374,19 @@ Trả về JSON cấu trúc sau:
       });
 
       if (response.text) {
-        return JSON.parse(response.text.trim()) as ExamMatrix;
+        const parsed = JSON.parse(response.text.trim());
+        if (!Array.isArray(parsed?.cells) || parsed.cells.length === 0) {
+          throw new Error('Gemini trả về ma trận thiếu các ô phân bổ nội dung.');
+        }
+        return parsed as ExamMatrix;
       }
     }
   } catch (error) {
-    console.error('Gemini generateExamMatrix error, using fallback:', error);
+    throw new Error(error instanceof Error ? error.message : 'Gemini không trả về ma trận hợp lệ.');
   }
 
-  // Fallback matrix
+  throw new Error('Gemini không trả về ma trận hợp lệ.');
+  /* istanbul ignore next -- legacy sample retained only as documentation, never returned */
   return {
     subject: params.subject,
     grade: params.grade,
@@ -445,29 +467,41 @@ Trả về JSON định dạng:
 
       if (response.text) {
         const parsed = JSON.parse(response.text.trim());
+        if (!Array.isArray(parsed?.questions) || parsed.questions.length === 0) {
+          throw new Error('Gemini không trả về danh sách câu hỏi cho đề thi.');
+        }
         return {
-          questions: (parsed.questions || []).map((q: any, idx: number) => ({
+          questions: parsed.questions.map((q: any, idx: number) => {
+            if (!q?.question || !['multiple_choice', 'true_false', 'short_answer', 'essay'].includes(q?.type) || !q?.correctAnswer || !q?.explanation) {
+              throw new Error(`Câu thi ${idx + 1} thiếu dữ liệu bắt buộc.`);
+            }
+            if (['multiple_choice', 'true_false'].includes(q.type) && (!Array.isArray(q.options) || q.options.length < 2)) {
+              throw new Error(`Câu thi ${idx + 1} thiếu các phương án lựa chọn.`);
+            }
+            return {
             id: `eq_gen_${Date.now()}_${idx + 1}`,
             question: q.question,
-            type: q.type || 'multiple_choice',
-            options: q.options || (q.type === 'multiple_choice' ? ['A. Lựa chọn 1', 'B. Lựa chọn 2', 'C. Lựa chọn 3', 'D. Lựa chọn 4'] : undefined),
-            correctAnswer: q.correctAnswer || '',
-            explanation: q.explanation || '',
+            type: q.type,
+            options: q.options,
+            correctAnswer: q.correctAnswer,
+            explanation: q.explanation,
             difficulty: q.difficulty || 'thong_hieu',
             learningObjective: q.learningObjective || '',
             points: q.points || (matrix.totalScore / matrix.questionCount)
-          })),
-          rubric: parsed.rubric || 'Thang điểm tự luận theo từng bước lập luận.',
-          scoringGuide: parsed.scoringGuide || 'Chấm trắc nghiệm tự động, chấm tự luận đối chiếu rubric.',
-          specification: parsed.specification || 'Bản đặc tả đề thi chuẩn GDPT 2018.'
+            } as Question;
+          }),
+          rubric: parsed.rubric || '',
+          scoringGuide: parsed.scoringGuide || '',
+          specification: parsed.specification || ''
         };
       }
     }
   } catch (error) {
-    console.error('Gemini generateExamFromApprovedMatrix error, using fallback:', error);
+    throw new Error(error instanceof Error ? error.message : 'Gemini không trả về đề thi hợp lệ.');
   }
 
-  // Fallback exam questions
+  throw new Error('Gemini không trả về đề thi hợp lệ.');
+  /* istanbul ignore next -- legacy sample retained only as documentation, never returned */
   const pointsPerQ = Math.round((matrix.totalScore / matrix.questionCount) * 10) / 10;
   return {
     specification: `Bản đặc tả đề thi môn ${matrix.subject} ${matrix.grade} (${scope}). Kiểm tra khả năng nhận diện định nghĩa, vận dụng công thức và tư duy giải quyết vấn đề thực tế.`,
@@ -540,6 +574,18 @@ export async function gradeStudentEssay(
   maxScore: number,
   officialAnswer?: string
 ): Promise<EssayGradingResult> {
+  if (!process.env.GEMINI_API_KEY) {
+    return {
+      questionId: '',
+      scoreProposal: 0,
+      maxScore,
+      reasoningSummary: studentAnswer.trim()
+        ? 'Chưa cấu hình Gemini; giáo viên cần duyệt trực tiếp theo rubric.'
+        : 'Học sinh chưa trả lời câu tự luận.',
+      confidence: 0,
+      needsTeacherReview: true
+    };
+  }
   const prompt = `
 Bạn là Giám khảo chấm thi sư phạm khách quan, công tâm.
 Hãy đánh giá bài làm tự luận của học sinh:
@@ -583,52 +629,31 @@ Trả về JSON:
 
       if (response.text) {
         const parsed = JSON.parse(response.text.trim());
+        const confidence = Number(parsed.confidence);
+        const normalizedConfidence = Number.isFinite(confidence) ? Math.min(1, Math.max(0, confidence)) : 0;
         return {
           questionId: '',
           scoreProposal: Math.min(maxScore, Math.max(0, Number(parsed.scoreProposal) || 0)),
           maxScore: maxScore,
           reasoningSummary: parsed.reasoningSummary || 'AI đã phân tích bài làm dựa trên tiêu chí rubric.',
-          confidence: Number(parsed.confidence) || 0.9,
-          needsTeacherReview: Boolean(parsed.needsTeacherReview),
+          confidence: normalizedConfidence,
+          needsTeacherReview: Boolean(parsed.needsTeacherReview) || normalizedConfidence < 0.85,
         };
       }
     }
   } catch (error) {
-    console.error('Gemini gradeStudentEssay error, using rule-based scoring:', error);
-  }
-
-  // Pedagogical Rule-based Fallback
-  const textLength = (studentAnswer || '').trim().length;
-  let scoreProposal = 0;
-  let reasoning = '';
-  let confidence = 0.85;
-  let needsReview = false;
-
-  if (textLength === 0) {
-    scoreProposal = 0;
-    reasoning = 'Học sinh để trống bài làm.';
-    confidence = 1.0;
-  } else if (textLength < 30) {
-    scoreProposal = Math.round(maxScore * 0.3 * 10) / 10;
-    reasoning = 'Bài làm quá ngắn, mới nêu ý tưởng ban đầu nhưng chưa hoàn chỉnh các bước giải.';
-    needsReview = true;
-  } else if (textLength < 100) {
-    scoreProposal = Math.round(maxScore * 0.75 * 10) / 10;
-    reasoning = 'Học sinh trình bày khá đủ các bước cơ bản, cần đối chiếu chi tiết các bước biến đổi.';
-    needsReview = true;
-  } else {
-    scoreProposal = Math.round(maxScore * 0.9 * 10) / 10;
-    reasoning = 'Bài làm đầy đủ, rõ ràng các bước lập luận theo yêu cầu của đề bài.';
-    confidence = 0.92;
+    console.error('Gemini gradeStudentEssay error:', error);
   }
 
   return {
     questionId: '',
-    scoreProposal,
+    scoreProposal: 0,
     maxScore,
-    reasoningSummary: reasoning,
-    confidence,
-    needsTeacherReview: needsReview,
+    reasoningSummary: studentAnswer.trim()
+      ? 'Chưa có kết quả chấm AI đáng tin cậy; giáo viên cần duyệt trực tiếp theo rubric.'
+      : 'Học sinh chưa trả lời câu tự luận.',
+    confidence: 0,
+    needsTeacherReview: true,
   };
 }
 
@@ -636,6 +661,7 @@ Trả về JSON:
  * 6. Multimodal Material Analyzer / Extractor
  */
 export async function analyzeLearningMaterial(filename: string, fileType: string, sampleContent?: string) {
+  if (!process.env.GEMINI_API_KEY) return null;
   const prompt = `
 Phân tích tài liệu học tập: "${filename}" (Định dạng: ${fileType}).
 Nội dung tài liệu trích xuất mẫu:
@@ -664,16 +690,16 @@ Trả về JSON:
       });
 
       if (response.text) {
-        return JSON.parse(response.text.trim());
+        const parsed = JSON.parse(response.text.trim());
+        if (!parsed?.summary || !Array.isArray(parsed.keyTopics) || !Array.isArray(parsed.recommendedQuestionTypes)) {
+          throw new Error('Gemini trả về kết quả phân tích tài liệu không hợp lệ.');
+        }
+        return parsed;
       }
     }
   } catch (error) {
     console.error('Gemini analyzeLearningMaterial error:', error);
   }
 
-  return {
-    summary: `Tài liệu ${filename} chứa các nội dung kiến thức chuyên sâu và bài tập vận dụng môn học.`,
-    keyTopics: ['Kiến thức trọng tâm', 'Ví dụ minh họa', 'Bài tập luyện tập'],
-    recommendedQuestionTypes: ['Trắc nghiệm 4 lựa chọn', 'Bài tập tự luận ngắn']
-  };
+  return null;
 }
