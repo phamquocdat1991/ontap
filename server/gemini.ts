@@ -22,6 +22,41 @@ function getAiClient(): GoogleGenAI {
   return aiClient;
 }
 
+const RESILIENT_MODELS = [
+  { model: process.env.GEMINI_MODEL || 'gemini-3.8-flash', timeoutMs: 12000 },
+  { model: 'gemini-3.7-flash', timeoutMs: 10000 },
+  { model: 'gemini-3.6-flash', timeoutMs: 10000 },
+  { model: 'gemini-3.5-flash-lite', timeoutMs: 8000 },
+];
+
+async function generateContentResilient(contents: string | any[], config: any = {}) {
+  const ai = getAiClient();
+  let lastError: any = null;
+
+  for (const candidate of RESILIENT_MODELS) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(new Error(`Timeout sau ${candidate.timeoutMs}ms`)), candidate.timeoutMs);
+    try {
+      const response = await ai.models.generateContent({
+        model: candidate.model,
+        contents,
+        config: {
+          ...config,
+          abortSignal: controller.signal,
+        },
+      });
+      clearTimeout(timer);
+      if (response?.text) return response;
+    } catch (err: any) {
+      clearTimeout(timer);
+      lastError = err;
+      console.warn(`[Ontap Resilience] Model ${candidate.model} gặp sự cố (${err?.message}), chuyển sang model dự phòng tiếp theo...`);
+    }
+  }
+
+  throw lastError || new Error('Tất cả các model Gemini dự phòng đều không phản hồi.');
+}
+
 export interface GenerateLessonInput {
   subject: string;
   grade: string;
@@ -85,15 +120,10 @@ Hãy trả về JSON theo đúng định dạng sau:
 `;
 
   try {
-    const ai = getAiClient();
     if (process.env.GEMINI_API_KEY) {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-          systemInstruction: 'Bạn là chuyên gia EdTech và sư phạm phổ thông Việt Nam. Hãy luôn trả về định dạng JSON hợp lệ.',
-        },
+      const response = await generateContentResilient(prompt, {
+        responseMimeType: 'application/json',
+        systemInstruction: 'Bạn là chuyên gia EdTech và sư phạm phổ thông Việt Nam. Hãy luôn trả về định dạng JSON hợp lệ.',
       });
 
       if (response.text) {
@@ -200,15 +230,10 @@ Trả về mảng JSON câu hỏi.
 `;
 
   try {
-    const ai = getAiClient();
     if (process.env.GEMINI_API_KEY) {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-          systemInstruction: 'Bạn là chuyên gia khảo thí và sư phạm Việt Nam. Trả về đúng mảng JSON các câu hỏi.',
-        },
+      const response = await generateContentResilient(prompt, {
+        responseMimeType: 'application/json',
+        systemInstruction: 'Bạn là chuyên gia khảo thí và sư phạm Việt Nam. Trả về đúng mảng JSON các câu hỏi.',
       });
 
       if (response.text) {
@@ -363,14 +388,9 @@ Trả về JSON cấu trúc sau:
 `;
 
   try {
-    const ai = getAiClient();
     if (process.env.GEMINI_API_KEY) {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-        },
+      const response = await generateContentResilient(prompt, {
+        responseMimeType: 'application/json',
       });
 
       if (response.text) {
@@ -455,14 +475,9 @@ Trả về JSON định dạng:
 `;
 
   try {
-    const ai = getAiClient();
     if (process.env.GEMINI_API_KEY) {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-        },
+      const response = await generateContentResilient(prompt, {
+        responseMimeType: 'application/json',
       });
 
       if (response.text) {
@@ -616,15 +631,10 @@ Trả về JSON:
 `;
 
   try {
-    const ai = getAiClient();
     if (process.env.GEMINI_API_KEY) {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-          systemInstruction: 'Bạn là chuyên gia chấm thi tự luận. Luôn trả về đúng định dạng JSON.',
-        },
+      const response = await generateContentResilient(prompt, {
+        responseMimeType: 'application/json',
+        systemInstruction: 'Bạn là chuyên gia chấm thi tự luận. Luôn trả về đúng định dạng JSON.',
       });
 
       if (response.text) {
@@ -679,14 +689,9 @@ Trả về JSON:
 `;
 
   try {
-    const ai = getAiClient();
     if (process.env.GEMINI_API_KEY) {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-        },
+      const response = await generateContentResilient(prompt, {
+        responseMimeType: 'application/json',
       });
 
       if (response.text) {
