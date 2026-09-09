@@ -41,7 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
           <Menu className="w-5 h-5" />
         </button>
 
-        <div 
+        <button type="button"
           onClick={() => onSelectTab(canManage ? 'dashboard' : 'student-dashboard')}
           className="flex items-center gap-2.5 cursor-pointer select-none group"
         >
@@ -51,17 +51,17 @@ export const Header: React.FC<HeaderProps> = ({
           <div>
             <div className="flex items-center gap-1.5">
               <span className="font-extrabold text-sm sm:text-base tracking-tight text-white">
-                AI LEARNING HUB
+                Ôn Tập
               </span>
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                 GDPT 2018
               </span>
             </div>
             <p className="text-[10px] text-slate-400 hidden sm:block">
-              Hệ thống Học tập & Khảo thí Sư phạm Số
+              Học nhẹ nhàng · Nhớ thật lâu
             </p>
           </div>
-        </div>
+        </button>
       </div>
 
       {/* Center: Quick Shortcuts (Desktop) */}

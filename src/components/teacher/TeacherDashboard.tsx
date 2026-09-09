@@ -6,7 +6,8 @@ import {
 } from 'lucide-react';
 import { AnalyticsSummary } from '../../types';
 import { api } from '../../services/api';
-import { LoadingState } from '../common/StateViews';
+import { SunriseWelcome } from '../common/SunriseWelcome';
+import { LoadingState, ErrorState } from '../common/StateViews';
 
 interface TeacherDashboardProps {
   onNavigate?: (tab: string) => void;
@@ -23,6 +24,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
 }) => {
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const handleLessonAIClick = () => {
     if (onOpenLessonAI) onOpenLessonAI();
@@ -42,9 +44,11 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
   const fetchAnalytics = async () => {
     try {
       setLoading(true);
+      setError(false);
       const data = await api.getAnalytics();
       setAnalytics(data);
     } catch (err) {
+      setError(true);
       console.error('Failed to load analytics:', err);
     } finally {
       setLoading(false);
@@ -59,55 +63,19 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
     return <LoadingState message="Đang nạp dữ liệu phân tích sư phạm..." />;
   }
 
+  if (error && !analytics) return <ErrorState message="Không tải được thống kê. Vui lòng thử lại." onRetry={fetchAnalytics} />;
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-16 md:pb-6">
-      {/* 1. Header Banner */}
-      <div className="theme-hero bg-gradient-to-r from-slate-900 via-slate-850 to-emerald-950/80 p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
-        <div className="relative z-10 max-w-3xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            Trợ lý Sư phạm Giáo dục Thông minh GDPT 2018
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-            Bảng Điều Khiển Sư Phạm & Khảo Thí
-          </h1>
-          <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-            Theo dõi tiến độ học tập thực tế theo chuẩn GDPT 2018, hỗ trợ chấm thi với Gemini AI và đồng bộ bảng điểm Google Sheets theo cấu hình.
-          </p>
-
-          <div className="flex items-center gap-3 pt-2 flex-wrap">
-            <button
-              onClick={handleLessonAIClick}
-              className="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-950/50 transition-all min-h-[44px]"
-            >
-              <Sparkles className="w-4 h-4" />
-              Soạn bài học AI mới
-            </button>
-            <button
-              onClick={handleExamMatrixClick}
-              className="px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 flex items-center gap-2 transition-all min-h-[44px]"
-            >
-              <Layers className="w-4 h-4 text-cyan-400" />
-              Tạo Ma trận Đề thi 4 mức độ
-            </button>
-            <button
-              onClick={handleGradingClick}
-              className="px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 flex items-center gap-2 transition-all min-h-[44px]"
-            >
-              <Award className="w-4 h-4 text-amber-400" />
-              Chấm thi & Duyệt điểm AI
-            </button>
-            <button
-              onClick={fetchAnalytics}
-              className="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-700 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
-              title="Làm mới dữ liệu"
-            >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            </button>
-          </div>
-        </div>
+      <SunriseWelcome teacher onStart={handleExamMatrixClick} />
+      <div className="sunrise-actions">
+        <button onClick={handleExamMatrixClick}><Layers /><span><strong>Tạo đề ôn tập</strong><small>Ma trận và đề kiểm tra</small></span><ArrowRight /></button>
+        <button onClick={handleLessonAIClick}><Sparkles /><span><strong>Soạn bài thông minh</strong><small>Chuẩn kiến thức GDPT 2018</small></span><ArrowRight /></button>
+        <button onClick={handleGradingClick}><Award /><span><strong>Chấm bài & kết quả</strong><small>Theo dõi tiến bộ học sinh</small></span><ArrowRight /></button>
+        <button onClick={() => onNavigate('question-bank')}><BookOpen /><span><strong>Ngân hàng câu hỏi</strong><small>Lưu trữ và tái sử dụng</small></span><ArrowRight /></button>
       </div>
-
+      <div className="flex justify-between items-center gap-3"><h2 className="font-bold text-lg">Lớp học hôm nay</h2><button onClick={fetchAnalytics} className="sunrise-text-button" disabled={loading}><RefreshCw size={16} className={loading ? 'animate-spin' : ''} />Làm mới</button></div>
+      {error && <p role="alert">Chưa cập nhật được dữ liệu mới. Đang hiển thị lần tải trước.</p>}
       {/* 2. 4 Core KPI Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-slate-900 p-5 rounded-3xl border border-slate-800 shadow-lg space-y-2">

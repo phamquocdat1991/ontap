@@ -120,6 +120,7 @@ Hãy trả về JSON theo đúng định dạng sau:
 `;
 
   try {
+    getAiClient(); // Fail explicitly when server configuration is missing.
     if (process.env.GEMINI_API_KEY) {
       const response = await generateContentResilient(prompt, {
         responseMimeType: 'application/json',
@@ -230,6 +231,7 @@ Trả về mảng JSON câu hỏi.
 `;
 
   try {
+    getAiClient(); // Fail explicitly when server configuration is missing.
     if (process.env.GEMINI_API_KEY) {
       const response = await generateContentResilient(prompt, {
         responseMimeType: 'application/json',
@@ -388,6 +390,7 @@ Trả về JSON cấu trúc sau:
 `;
 
   try {
+    getAiClient(); // Fail explicitly when server configuration is missing.
     if (process.env.GEMINI_API_KEY) {
       const response = await generateContentResilient(prompt, {
         responseMimeType: 'application/json',
@@ -475,6 +478,7 @@ Trả về JSON định dạng:
 `;
 
   try {
+    getAiClient(); // Fail explicitly when server configuration is missing.
     if (process.env.GEMINI_API_KEY) {
       const response = await generateContentResilient(prompt, {
         responseMimeType: 'application/json',
@@ -631,6 +635,7 @@ Trả về JSON:
 `;
 
   try {
+    getAiClient(); // Fail explicitly when server configuration is missing.
     if (process.env.GEMINI_API_KEY) {
       const response = await generateContentResilient(prompt, {
         responseMimeType: 'application/json',
@@ -689,6 +694,7 @@ Trả về JSON:
 `;
 
   try {
+    getAiClient(); // Fail explicitly when server configuration is missing.
     if (process.env.GEMINI_API_KEY) {
       const response = await generateContentResilient(prompt, {
         responseMimeType: 'application/json',

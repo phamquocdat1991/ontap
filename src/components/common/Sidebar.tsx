@@ -31,7 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const canManage = isTeacher || isAdmin;
 
   const teacherNavItems: NavItem[] = [
-    { id: 'dashboard', label: 'Tổng quan & Phân tích', icon: LayoutDashboard, badge: 'KPI' },
+    { id: 'dashboard', label: 'Trang chủ & Thống kê', icon: LayoutDashboard, badge: 'KPI' },
     { id: 'classes', label: 'Lớp học & Học sinh', icon: Users },
     { id: 'courses', label: 'Khóa học & Bài học', icon: BookOpen },
     { id: 'lesson-ai', label: 'Soạn bài học AI', icon: Sparkles, highlight: true },
@@ -53,7 +53,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const navItems = isTeacher || isAdmin ? teacherNavItems : studentNavItems;
 
   const content = (
-    <div className="flex flex-col h-full bg-slate-900 border-r border-slate-800">
+    <div className="sunrise-sidebar flex flex-col h-full bg-slate-900 border-r border-slate-800">
       {/* User Info Capsule */}
       <div className="p-4 border-b border-slate-800/80 flex items-center justify-between">
         <div className="flex items-center gap-3 min-w-0">
@@ -100,6 +100,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           return (
             <button
               key={item.id}
+              aria-current={isActive ? 'page' : undefined}
               onClick={() => {
                 onSelectView(item.id);
                 onCloseMobile();
@@ -135,7 +136,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-4 border-t border-slate-800/80 bg-slate-900/60">
         <div className="flex items-center gap-2 text-[11px] text-slate-400">
           <Shield className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-          <span className="truncate">GDPT 2018 • AI cấu hình phía máy chủ</span>
+          <span className="truncate">Tri thức hôm nay, vững bước ngày mai</span>
         </div>
       </div>
     </div>

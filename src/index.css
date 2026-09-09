@@ -87,9 +87,9 @@ html.light .app-shell .text-slate-400 { color: #64748b; }
 html.light .app-shell .text-slate-500 { color: #64748b; }
 
 html.light .app-shell .text-white { color: #0f172a; }
-html.light .app-shell [class*="bg-emerald-5"][class*="text-white"],
-html.light .app-shell [class*="bg-emerald-6"][class*="text-white"],
-html.light .app-shell [class*="bg-rose-6"][class*="text-white"],
+html.light .app-shell .bg-emerald-500.text-white,
+html.light .app-shell .bg-emerald-600.text-white,
+html.light .app-shell .bg-rose-600.text-white,
 html.light .app-shell [class*="bg-gradient"][class*="text-white"],
 html.light .app-shell .theme-hero .text-white { color: white; }
 html.light .app-shell .theme-hero .text-slate-300 { color: #dbeafe; }
@@ -151,3 +151,57 @@ html.light ::-webkit-scrollbar-thumb { background: #cbd5e1; }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Bình minh: peach light, mint accents and legible warm surfaces. */
+html.light .app-shell { background: radial-gradient(ellipse at 45% 0%, #ffe6e9 0, transparent 55%), #fff9f5; }
+html.light .app-shell header { background: #fff8f6ed; border-color: #f2deda; }
+html.light .app-shell .sunrise-sidebar { background: #fffdf9; border-color: #f2e5df; width: 100%; }
+html.light .app-shell .sunrise-sidebar button[aria-current="page"] { background: #ffe1e8; color: #a52b53; box-shadow: none; }
+html.light .app-shell .sunrise-sidebar button[aria-current="page"] svg { color: #b5355d; }
+html.light .app-shell .bg-slate-950, html.light .app-shell [class*="bg-slate-950/"] { background-color: #fff8f5; }
+html.light .app-shell .bg-slate-800, html.light .app-shell [class*="bg-slate-800/"] { background-color: #eef7f3; }
+html.light .app-shell [class*="border-slate-8"], html.light .app-shell [class*="border-slate-7"] { border-color: #eadfd9; }
+html.light .app-shell .text-emerald-400, html.light .app-shell .text-emerald-300, html.light .app-shell .text-teal-400, html.light .app-shell .text-cyan-400 { color: #217b70; }
+html.light .app-shell .text-amber-400, html.light .app-shell .text-amber-300 { color: #966215; }
+html.light .app-shell .text-rose-400, html.light .app-shell .text-rose-300 { color: #b53e60; }
+html.light .app-shell .text-purple-400, html.light .app-shell .text-blue-400 { color: #6a559c; }
+html.light .app-shell .text-cyan-200 { color: #276e76; }
+html.light .app-shell .bg-emerald-600 { background-color: #297f73; }
+html.light .app-shell .text-xs { font-size: .875rem; line-height: 1.5; }
+html.light .app-shell .shadow-xl, html.light .app-shell .shadow-lg, html.light .app-shell .shadow-2xl { box-shadow: 0 6px 24px #784b3910; }
+.sunrise-welcome { position: relative; overflow: hidden; border-radius: 24px; background: #ffede6 url('/images/sunrise.webp') center right / cover no-repeat; min-height: 290px; padding: 32px; isolation: isolate; border: 1px solid #f6ded4; }
+.sunrise-welcome::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg,#fff3e9f5 0%,#fff2e9ed 38%,#fff2e96b 67%,transparent 100%); z-index: -1; }
+.sunrise-copy { max-width: 580px; }
+.sunrise-eyebrow { display: inline-flex; align-items: center; gap: 8px; color: #33786b; font-size: 14px; font-weight: 600; }
+.sunrise-copy h1 { color: #ad4360; font-size: clamp(1.8rem,3vw,2.8rem); line-height: 1.25; font-weight: 800; letter-spacing: -.045em; margin: 12px 0; }
+.sunrise-copy h1 em { font-style: normal; color: #246f62; }
+.sunrise-copy p { max-width: 420px; color: #415b59; font-size: 16px; line-height: 1.6; margin-bottom: 20px; }
+.sunrise-primary { display: inline-flex; gap: 10px; align-items: center; border-radius: 999px; padding: 13px 20px; background: #bd4264; color: white; font-weight: 700; font-size: 14px; box-shadow: 0 6px 16px #bc456329; }
+.sunrise-primary:hover { background: #a63253; }
+.sunrise-actions { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; }
+.sunrise-actions button { display: flex; align-items: center; gap: 12px; text-align: left; padding: 20px 16px; background: #ffe7ed; color: #8d3756; border-radius: 18px; min-width: 0; transition: transform .2s; }
+.sunrise-actions button:hover { transform: translateY(-3px); }
+.sunrise-actions button:nth-child(2) { background: #ddf5ef; color: #246d65; }
+.sunrise-actions button:nth-child(3) { background: #fff1da; color: #825d22; }
+.sunrise-actions button:nth-child(4) { background: #eee5fb; color: #715193; }
+.sunrise-actions svg { flex-shrink: 0; width: 24px; }
+.sunrise-actions svg:last-child { width: 16px; margin-left: auto; }
+.sunrise-actions strong { display: block; font-size: 14px; }
+.sunrise-actions small { display: block; margin-top: 5px; font-size: 12px; line-height: 1.5; }
+.sunrise-text-button { display: inline-flex; gap: 8px; align-items: center; color: #287a6d; padding: 10px; font-size: 14px; }
+.study-tools { background: white; border: 1px solid #eddfd9; border-radius: 22px; padding: 20px; }
+.study-tools h2 { font-weight: 700; margin-bottom: 14px; }
+.study-tools-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.study-tools input, .study-tools select { border: 1px solid #d9e3dc; border-radius: 12px; padding: 11px 14px; background: #fffdfa; min-width: 0; font-size: 16px; }
+.study-tools input { flex: 1; }
+.study-tools button { padding: 11px 14px; border-radius: 12px; border: 1px solid #dedfd8; font-size: 14px; }
+.study-tools button[aria-pressed="true"] { background: #ffe3eb; color: #9d3454; border-color: #edb7c7; }
+.dark .study-tools { background: #152b29; border-color: #34504c; }
+.dark .study-tools input, .dark .study-tools select { background: #182e2b; color: #eef8f5; border-color: #34504c; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .6; }
+@media(min-width: 1500px) { .sunrise-welcome { min-height: 330px; padding: 38px; } }
+@media(max-width: 1100px) { .sunrise-actions { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width: 640px) { .sunrise-welcome { padding: 24px 20px; background-position: 65% center; } .sunrise-welcome::before { background: #fff3e9df; } .sunrise-actions { gap: 10px; } .sunrise-actions button { padding: 15px 12px; } .sunrise-actions svg:last-child { display: none; } .study-tools input { flex-basis: 100%; } .app-shell header > div:first-child { min-width: 0; } .app-shell header { padding-inline: 8px; gap: 4px; } }
+
+html.light .app-shell .sunrise-sidebar button:not([aria-current="page"]) { color: #365d56; }

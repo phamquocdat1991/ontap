@@ -6,7 +6,8 @@ import {
 } from 'lucide-react';
 import { Course, Lesson, Exam, LessonProgress, User } from '../../types';
 import { api } from '../../services/api';
-import { LoadingState } from '../common/StateViews';
+import { SunriseWelcome } from '../common/SunriseWelcome';
+import { LoadingState, ErrorState } from '../common/StateViews';
 
 interface StudentDashboardProps {
   user: User;
@@ -24,87 +25,81 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, viewMo
   const [loading, setLoading] = useState(true);
   const [selectedCourseId, setSelectedCourseId] = useState<string>('all');
 
+  const [query, setQuery] = useState('');
+  const [onlyFavorites, setOnlyFavorites] = useState(false);
+  const [error, setError] = useState(false);
+  const [reload, setReload] = useState(0);
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    try { const value = JSON.parse(localStorage.getItem(`ontap-favorites:${user.id}`) || '[]'); return Array.isArray(value) ? value.filter(id => typeof id === 'string') : []; } catch { return []; }
+  });
+  const toggleFavorite = (id: string) => {
+    const next = favorites.includes(id) ? favorites.filter(item => item !== id) : [...favorites, id];
+    setFavorites(next);
+    try { localStorage.setItem(`ontap-favorites:${user.id}`, JSON.stringify(next)); } catch { /* Still usable for this session. */ }
+  };
   useEffect(() => {
+    let cancelled = false;
     const fetchData = async () => {
       try {
         setLoading(true);
+        setError(false);
         const [cList, lList, eList, pList] = await Promise.all([
           api.getCourses(),
           api.getLessons(),
           api.getExams(),
           api.getStudentProgress(user.id)
         ]);
+        if (cancelled) return;
         setCourses(cList);
         setLessons(lList.filter(l => l.status === 'published'));
         setExams(eList.filter(e => e.status === 'published'));
         setProgressList(pList);
       } catch (err) {
+        if (!cancelled) setError(true);
         console.error('Failed to load student data:', err);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
     fetchData();
-  }, [user.id]);
+    return () => { cancelled = true; };
+  }, [user.id, reload]);
 
   if (loading) {
     return <LoadingState message="Đang nạp dữ liệu học tập của bạn..." />;
   }
 
-  // Filter lessons & exams by selected course
-  const filteredLessons = selectedCourseId === 'all' 
-    ? lessons 
-    : lessons.filter(l => l.courseId === selectedCourseId);
+  if (error) return <ErrorState message="Không tải được dữ liệu học tập. Hãy thử lại." onRetry={() => setReload(n => n + 1)} />;
 
-  const filteredExams = selectedCourseId === 'all'
-    ? exams
-    : exams.filter(e => e.courseId === selectedCourseId);
+  const matchesSearch = (title: string) => title.toLocaleLowerCase('vi').includes(query.trim().toLocaleLowerCase('vi'));
+  // Filter lessons & exams by selected course
+  const filteredLessons = lessons.filter(l => (selectedCourseId === 'all' || l.courseId === selectedCourseId) && matchesSearch(l.title) && (!onlyFavorites || favorites.includes(l.id)));
+
+  const filteredExams = exams.filter(e => (selectedCourseId === 'all' || e.courseId === selectedCourseId) && matchesSearch(e.title));
 
   // Active course details
   const activeCourse = courses.find(c => c.id === selectedCourseId);
 
   // Calculations
-  const completedLessons = progressList.filter(progress => progress.isCompleted || progress.percentage >= 99).length;
+  const completedLessons = lessons.filter(lesson => progressList.some(progress => progress.lessonId === lesson.id && (progress.isCompleted || progress.percentage >= 99))).length;
   const totalLessons = lessons.length || 1;
   const overallPercentage = Math.min(100, Math.round((completedLessons / totalLessons) * 100));
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-16 md:pb-6">
-      {/* 1. Welcoming Hero Banner */}
-      <div className="theme-hero relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950/90 via-slate-900 to-teal-950/80 border border-emerald-800/40 p-6 sm:p-8 shadow-2xl">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2 max-w-xl">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                Học sinh • {user.className || 'Lớp mẫu'}
-              </span>
-              <span className="flex items-center gap-1.5 text-xs font-bold text-cyan-200 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-400/20">
-                <Target className="w-4 h-4" /> {completedLessons}/{lessons.length} bài đã hoàn thành
-              </span>
-            </div>
-
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Chào mừng trở lại, {user.fullName}! 
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Bạn đang học môn <strong className="text-emerald-400">Toán 10 (Bộ Kết Nối Tri Thức)</strong>. Hãy hoàn thành các bài học để tự tin bứt phá trong bài kiểm tra sắp tới nhé!
-            </p>
-          </div>
-
-          {/* Quick Motivational Stats Card */}
-          <div className="flex items-center gap-4 bg-slate-950/80 p-4 rounded-2xl border border-slate-800 backdrop-blur-sm self-start md:self-auto shrink-0 shadow-lg">
-            <div className="text-center pr-4 border-r border-slate-800">
-              <p className="text-2xl sm:text-3xl font-black text-emerald-400">{overallPercentage}%</p>
-              <p className="text-[10px] uppercase font-bold text-slate-400">Đã Hoàn Thành</p>
-            </div>
-            <div className="text-center pl-2">
-              <p className="text-2xl sm:text-3xl font-black text-amber-400">{completedLessons}/{lessons.length}</p>
-              <p className="text-[10px] uppercase font-bold text-slate-400">Bài Đã Học</p>
-            </div>
-          </div>
+      <SunriseWelcome onStart={lessons.length ? () => {
+        const recent = [...progressList].filter(p => lessons.some(l => l.id === p.lessonId) && !p.isCompleted && p.percentage < 99).sort((a, b) => Date.parse(b.lastOpenedAt) - Date.parse(a.lastOpenedAt))[0];
+        onOpenLesson(recent?.lessonId || lessons.find(l => !progressList.some(p => p.lessonId === l.id && (p.isCompleted || p.percentage >= 99)))?.id || lessons[0].id);
+      } : undefined} />
+      <section className="study-tools">
+        <div className="flex flex-wrap justify-between gap-3 mb-3"><h2>Chào {user.fullName}!</h2><span className="text-sm">{completedLessons}/{lessons.length} bài hoàn thành · {overallPercentage}%</span></div>
+        <div className="study-tools-row">
+          <input aria-label="Tìm bài học hoặc đề kiểm tra" placeholder="Tìm bài học, chủ đề, đề kiểm tra…" value={query} onChange={e => setQuery(e.target.value)} />
+          {viewMode !== 'exams' && <button aria-pressed={onlyFavorites} onClick={() => setOnlyFavorites(!onlyFavorites)}><Star size={16} className="inline mr-2" />Bài yêu thích</button>}
+          {(query || onlyFavorites) && <button onClick={() => { setQuery(''); setOnlyFavorites(false); }}>Xóa bộ lọc</button>}
         </div>
-      </div>
-
+        <p className="text-xs text-slate-400 mt-3">Bài yêu thích được lưu riêng cho tài khoản trên thiết bị này.</p>
+      </section>
       {/* Course Filter Bar */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2">
         <span className="text-xs font-bold text-slate-400 shrink-0">Môn học:</span>
@@ -158,7 +153,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, viewMo
               {filteredLessons.length === 0 ? (
                 <div className="p-8 text-center bg-slate-950/40 rounded-2xl border border-slate-800/80">
                   <BookOpen className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-                  <p className="text-xs text-slate-400">Chưa có bài học nào trong môn này. Hãy chọn "Tất cả các môn" để xem các bài học khác.</p>
+                  <p className="text-xs text-slate-400">Không có bài học phù hợp. Hãy thay đổi từ khóa, môn học hoặc bộ lọc yêu thích.</p>
                 </div>
               ) : (
                 filteredLessons.map((les) => {
@@ -206,6 +201,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, viewMo
                       </div>
 
                       <div className="shrink-0 flex items-center gap-2">
+                        <button onClick={() => toggleFavorite(les.id)} aria-pressed={favorites.includes(les.id)} aria-label={`${favorites.includes(les.id) ? 'Bỏ yêu thích' : 'Yêu thích'}: ${les.title}`} className="p-3 rounded-xl border border-slate-700 text-rose-400"><Star size={18} fill={favorites.includes(les.id) ? 'currentColor' : 'none'} /></button>
                         <button
                           onClick={() => viewMode === 'practice' ? onStartPractice(les.id) : onOpenLesson(les.id)}
                           className={`w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all min-h-[44px] ${
@@ -243,14 +239,14 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, viewMo
             <div className="space-y-3">
               {filteredExams.length === 0 ? (
                 <div className="p-4 text-center text-xs text-slate-500">
-                  Không có đề thi nào trong môn này.
+                  Không có đề thi phù hợp với bộ lọc.
                 </div>
               ) : (
                 filteredExams.map((ex) => (
                   <div key={ex.id} className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3 hover:border-amber-500/30 transition-colors">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                        {ex.type === 'midterm' ? 'Giữa kỳ' : ex.type === 'regular' ? '15 Phút' : 'Cuối kỳ'}
+                        {ex.type === 'midterm' ? 'Giữa kỳ' : ex.type === 'chapter_review' ? 'Ôn tập chương' : 'Cuối kỳ'}
                       </span>
                       <span className="text-xs font-bold text-slate-300 flex items-center gap-1">
                         <Clock className="w-3.5 h-3.5 text-emerald-400" /> {ex.durationMinutes} phút
@@ -260,7 +256,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, viewMo
                     <div>
                       <h3 className="text-sm font-bold text-white leading-snug">{ex.title}</h3>
                       <p className="text-[11px] text-slate-400 mt-1">
-                        Gồm {ex.questionCount || 4} câu hỏi (Trắc nghiệm & Tự luận có giải thích)
+                        Gồm {ex.questionCount ?? 0} câu hỏi (Trắc nghiệm & Tự luận có giải thích)
                       </p>
                     </div>
 
@@ -284,7 +280,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({ user, viewMo
               <h3 className="text-xs font-bold uppercase tracking-wider">Mẹo học tập hiệu quả</h3>
             </div>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Hãy chú ý phần <strong className="text-rose-400">Lỗi thường gặp</strong> trong mỗi bài học để tránh mất điểm đáng tiếc ở các bài toán vectơ nhé!
+              Hãy chú ý phần <strong className="text-rose-400">Lỗi thường gặp</strong> trong mỗi bài học để tránh mất điểm đáng tiếc khi luyện tập nhé!
             </p>
           </div>}
         </div>}

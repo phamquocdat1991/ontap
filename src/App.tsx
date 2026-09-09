@@ -57,7 +57,7 @@ const MainApp: React.FC = () => {
             <div className="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-950 dark:text-white tracking-wide">AI LEARNING HUB • GDPT 2018</h2>
+            <h2 className="text-base font-bold text-slate-950 dark:text-white tracking-wide">Ôn Tập • Học nhẹ nhàng mỗi ngày</h2>
             <p className="text-xs text-slate-400 mt-1">Đang nạp dữ liệu giáo dục và cấu hình sư phạm số...</p>
           </div>
           {showRetryPrompt && (
@@ -128,7 +128,7 @@ const MainApp: React.FC = () => {
         )}
 
         {/* Main Content Area */}
-        <main id="main-content" className={`flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 ${currentView === 'exam-room' ? 'max-w-5xl mx-auto w-full' : ''}`}>
+        <main id="main-content" className={`min-w-0 flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 ${currentView === 'exam-room' ? 'max-w-5xl mx-auto w-full' : ''}`}>
           {/* TEACHER & ADMIN VIEWS */}
           {canManage && (
             <>
@@ -169,7 +169,7 @@ const MainApp: React.FC = () => {
           {isStudent && (
             <>
               {(currentView === 'student-dashboard' || currentView === 'student-courses' || currentView === 'student-exams') && (
-                <StudentDashboard
+                <StudentDashboard key={user.id}
                   user={user}
                   viewMode={currentView === 'student-courses' ? 'courses' : currentView === 'student-exams' ? 'exams' : 'overview'}
                   onOpenLesson={handleOpenLesson}
@@ -201,7 +201,7 @@ const MainApp: React.FC = () => {
                 />
               )}
               {currentView === 'student-practice' && (
-                <StudentDashboard
+                <StudentDashboard key={user.id}
                   user={user}
                   viewMode="practice"
                   onOpenLesson={handleOpenLesson}
